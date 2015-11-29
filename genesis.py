@@ -36,11 +36,11 @@ class Genesis:
 
         query = ('CREATE TABLE IF NOT EXISTS users '
                  '(chat_id INTEGER PRIMARY KEY, platform INTEGER,'
-                 'alert_track INTEGER, invasion_track INTEGER,'
-                 'broadcast INTEGER, photo INTEGER,'
-                 'helmet_track INTEGER, clantech_track INTEGER,'
-                 'nightmare_track INTEGER, aura_track INTEGER,'
-                 'resource_track INTEGER, nitain_track INTEGER)')
+                 'alert_track TINYINT, invasion_track TINYINT,'
+                 'broadcast TINYINT, photo TINYINT,'
+                 'helmet_track TINYINT, clantech_track TINYINT,'
+                 'nightmare_track TINYINT, aura_track TINYINT,'
+                 'resource_track TINYINT, nitain_track TINYINT)')
 
         cursor.execute(query)
         db.commit()
