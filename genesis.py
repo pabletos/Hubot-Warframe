@@ -1,12 +1,11 @@
 from datetime import datetime
-import threading, time, shelve, argparse, os.path, dbm, requests, sqlite3, telegram
+import threading, time, shelve, argparse, os.path, dbm, requests, mysql.connector, telegram, configparser
 
 from pyDeathsnacks import pyDeathsnacks
 
 class Genesis:
 
-    TOKEN_PATH = 'token.txt'
-    DB_NAME = 'your db here'
+    CONFIG_PATH = 'config.ini'
 
     INSTRUCTIONS = (
                 'I am allowed to answer to any of these commands:\n\n'
@@ -29,10 +28,10 @@ class Genesis:
     
     def __init__(self):
         
-        read_token()
+        read_config()
         self.wrapper = telegram.Bot(token = self.token)
 
-        db = sqlite3.connect(DB_NAME)
+        db = mysql.connector.connect(user= self.db_user, password= self.db_pass,host= self.db_host,database= self.db_name)
         cursor = db.cursor()
 
         query = ('CREATE TABLE IF NOT EXISTS users '
@@ -48,28 +47,37 @@ class Genesis:
         db.close()
 
 
-    def read_token(self):
-        """ Read the bot token from the file specified in TOKEN_PATH"""
+    def read_config(self):
+        """ Read the bot config from the file specified in CONFIG_PATH """
 
-        with open(TOKEN_PATH) as f:
-            self.token = f.readline()
+        config = configparser.ConfigParser()
+        config.read(CONFIG_PATH)
+
+        server = config['SERVER']
+        database = config['DATABASE']
+
+        self.token = server['Token']
+        self.db_name = database['Name']
+        self.db_user = database['Root']
+        self.db_pass = database['Password']
+        self.db_host = database['Host']
 
 
     def start(self, chatid):
         """ Register new users """
 
-        db = sqlite3.connect(DB_NAME)
+        db = mysql.connector.connect(user= self.db_user, password= self.db_pass,host= self.db_host,database= self.db_name)
         cursor = db.cursor()
 
         #checks if user exists already
-        query = "SELECT name FROM users WHERE chat_id = ?"
+        query = "SELECT name FROM users WHERE chat_id = %s"
         cursor.execute(query, (chatid,))
         row = cursor.fetchone()
 
         if row == None:
             #create a record if doesn't exist
 
-            create = ('INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
+            create = ('INSERT INTO user VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)')
             cursor.execute(create, (chatid, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
             db.commit()
             db.close()
@@ -80,16 +88,16 @@ class Genesis:
     def alert_track(self,chatid,chatname):
         """ Connects to database and change alert tracking value from 0 to 1 or 1 to 0 (tracking/not tracking) """
 
-        db = sqlite3.connect(DB_NAME)
+        db = mysql.connector.connect(user= self.db_user, password= self.db_pass,host= self.db_host,database= self.db_name)
         cursor = db.cursor()
 
-        query = "SELECT alert_track FROM users WHERE chat_id = ?"
+        query = "SELECT alert_track FROM users WHERE chat_id = %s"
         cursor.execute(query, (chatid,))
         row = cursor.fetchone()
 
         if row != None:
             #if fetching was succesful it checks chat_id value
-            update = "UPDATE users SET alert_track = ? WHERE chat_id = ?"
+            update = "UPDATE users SET alert_track = %s WHERE chat_id = %s"
 
             if row[0] == 0:
                 #starts
@@ -107,16 +115,16 @@ class Genesis:
     def invasion_track(self,chatid):
         """ Connects to database and change invasion tracking value from 0 to 1 or 1 to 0 (tracking/not tracking) """
 
-        db = sqlite3.connect(DB_NAME)
+        db = mysql.connector.connect(user= self.db_user, password= self.db_pass,host= self.db_host,database= self.db_name)
         cursor = db.cursor()
 
-        query = "SELECT invasion_track FROM users WHERE chat_id = ?"
+        query = "SELECT invasion_track FROM users WHERE chat_id = %s"
         cursor.execute(query, (chatid,))
         row = cursor.fetchone()
 
         if row != None:
             #if fetching was succesful it checks chat_id value
-            update = "UPDATE users SET invasion_track = ? WHERE chat_id = ?"
+            update = "UPDATE users SET invasion_track = %s WHERE chat_id = %s"
             
             if row[0] == 0:
                 #starts
@@ -133,10 +141,10 @@ class Genesis:
     def broadcast(self,field,message):
         """ Broadcast a message checking if a row value is 1 (if users are tracking) """
 
-        db = sqlite3.connect(DB_NAME)
+        db = mysql.connector.connect(user= self.db_user, password= self.db_pass,host= self.db_host,database= self.db_name)
         cursor = db.cursor()
 
-        query = "SELECT chat_id FROM users WHERE ? = 1"
+        query = "SELECT chat_id FROM users WHERE %s = 1"
         cursor.execute(query, (field,))
         rows = cursor.fetchall()
 
@@ -146,10 +154,10 @@ class Genesis:
         db.close()
 
     def remove_chat(self, chatid):
-        db = sqlite3.connect(DB_NAME)
+        db = mysql.connector.connect(user= self.db_user, password= self.db_pass,host= self.db_host,database= self.db_name)
         cursor = db.cursor()
 
-        cursor.execute('DELETE FROM users WHERE chat_id = ?', (chatid,))
+        cursor.execute('DELETE FROM users WHERE chat_id = %s', (chatid,))
 
         db.commit()
         db.close()
