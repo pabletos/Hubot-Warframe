@@ -32,6 +32,21 @@ class Genesis:
         read_token()
         self.wrapper = telegram.Bot(token = self.token)
 
+        db = sqlite3.connect('DB_NAME')
+        cursor = db.cursor()
+
+        query = ('CREATE TABLE IF NOT EXISTS users '
+                 '(chat_id INTEGER PRIMARY KEY, platform INTEGER,'
+                 'alert_track INTEGER, invasion_track INTEGER,'
+                 'broadcast INTEGER, photo INTEGER,'
+                 'helmet_track INTEGER, clantech_track INTEGER,'
+                 'nightmare_track INTEGER, aura_track INTEGER,'
+                 'resource_track INTEGER, nitain_track INTEGER)')
+
+        cursor.execute(query)
+        db.commit()
+        db.close()
+
 
     def read_token(self):
         """ Read the bot token from the file specified in TOKEN_PATH"""
@@ -40,7 +55,7 @@ class Genesis:
             self.token = f.readline()
 
 
-    def start(self,chatid,chatname):
+    def start(self, chatid):
         """ Register new users """
 
         db = sqlite3.connect(DB_NAME)
@@ -54,12 +69,13 @@ class Genesis:
         if row == None:
             #create a record if doesn't exist
 
-            create = "INSERT INTO users (chat_id, name, alert_track, invasion_track, broadcast, photo) VALUES (?, ?, ?, ?, ?, ?)"
-            cursor.execute(create, (chatid, chatname, 1, 1, 1, 1))
+            create = ('INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
+            cursor.execute(create, (chatid, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1))
             db.commit()
+            db.close()
+
             wrapper.sendMessage(chat_id = chatid, text = "Welcome operator!\n" + INSTRUCTIONS)
 
-            db.close()
 
     def alert_track(self,chatid,chatname):
         """ Connects to database and change alert tracking value from 0 to 1 or 1 to 0 (tracking/not tracking) """
@@ -67,56 +83,52 @@ class Genesis:
         db = sqlite3.connect(DB_NAME)
         cursor = db.cursor()
 
-        query = "SELECT name, alert_track FROM users WHERE chat_id = ?"
+        query = "SELECT alert_track FROM users WHERE chat_id = ?"
         cursor.execute(query, (chatid,))
         row = cursor.fetchone()
 
         if row != None:
             #if fetching was succesful it checks chat_id value
+            update = "UPDATE users SET alert_track = ? WHERE chat_id = ?"
 
-            if row[1] == 0:
+            if row[0] == 0:
                 #starts
-
-                update = "UPDATE users SET alert_track = ? WHERE chat_id = ?"
                 cursor.execute(update, (1, chatid))
-                db.commit()
                 wrapper.sendMessage(chat_id = chatid, text = "Starting tracking alerts, here we go!\n")
             else:
                 #stops
-
-                update = "UPDATE users SET alert_track = ? WHERE chat_id = ?"
                 cursor.execute(update, (0, chatid))
-                db.commit()
                 wrapper.sendMessage(chat_id = chatid, text = "Stopping the tracking, use /startalerts if you want to start tracking again, operator\n")
+
+            db.commit()
+        db.close()
             
 
-    def invasion_track(self,chatid,chatname):
+    def invasion_track(self,chatid):
         """ Connects to database and change invasion tracking value from 0 to 1 or 1 to 0 (tracking/not tracking) """
 
         db = sqlite3.connect(DB_NAME)
         cursor = db.cursor()
 
-        query = "SELECT name, invasion_track FROM users WHERE chat_id = ?"
+        query = "SELECT invasion_track FROM users WHERE chat_id = ?"
         cursor.execute(query, (chatid,))
         row = cursor.fetchone()
 
         if row != None:
             #if fetching was succesful it checks chat_id value
+            update = "UPDATE users SET invasion_track = ? WHERE chat_id = ?"
             
-            if row[1] == 0:
+            if row[0] == 0:
                 #starts
-
-                update = "UPDATE users SET invasion_track = ? WHERE chat_id = ?"
                 cursor.execute(update, (1, chatid))
-                db.commit()
                 wrapper.sendMessage(chat_id = chatid, text = "Starting tracking invasions, here we go!\n")
             else:
                 #stops
-
-                update = "UPDATE users SET invasion_track = ? WHERE chat_id = ?"
                 cursor.execute(update, (0, chatid))
-                db.commit()
                 wrapper.sendMessage(chat_id = chatid, text = "Stopping the tracking, use /invasion if you want to start tracking again, operator\n")
+
+            db.commit()
+        db.close()
 
     def broadcast(self,field,message):
         """ Broadcast a message checking if a row value is 1 (if users are tracking) """
