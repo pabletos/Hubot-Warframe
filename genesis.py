@@ -47,15 +47,15 @@ class Genesis:
         cursor = db.cursor()
 
         #checks if user exists already
-        query = ("SELECT name FROM users WHERE chat_id = %s")
-        cursor.execute(query,(chatid,))
+        query = "SELECT name FROM users WHERE chat_id = ?"
+        cursor.execute(query, (chatid,))
         row = cursor.fetchone()
 
         if row == None:
             #create a record if doesn't exist
 
-            create = ("INSERT INTO users (chat_id, name, alert_track, invasion_track, broadcast, photo) VALUES (%s, %s, %s, %s, %s, %s)")
-            cursor.execute(create, (chatid, chatname, "1", "1", "1", "1"))
+            create = "INSERT INTO users (chat_id, name, alert_track, invasion_track, broadcast, photo) VALUES (?, ?, ?, ?, ?, ?)"
+            cursor.execute(create, (chatid, chatname, 1, 1, 1, 1))
             db.commit()
             wrapper.sendMessage(chat_id = chatid, text = "Welcome operator!\n" + INSTRUCTIONS)
 
@@ -67,25 +67,25 @@ class Genesis:
         db = sqlite3.connect(DB_NAME)
         cursor = db.cursor()
 
-        query = ("SELECT name, alert_track FROM users WHERE chat_id = %s")
-        cursor.execute(query,(chatid,))
+        query = "SELECT name, alert_track FROM users WHERE chat_id = ?"
+        cursor.execute(query, (chatid,))
         row = cursor.fetchone()
 
         if row != None:
             #if fetching was succesful it checks chat_id value
 
-            if row[1] == "0":
+            if row[1] == 0:
                 #starts
 
-                update = ("UPDATE users SET alert_track = %s WHERE chat_id = %s ")
-                cursor.execute(update,("1",chatid))
+                update = "UPDATE users SET alert_track = ? WHERE chat_id = ?"
+                cursor.execute(update, (1, chatid))
                 db.commit()
                 wrapper.sendMessage(chat_id = chatid, text = "Starting tracking alerts, here we go!\n")
             else:
                 #stops
 
-                update = ("UPDATE users SET track = %s WHERE chat_id = %s ")
-                cursor.execute(update,("0",chatid))
+                update = "UPDATE users SET alert_track = ? WHERE chat_id = ?"
+                cursor.execute(update, (0, chatid))
                 db.commit()
                 wrapper.sendMessage(chat_id = chatid, text = "Stopping the tracking, use /startalerts if you want to start tracking again, operator\n")
             
@@ -96,25 +96,25 @@ class Genesis:
         db = sqlite3.connect(DB_NAME)
         cursor = db.cursor()
 
-        query = ("SELECT name, invasion_track FROM users WHERE chat_id = %s")
-        cursor.execute(query,(chatid,))
+        query = "SELECT name, invasion_track FROM users WHERE chat_id = ?"
+        cursor.execute(query, (chatid,))
         row = cursor.fetchone()
 
         if row != None:
             #if fetching was succesful it checks chat_id value
             
-            if row[1] == "0":
+            if row[1] == 0:
                 #starts
 
-                update = ("UPDATE users SET track = %s WHERE chat_id = %s ")
-                cursor.execute(update,("1",chatid))
+                update = "UPDATE users SET invasion_track = ? WHERE chat_id = ?"
+                cursor.execute(update, (1, chatid))
                 db.commit()
                 wrapper.sendMessage(chat_id = chatid, text = "Starting tracking invasions, here we go!\n")
             else:
                 #stops
 
-                update = ("UPDATE users SET track = %s WHERE chat_id = %s ")
-                cursor.execute(update,("0",chatid))
+                update = "UPDATE users SET invasion_track = ? WHERE chat_id = ?"
+                cursor.execute(update, (0, chatid))
                 db.commit()
                 wrapper.sendMessage(chat_id = chatid, text = "Stopping the tracking, use /invasion if you want to start tracking again, operator\n")
 
@@ -124,18 +124,12 @@ class Genesis:
         db = sqlite3.connect(DB_NAME)
         cursor = db.cursor()
 
-        query = ("SELECT chat_id, %s FROM users")
-        cursor.execute(query,(field,))
+        query = "SELECT chat_id FROM users WHERE ? = 1"
+        cursor.execute(query, (field,))
         rows = cursor.fetchall()
 
         for row in rows:
-
-            #check tracking values and send alerts or invasions
-            try:
-                if row[1] == '1':
-                    send_message(row[0],message)
-            except:
-                continue
+            send_message(row[0], message)
 
         db.close()
 
