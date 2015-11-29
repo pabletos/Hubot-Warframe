@@ -145,6 +145,16 @@ class Genesis:
 
         db.close()
 
+    def remove_chat(self, chatid):
+        db = sqlite3.connect(DB_NAME)
+        cursor = db.cursor()
+
+        cursor.execute('DELETE FROM users WHERE chat_id = ?', (chatid,))
+
+        db.commit()
+        db.close()
+
+
     def run(self):
 
 
@@ -187,6 +197,10 @@ class Genesis:
                 self.set_notifications(chat_id, True)
             elif 'off' in text:
                 self.set_notifications(chat_id, False)
+
+        if (message.left_chat_partecipant is not None and
+                message.left_chat_participant.id == wrapper.id):
+            self.remove_chat(chat_id)
 
 
     if __name__ == '__main__':
