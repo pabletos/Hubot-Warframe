@@ -35,7 +35,7 @@ class Genesis:
         cursor = db.cursor()
 
         query = ('CREATE TABLE IF NOT EXISTS users '
-                 '(chat_id INTEGER PRIMARY KEY, platform INTEGER,'
+                 '(chat_id INTEGER PRIMARY KEY, platform TINYINT,'
                  'alert_track TINYINT, invasion_track TINYINT,'
                  'broadcast TINYINT, photo TINYINT,'
                  'helmet_track TINYINT, clantech_track TINYINT,'
