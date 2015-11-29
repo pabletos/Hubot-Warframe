@@ -29,7 +29,8 @@ class Genesis:
             )
     
     def __init__(self):
-        pass
+        
+        self.wrapper = telegram.Bot(token = TOKEN)
 
 
     def start(self,chatid,chatname):
@@ -49,7 +50,7 @@ class Genesis:
             create = ("INSERT INTO users (chat_id, name, alert_track, invasion_track, broadcast, photo) VALUES (%s, %s, %s, %s, %s, %s)")
             cursor.execute(create, (chatid, chatname, "1", "1", "1", "1"))
             db.commit()
-            send_message(chatid,"Welcome operator!\n" + INSTRUCTIONS)
+            wrapper.sendMessage(chat_id = chatid, text = "Welcome operator!\n" + INSTRUCTIONS)
 
             db.close()
 
@@ -72,14 +73,14 @@ class Genesis:
                 update = ("UPDATE users SET alert_track = %s WHERE chat_id = %s ")
                 cursor.execute(update,("1",chatid))
                 db.commit()
-                send_message(chatid,"Starting tracking alerts, here we go!\n")
+                wrapper.sendMessage(chat_id = chatid, text = "Starting tracking alerts, here we go!\n")
             else:
                 #stops
 
                 update = ("UPDATE users SET track = %s WHERE chat_id = %s ")
                 cursor.execute(update,("0",chatid))
                 db.commit()
-                send_message(chatid,"Stopping the tracking, use /startalerts if you want to start tracking again, operator\n")
+                wrapper.sendMessage(chat_id = chatid, text = "Stopping the tracking, use /startalerts if you want to start tracking again, operator\n")
             
 
     def invasion_track(self,chatid,chatname):
@@ -101,14 +102,14 @@ class Genesis:
                 update = ("UPDATE users SET track = %s WHERE chat_id = %s ")
                 cursor.execute(update,("1",chatid))
                 db.commit()
-                send_message(chatid,"Starting tracking invasions, here we go!\n")
+                wrapper.sendMessage(chat_id = chatid, text = "Starting tracking invasions, here we go!\n")
             else:
                 #stops
 
                 update = ("UPDATE users SET track = %s WHERE chat_id = %s ")
                 cursor.execute(update,("0",chatid))
                 db.commit()
-                send_message(chatid,"Stopping the tracking, use /invasion if you want to start tracking again, operator\n")
+                wrapper.sendMessage(chat_id = chatid, text = "Stopping the tracking, use /invasion if you want to start tracking again, operator\n")
 
     def broadcast(self,field,message):
         """ Broadcast a message checking if a row value is 1 (if users are tracking) """
