@@ -32,7 +32,7 @@ class Genesis:
         read_token()
         self.wrapper = telegram.Bot(token = self.token)
 
-        db = sqlite3.connect('DB_NAME')
+        db = sqlite3.connect(DB_NAME)
         cursor = db.cursor()
 
         query = ('CREATE TABLE IF NOT EXISTS users '
