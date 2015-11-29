@@ -1,5 +1,5 @@
 from datetime import datetime
-import threading, time, shelve, argparse, os.path, dbm, requests, sqlite3
+import threading, time, shelve, argparse, os.path, dbm, requests, sqlite3, telegram
 
 from pyDeathsnacks import pyDeathsnacks
 
@@ -110,14 +110,14 @@ class Genesis:
                 db.commit()
                 send_message(chatid,"Stopping the tracking, use /invasion if you want to start tracking again, operator\n")
 
-    def public_broadcast(self,row):
+    def broadcast(self,field,message):
         """ Broadcast a message checking if a row value is 1 (if users are tracking) """
 
         db = sqlite3.connect(DB_NAME)
         cursor = db.cursor()
 
         query = ("SELECT chat_id, %s FROM users")
-        cursor.execute(query,(row,))
+        cursor.execute(query,(field,))
         rows = cursor.fetchall()
 
         for row in rows:
@@ -125,14 +125,58 @@ class Genesis:
             #check tracking values and send alerts or invasions
             try:
                 if row[1] == '1':
-                    send_message(row[0],alert)
+                    send_message(row[0],message)
             except:
                 continue
 
         db.close()
 
+    def run(self):
+
+
+    def bot(self, message):
+        """ Answers received messages
+
+        Parameters
+        ----------
+        message : str
+            Textual content of received message
+        """
+
+        text = message['text']
+        chat_id = message['chat']['id']
+
+        if '/help' in text:
+            self.send(chat_id, WarBot.USAGE)
+
+        elif '/alerts' in text:
+            if 'all' in text:
+                self.send(chat_id, self.get_alert_string(True))
+            else:
+                self.send(chat_id, self.get_alert_string(False))
+
+        elif '/invasions' in text:
+            if 'all' in text:
+                self.send(chat_id, self.get_invasion_string(True))
+            else:
+                self.send(chat_id, self.get_invasion_string(False))
+        
+        elif '/darvo' in text:
+            self.send(chat_id, self.get_deals_string())
+
+        elif '/news' in text:
+            self.send(chat_id, self.get_news_string(), markdown=True,
+                      link_preview=False)
+
+        elif '/notify' in text:
+            if 'on' in text:
+                self.set_notifications(chat_id, True)
+            elif 'off' in text:
+                self.set_notifications(chat_id, False)
+
+
     if __name__ == '__main__':
 
         os.chdir(os.path.dirname(__file__))
         bot = Genesis()
-        bot.run
+        bot.run()
