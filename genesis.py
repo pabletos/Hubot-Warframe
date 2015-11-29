@@ -5,8 +5,7 @@ from pyDeathsnacks import pyDeathsnacks
 
 class Genesis:
 
-    TOKEN = 'your token here'
-    API_URL = 'https://api.telegram.org/bot' + TOKEN + '/'
+    TOKEN_PATH = 'token.txt'
     DB_NAME = 'your db here'
 
     INSTRUCTIONS = (
@@ -30,7 +29,15 @@ class Genesis:
     
     def __init__(self):
         
-        self.wrapper = telegram.Bot(token = TOKEN)
+        read_token()
+        self.wrapper = telegram.Bot(token = self.token)
+
+
+    def read_token(self):
+        """ Read the bot token from the file specified in TOKEN_PATH"""
+
+        with open(TOKEN_PATH) as f:
+            self.token = f.readline()
 
 
     def start(self,chatid,chatname):
