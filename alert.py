@@ -46,6 +46,12 @@ class Alert:
                                   self.minLevel, self.maxLevel,
                                   self.get_eta_string())
 
+    def is_expired(self):
+        """Returns True if the alert has expired, False otherwise
+
+        """
+        return self.expiry < datetime.now()
+
     def get_eta_string(self):
         """Returns a string containing the alert's ETA
 
