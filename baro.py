@@ -31,6 +31,12 @@ class Baro:
 
             return baroItemString
 
+    def is_active(self):
+        """Returns True if the Void Trader is currently active, False otherwise
+
+        """
+        return (self.start < datetime.now() and self.end > datetime.now())
+
     def get_end_string(self):
         """Returns a string containing Baro's departure time
 
