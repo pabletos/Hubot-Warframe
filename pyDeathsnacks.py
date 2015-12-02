@@ -19,38 +19,38 @@ class pyDeathsnacks:
 
     @staticmethod
     def get_alerts():
-        alert_data = download_json(ALERT_URL)
+        alert_data = pyDeathsnacks.download_json(pyDeathsnacks.ALERT_URL)
 
         return [Alert(d) for d in alert_data]
 
     @staticmethod
     def get_invasions():
-        invasion_data = download_json(INVASION_URL) 
+        invasion_data = pyDeathsnacks.download_json(pyDeathsnacks.INVASION_URL)
 
-        return [Invasion(d) for d in alert_data]
+        return [Invasion(d) for d in invasion_data]
 
     @staticmethod
     def get_deals():
-        deal_data = download_json(DEAL_URL)
+        deal_data = pyDeathsnacks.download_json(pyDeathsnacks.DEAL_URL)
 
         return [Deal(d) for d in deal_data]
 
     @staticmethod
     def get_news():
-        news_data = download_text(NEWS_URL)
+        news_data = pyDeathsnacks.download_text(pyDeathsnacks.NEWS_URL)
 
         news_data.pop()
         return [News(d) for d in news_data]
 
     @staticmethod
     def get_baro():
-        baro_data = download_json(BARO_URL)
+        baro_data = pyDeathsnacks.download_json(pyDeathsnacks.BARO_URL)
 
         return [Baro(d) for d in baro_data]
 
     @staticmethod
     def get_library():
-        library_data = download_json(LIBRARY_URL)
+        library_data = pyDeathsnacks.download_json(pyDeathsnacks.LIBRARY_URL)
 
         return Library(library_data)
 
