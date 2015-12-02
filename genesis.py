@@ -1,7 +1,11 @@
+import threading, argparse, configparser, logging, sys
 from datetime import datetime
-import threading, time, shelve, argparse, os.path, dbm, requests, mysql.connector, telegram, configparser
+
+import mysql.connector
+import telegram
 
 from pyDeathsnacks import pyDeathsnacks
+
 
 class Genesis:
 
@@ -28,8 +32,17 @@ class Genesis:
     
     def __init__(self):
         
-        read_config()
-        self.wrapper = telegram.Bot(token = self.token)
+        self.read_config()
+
+        self.updater = telegram.Updater(self.token)
+        dp = self.updater.dispatcher
+        dp.addTelegramCommandHandler('help', self.help)
+        dp.addTelegramCommandHandler('alerts', self.alerts)
+        dp.addTelegramCommandHandler('invasions', self.invasions)
+        dp.addTelegramCommandHandler('darvo', self.darvo)
+        dp.addTelegramCommandHandler('simaris', self.simaris)
+        dp.addTelegramCommandHandler('baro', self.baro)
+        dp.addUnknownTelegramCommandHandler(self.unknown_command)
 
         db = mysql.connector.connect(user= self.db_user, password= self.db_pass,host= self.db_host,database= self.db_name)
         cursor = db.cursor()
@@ -51,14 +64,18 @@ class Genesis:
         """ Read the bot config from the file specified in CONFIG_PATH """
 
         config = configparser.ConfigParser()
-        config.read(CONFIG_PATH)
+        config.read(Genesis.CONFIG_PATH)
 
         server = config['SERVER']
         database = config['DATABASE']
 
         self.token = server['Token']
+        self.port = int(server['Port'])
+        self.cert_path = server['Certificate']
+        self.key_path = server['Key']
+        self.hostname = server['Host name']
         self.db_name = database['Name']
-        self.db_user = database['Root']
+        self.db_user = database['User']
         self.db_pass = database['Password']
         self.db_host = database['Host']
 
@@ -162,57 +179,131 @@ class Genesis:
         db.commit()
         db.close()
 
+    def help(self, bot, update):
+        """ Send help message to a telegram chat
+
+        """
+        bot.sendMessage(update.message.chat_id, Genesis.INSTRUCTIONS)
+
+    def alerts(self, bot, update, args):
+        """ Send the current alerts to a telegram chat
+
+        """
+        alerts = [a for a in pyDeathsnacks.get_alerts() if not a.is_expired()]
+
+        if alerts:
+            text = '\n\n'.join([str(a) for a in alerts])
+        else:
+            text = 'There are no alerts, operator.'
+        bot.sendMessage(update.message.chat_id, text)
+
+    def invasions(self, bot, update, args):
+        """ Send the current invasions to a telegram chat
+
+        """
+        invasions = pyDeathsnacks.get_invasions()
+
+        if invasions:
+            text = '\n\n'.join([str(i) for i in invasions])
+        else:
+            text = 'There are no invasions, operator.'
+
+        bot.sendMessage(update.message.chat_id, text)
+
+    def darvo(self, bot, update):
+        deals = pyDeathsnacks.get_deals()
+
+        if deals:
+            text = '\n\n'.join([str(d) for d in deals])
+        else:
+            text = 'There are no daily deals, operator.'
+
+        bot.sendMessage(update.message.chat_id, text)
+
+    def simaris(self, bot, update):
+        simaris = pyDeathsnacks.get_library()
+
+        if simaris.is_active():
+            text = str(simaris)
+        else:
+            text = 'There is no active target, operator.'
+
+        bot.sendMessage(update.message.chat_id, text)
+
+    def baro(self, bot, update):
+        baro = pyDeathsnacks.get_baro()[0]
+
+        if baro.is_active():
+            text = str(baro)
+        else:
+            text = 'Baro is not here yet, he will arrive in '\
+                    + baro.get_start_string()
+
+        bot.sendMessage(update.message.chat_id, text)
+
+    def unknown_command(self, bot, update):
+        bot.sendMessage(update.message.chat_id,
+                "I'm afraid my language calibrator is severely damaged, "
+                "please operator try again or use /help.")
 
     def run(self):
+        """ Set up the WebHook and handle user input
 
-
-    def bot(self, message):
-        """ Answers received messages
-
-        Parameters
-        ----------
-        message : str
-            Textual content of received message
         """
+        url = 'https://{}:{}/{}'.format(self.hostname, self.port, self.token)
+        self.updater.bot.setWebhook(webhook_url=url,
+                certificate=open(self.cert_path, 'rb'))
+        self.update_queue = self.updater.start_webhook(url_path=self.token,
+                listen='0.0.0.0', port=self.port, cert=self.cert_path,
+                key=self.key_path)
 
-        text = message['text']
-        chat_id = message['chat']['id']
+        print('The bot is running, Q to exit')
 
-        if '/help' in text:
-            self.send(chat_id, WarBot.USAGE)
+        while True:
+            try:
+                text = raw_input()
+            except NameError:
+                text = input()
 
-        elif '/alerts' in text:
-            if 'all' in text:
-                self.send(chat_id, self.get_alert_string(True))
-            else:
-                self.send(chat_id, self.get_alert_string(False))
+            if text.lower() == 'q':
+                print('Stopping the bot...')
+                self.updater.stop()
+                break
 
-        elif '/invasions' in text:
-            if 'all' in text:
-                self.send(chat_id, self.get_invasion_string(True))
-            else:
-                self.send(chat_id, self.get_invasion_string(False))
-        
-        elif '/darvo' in text:
-            self.send(chat_id, self.get_deals_string())
+def main():
+    parser = argparse.ArgumentParser(description='A Warframe alert bot')
+    parser.add_argument('-v', help='Enable verbose output', dest='verbose',
+            action='store_true')
+    parser.add_argument('-vv', help='Enable very verbose output',
+            dest='very_verbose', action='store_true')
+    parser.add_argument('-l', '--logfile', help='Path to log file',
+            dest='logfile', default='genesis.log')
+    args = parser.parse_args()
 
-        elif '/news' in text:
-            self.send(chat_id, self.get_news_string(), markdown=True,
-                      link_preview=False)
+    logger = logging.getLogger()
+    formatter = \
+                logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-        elif '/notify' in text:
-            if 'on' in text:
-                self.set_notifications(chat_id, True)
-            elif 'off' in text:
-                self.set_notifications(chat_id, False)
+    fh = logging.FileHandler(args.logfile)
+    fh.setLevel(logging.WARNING)
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
 
-        if (message.left_chat_partecipant is not None and
-                message.left_chat_participant.id == wrapper.id):
-            self.remove_chat(chat_id)
+    if args.verbose or args.very_verbose:
+        sh = logging.StreamHandler(sys.stdout)
 
+        if args.verbose:
+            sh.setLevel(logging.INFO)
+            logger.setLevel(logging.INFO)
+        else:
+            sh.setLevel(logging.DEBUG)
+            logger.setLevel(logging.DEBUG)
 
-    if __name__ == '__main__':
+        sh.setFormatter(formatter)
+        logger.addHandler(sh)
 
-        os.chdir(os.path.dirname(__file__))
-        bot = Genesis()
-        bot.run()
+    bot = Genesis()
+    bot.run()
+
+if __name__ == '__main__':
+    main()
