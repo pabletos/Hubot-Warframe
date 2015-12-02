@@ -41,10 +41,10 @@ class Baro:
         """Returns a string containing Baro's departure time
 
         """
-        return timedelta_to_string(self.end - datetime.now())
+        return utils.timedelta_to_string(self.end - datetime.now())
 
     def get_start_string(self):
         """Returns a string containing Baro's arrival time
 
         """
-        return timedelta_to_string(self.start - datetime.now())
+        return utils.timedelta_to_string(self.start - datetime.now())
