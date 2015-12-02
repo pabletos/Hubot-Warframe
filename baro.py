@@ -1,8 +1,9 @@
 from datetime import datetime
 
+import utils
 
 class Baro:
-    """This class represents a Baro item and is initialized with
+    """This class contains info about the Void Trader and is initialized with
     data in JSON format
 
     """
@@ -15,7 +16,7 @@ class Baro:
         self.manifest          = data['Manifest']
 
     def __str__(self):
-        """Returns a string with all the information about Baro offer
+        """Returns a string with all the information about Baro's offers
 
         """
         baroItemString = ""
@@ -30,18 +31,14 @@ class Baro:
 
             return baroItemString
 
-    def get_eta_string(self):
-        """Returns a string containing the Baro's ETA
+    def get_end_string(self):
+        """Returns a string containing Baro's departure time
 
         """
-        seconds = int((self.end - datetime.now()).total_seconds())
-        return '{} days, {} hrs, {} mins'.format((seconds // 86400), ((seconds % 86400) // 3600),
-                                        (seconds % 3600) // 60)
+        return timedelta_to_string(self.end - datetime.now())
 
     def get_start_string(self):
-        """Returns a string containing the Baro's start
+        """Returns a string containing Baro's arrival time
 
         """
-        seconds = int((self.start - datetime.now()).total_seconds())
-        return '{} days, {} hrs, {} mins'.format((seconds // 86400), ((seconds % 86400) // 3600),
-                                        (seconds % 3600) // 60)
+        return timedelta_to_string(self.start - datetime.now())
