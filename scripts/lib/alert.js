@@ -1,6 +1,12 @@
 var util = require('util');
 var dsUtil = require('./_utils.js');
+var Reward = require('./reward.js');
 
+/** Create a new alert instance
+ *
+ * @constructor
+ * @param {object} data Alert data
+ */
 var Alert = function(data) {
   this.id = data.id;
   this.activation = new Date(1000 * data.Activation.sec);
@@ -14,52 +20,54 @@ var Alert = function(data) {
   this.nightmare = data.MissionInfo.nightmare;
   this.archwing = data.MissionInfo.archwingRequired;
 
-  this.items = data.MissionInfo.missionReward.items;
-  this.countedItems = data.MissionInfo.missionReward.countedItems;
-  this.credits = data.MissionInfo.missionReward.credits;
+  this.reward = new Reward({
+    items: data.MissionInfo.missionReward.items,
+    countedItems: data.MissionInfo.missionReward.countedItems,
+    credits: data.MissionInfo.missionReward.credits
+  });
 }
 
+/**
+ * Return a string representation of this alert object
+ *
+ * @return {string} The new string object
+ */
 Alert.prototype.toString = function() {
-  var rewardString = '';
-
-  for(var i in this.items) {
-    rewardString += this.items[i] + ' + ';
-  }
-
-  for(var i in this.countedItems) {
-    rewardString += util.format('%d %s + ', this.countedItems[i].ItemCount,
-				this.countedItems[i].ItemType);
-  }
-
-  rewardString += this.credits + 'cr';
-
   var alertString = util.format('%s\n' +
                                 '%s (%s)\n' +
                                 '%s\n' +
                                 'level %d - %d\n' +
                                 'Expires in %s',
                                 this.location, this.missionType, this.faction,
-                                rewardString, this.minLevel, this.maxLevel,
-                                this.getETAString());
+                                this.reward.toString(), this.minLevel,
+                                this.maxLevel, this.getETAString());
 
   return alertString;
 }
 
+/**
+ * Return a string containing the alert's ETA
+ *
+ * @return {string} The new string object
+ */
 Alert.prototype.getETAString = function() {
   return dsUtil.timeDeltaToString(this.expiry.getTime() - Date.now());
 }
 
-// Returns an array of String objects with all the rewards of this alert
-Alert.prototype.getRewards = function() {
-  var rewards = this.items;
-
-  for(var i in this.countedItems) {
-    rewards.push(this.countedItems[i].itemType);
-  }
-
-  return rewards;
+/**
+ * Returns an array of strings each representing a reward type
+ * Empty for credit only alerts
+ *
+ * @return {array} The reward type array
+ */
+Alert.prototype.getRewardTypes = function() {
+  return this.reward.getTypes();
 }
 
+/** Returns true if the alert has expired, false otherwise
+ *
+ * @return {boolean} Expired-ness of the alert
+ */
 Alert.prototype.isExpired = function() {
   return this.expiry.getTime() < Date.now();
 }

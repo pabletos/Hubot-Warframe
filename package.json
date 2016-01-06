@@ -6,7 +6,10 @@
   "description": "Warframe alert bot",
   "dependencies": {
     "hubot": "^2.17.0",
-    "hubot-telegram": "0.0.8"
+    "hubot-mongodb-brain": "^0.1.1",
+    "hubot-telegram": "0.0.8",
+    "mongodb": "^2.1.2",
+    "request": "^2.67.0"
   },
   "engines": {
     "node": "0.10.x"

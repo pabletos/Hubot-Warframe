@@ -1,5 +1,11 @@
 util = require('util');
 
+/**
+ * Create a new Library target instance
+ *
+ * @constructor
+ * @param {object} data Library target data
+ */
 var Library = function(data) {
   if(data.CurrentTarget) {
     this.active = true;
@@ -12,6 +18,11 @@ var Library = function(data) {
   }
 }
 
+/**
+ * Return a string representation of this library target
+ *
+ * @return {string} Target in string format
+ */
 Library.prototype.toString = function() {
   if(!this.isActive()) {
     return 'No active target';
@@ -25,6 +36,11 @@ Library.prototype.toString = function() {
   return libraryString;
 }
 
+/**
+ * Return true if the target is active, false otherwise
+ *
+ * @return {boolean} Whether the target is active
+ */
 Library.prototype.isActive = function() {
   return this.active;
 }

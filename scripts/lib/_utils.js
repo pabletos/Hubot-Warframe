@@ -1,6 +1,13 @@
 var util = require('util');
 
-// Convert the difference between two Date object to a String
+/**
+ * Converts the difference between two Date object to a String.
+ * Convenience function
+ *
+ * @param {integer} millis  Difference in milliseconds between the two dates
+ *
+ * @return {string}
+ */
 module.exports.timeDeltaToString = function(millis) {
   var seconds = millis / 1000;
 

@@ -1,6 +1,12 @@
 var util = require('util');
 var dsUtil = require('./_utils.js');
 
+/**
+ * Create a new News instance
+ *
+ * @constructor
+ * @param {string} data Data about this news, with fields separated by the | character
+ */
 var News = function(data) {
   info = data.split('|');
   
@@ -10,6 +16,15 @@ var News = function(data) {
   this.text = info[3];
 }
 
+/**
+ * Return a string representation of the news object, with optional
+ * Markdown formatting
+ *
+ * @param {boolean} showElapsedTime Show/hide elapsed time
+ * @param {boolean} markdown Enable/disable Markdown formatting
+ *
+ * @return {string} This object in string format
+ */
 News.prototype.toString = function(showElapsedTime, markdown) {
   // Default value = true
   showElapsedTime = typeof showElapsedTime !== 'undefined'
@@ -31,7 +46,8 @@ News.prototype.toString = function(showElapsedTime, markdown) {
   if(markdown) {
     // Escape square brackets
     elapsedTime = elapsedTime.replace(/\[/, '\\[');
-    text = text.replace(/\[/, '\\[');
+    text = text.replace(/\[/, '(');
+    text = text.replace(/\]/, ')');
 
     formatString = '%s[%s](%s)'
   }
@@ -39,6 +55,10 @@ News.prototype.toString = function(showElapsedTime, markdown) {
   return util.format(formatString, elapsedTime, text, this.link);
 }
 
+/**
+ * Return how much time has passed since this news was published
+ * @return {string} The new string object
+ */
 News.prototype.getElapsedTime = function() {
   return dsUtil.timeDeltaToString(Date.now() - this.time.getTime());
 }

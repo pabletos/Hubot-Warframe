@@ -1,11 +1,11 @@
 # Description:
-#   Warframe bot
+#   Basic bot commands
 #
 # Dependencies:
 #   None
 #
 # Configuration:
-#   None
+#   MONGODB_URL - MongoDB url
 #
 # Commands:
 #   help - Get help
@@ -14,46 +14,125 @@
 #   news - Display news
 #   baro - Display current Baro status/inventory
 #   darvo - Display daily deals
+#   start - Add user to database and start tracking
+#   stop - Turn off notifications
 #
 # Author:
+#   nspacestd
 
+Users = require('./lib/users.js')
 ds = require('./lib/deathsnacks.js')
 
+mongoURL = process.env.MONGODB_URL
+
 module.exports = (robot) ->
-  robot.hear /help/i, (res) ->
+  userDB = new Users(mongoURL)
+
+  # The robot's own user id (telegram only)
+  if robot.adapterName is 'telegram'
+    token = process.env.TELEGRAM_TOKEN
+    selfID = token.slice 0, token.indexOf(':')
+
+  robot.respond /help/, (res) ->
     res.send '/help - Show this\n' + \
              '/alerts - Show alerts\n' + \
              '/invasions - Show invasions\n' + \
              '/darvo - Show daily deals\n' + \
              '/news - Show news\n' + \
-             '/baro - Show Baro status'
+             '/baro - Show Baro status\n' + \
+             '/settings - Change bot settings\n' + \
+             '/stop - Stop all tracking'
 
-  robot.hear /alerts/i, (res) ->
-    ds.getAlerts ds.PLATFORM.PC, (data) ->
-      message = (alert.toString() for alert in data when not alert.isExpired())
-      res.send message.join('\n\n')
-
-  robot.hear /invasions/i, (res) ->
-    ds.getInvasions ds.PLATFORM.PC, (data) ->
-      message = (invasion.toString() for invasion in data)
-      res.send message.join('\n\n')
-
-  robot.hear /darvo/i, (res) ->
-    ds.getDeals ds.PLATFORM.PC, (data) ->
-      message = (deal.toString() for deal in data)
-      res.send message.join('\n\n')
-
-  robot.hear /news/i, (res) ->
-    ds.getNews ds.PLATFORM.PC, (data) ->
-      if robot.adapterName == 'telegram'
-        message = (news.toString(true, true) for news in data)
-        robot.emit('telegram:invoke', 'sendMessage', {chat_id: res.message.room, \
-        text: message.join('\n\n'), parse_mode: 'Markdown', \
-        disable_web_page_preview : 1}, (error, response) ->)
+  robot.respond /alerts/, (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        robot.logger.error err
       else
-        message = (news.toString(true, false) for news in data)
-        res.send message.join('\n\n')
+        ds.getAlerts platform, (err, data) ->
+          if err
+            robot.logger.error err
+          else
+            message = (alert.toString() for alert in data).join('\n\n')
+            res.send message
 
-  robot.hear /baro/i, (res) ->
-    ds.getBaro ds.PLATFORM.PC, (data) ->
-      res.send data.toString()
+  robot.respond /invasions/, (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        robot.logger.error err
+      else
+        ds.getInvasions platform, (err, data) ->
+          if err
+            robot.logger.error err
+          else
+            message = (invasion.toString() for invasion in data).join('\n\n')
+            res.send message
+
+  robot.respond /darvo/, (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        robot.logger.error err
+      else
+        ds.getDeals platform, (err, data) ->
+          if err
+            robot.logger.error err
+          else
+            message = (deal.toString() for deal in data).join('\n\n')
+            res.send message
+
+  robot.respond /news/, (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        robot.logger.error err
+      else
+        ds.getNews platform, (err, data) ->
+          if err
+            robot.logger.error err
+          else
+            if robot.adapterName is 'telegram'
+              # Send with Markdown
+              message = (news.toString(true, true) for news in data).join('\n\n')
+              robot.emit 'telegram:invoke', 'sendMessage', 
+                chat_id: res.message.room
+                text: message
+                parse_mode: 'Markdown'
+                disable_web_page_preview: true
+              , (err, response) ->
+                if err
+                  robot.logger.error err
+
+            # No Telegram
+            else
+              message = (news.toString(true, false) for news in data).join('\n\n')
+              res.send message
+
+  robot.respond /baro/, (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        robot.logger.error err
+      else
+        ds.getBaro platform, (err, data) ->
+          if err
+            robot.logger.error err
+          else
+            res.send data.toString()
+
+  robot.respond /start/, (res) ->
+    userDB.add res.message.room, (err, result) ->
+      if err
+        robot.logger.error err
+      else
+        if result
+          res.send 'Tracking started'
+        else
+          res.send 'Already tracking'
+
+  robot.respond /stop/, (res) ->
+    userDB.stopTrack res.message.room, (err, result) ->
+      if err
+        robot.logger.error err
+      else
+        res.send 'Tracking stopped'
+
+  robot.leave (res) ->
+    if selfID? and res.message.user.id is selfID
+      userDB.remove res.message.room
