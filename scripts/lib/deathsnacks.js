@@ -154,7 +154,7 @@ exports.getBaro = function(platform, callback) {
     if(err) {
       callback(err, null);
     } else {
-      callback(new Baro(data[0]));
+      callback(null, new Baro(data[0]));
     }
   });
 }
