@@ -127,7 +127,7 @@ module.exports = (robot) ->
           res.send 'Already tracking'
 
   robot.respond /stop/, (res) ->
-    userDB.stopTrack res.message.room, (err, result) ->
+    userDB.stopTrack res.message.room, (err) ->
       if err
         robot.logger.error err
       else

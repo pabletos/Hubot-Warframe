@@ -260,7 +260,7 @@ Users.prototype.setItemTrack = function(chatID, item, value, callback) {
 Users.prototype.stopTrack = function(chatID, callback) {
   MongoClient.connect(this.mongoURL, function(err, db) {
     if(err) {
-      callback(err, null);
+      callback(err);
     } else {
       var query, update, c;
 
