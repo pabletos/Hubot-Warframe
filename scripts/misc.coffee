@@ -22,11 +22,6 @@ mongoURL = process.env.MONGODB_URL
 module.exports = (robot) ->
   userDB = new Users(mongoURL)
 
-  # The robot's own user id (telegram only)
-  if robot.adapterName is 'telegram'
-    token = process.env.TELEGRAM_TOKEN
-    selfID = token.slice 0, token.indexOf(':')
-
   robot.respond /help/, (res) ->
     res.send '/help - Show this\n' + \
              '/alerts - Show alerts\n' + \
@@ -54,8 +49,9 @@ module.exports = (robot) ->
       else
         res.send 'Tracking stopped'
 
-  if selfID?
+  if robot.adapterName is 'telegram'
+    # Remove chat from the database when the bot is kicked, Telegram only
     robot.leave (res) ->
-      if res.message.user.id is selfID
+      if res.message.user.id is robot.adapter.bot_id
         userDB.remove res.message.room, (err) ->
           robot.logger.error err if err
