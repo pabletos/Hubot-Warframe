@@ -55,3 +55,7 @@ module.exports = (robot) ->
       if res.message.user.id is robot.adapter.bot_id
         userDB.remove res.message.room, (err) ->
           robot.logger.error err if err
+
+    robot.enter (res) ->
+      if res.message.user.id is robot.adapter.bot_id
+        res.send 'Hello, Operator! Please type /start to begin tracking.'
