@@ -1,17 +1,28 @@
 {
-  "name": "Cephalon-Genesis",
-  "version": "0.0.0",
-  "private": true,
-  "author": "nspacestd <nspacestd@users.noreply.github.com>",
-  "description": "Warframe alert bot",
-  "dependencies": {
-    "hubot": "^2.17.0",
-    "hubot-mongodb-brain": "^0.1.1",
-    "hubot-telegram": "0.0.8",
-    "mongodb": "^2.1.2",
-    "request": "^2.67.0"
-  },
-  "engines": {
-    "node": "0.10.x"
-  }
+	"name": "Cephalon-Genesis",
+	"version": "0.0.0",
+ 	"private": true,
+  	"author": "nspacestd <nspacestd@users.noreply.github.com>",
+  	"description": "Warframe alert bot",
+  	"main": "src/misc.coffee",
+  	"peerDependencies": {
+    		"hubot": "^2.17.0"
+  	},
+  	"dependencies": {
+    		"hubot-mongodb-brain": "^0.1.1",
+    		"mongodb": "^2.1.2",
+		"request": "^2.67.0"
+  	},
+  	"engines": {
+    		"node": "0.10.x"
+  	},
+  	"readme":  "echo \"Error: no test specified\" && exit 1",
+  	"scripts": {
+    		"test": "echo \"Error: no test specified\" && exit 1"
+   	},
+   	"repository": {
+		"type": "git",
+      		"url": "https://github.com/pabletos/Genesis-project"	
+   	}
+
 }
