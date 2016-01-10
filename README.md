@@ -20,7 +20,7 @@ For Telegram, launch with
 
     ```json
     [
-        "hubot-wikia"
+        "Genesis-project"
     ]
     ```
 
