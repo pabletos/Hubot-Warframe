@@ -1,5 +1,5 @@
 {
-	"name": "Cephalon-Genesis",
+	"name": "hubot-warframe",
 	"version": "0.0.0",
  	"private": true,
   	"author": "nspacestd <nspacestd@users.noreply.github.com>",
@@ -21,7 +21,7 @@
    	},
    	"repository": {
 		"type": "git",
-      		"url": "https://github.com/pabletos/Genesis-project"	
+      		"url": "https://github.com/pabletos/hubot-warframe"	
    	}
 
 }
