@@ -8,9 +8,8 @@
 #   MONGODB_URL - MongoDB url
 #
 # Commands:
-#   help - Get help
-#   start - Add user to database and start tracking
-#   stop - Turn off notifications
+#   hubot start - Add user to database and start tracking
+#   hubot stop - Turn off notifications
 #
 # Author:
 #   nspacestd
@@ -22,15 +21,15 @@ mongoURL = process.env.MONGODB_URL
 module.exports = (robot) ->
   userDB = new Users(mongoURL)
 
-  robot.respond /help/, (res) ->
-    res.send '/help - Show this\n' + \
-             '/alerts - Show alerts\n' + \
-             '/invasions - Show invasions\n' + \
-             '/darvo - Show daily deals\n' + \
-             '/news - Show news\n' + \
-             '/baro - Show Baro status\n' + \
-             '/settings - Change bot settings\n' + \
-             '/stop - Stop all tracking'
+#  robot.respond /help/, (res) ->
+#    res.send '/help - Show this\n' + \
+#             '/alerts - Show alerts\n' + \
+#             '/invasions - Show invasions\n' + \
+#             '/darvo - Show daily deals\n' + \
+#             '/news - Show news\n' + \
+#             '/baro - Show Baro status\n' + \
+#             '/settings - Change bot settings\n' + \
+#             '/stop - Stop all tracking'
 
   robot.respond /start/, (res) ->
     userDB.add res.message.room, (err, result) ->

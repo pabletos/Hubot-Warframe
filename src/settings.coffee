@@ -8,11 +8,11 @@
 #   MONGODB_URL - MongoDB url
 # 
 # Commands:
-#   settings - Display settings menu
-#   platform <platform> - Change platform or display menu if no argument
-#   track <reward or event> - Start tracking reward or event, menu if no argument
-#   untrack <reward or event> - Stop tracking reward or event
-#   end (telegram only) - Hide custom keyboard
+#   hubot settings - Display settings menu
+#   hubot platform <platform> - Change platform or display menu if no argument
+#   hubot track <reward or event> - Start tracking reward or event, menu if no argument
+#   hubot untrack <reward or event> - Stop tracking reward or event
+#   hubot end (telegram only) - Hide custom keyboard
 #
 # Author:
 #   nspacestd
