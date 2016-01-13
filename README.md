@@ -1,10 +1,6 @@
 #Cephalon Genesis
 A Warframe tracking bot, built on the hubot framework
 
-For Telegram, launch with 
-
-`TELEGRAM_TOKEN=token TELEGRAM_WEBHOOK=https://example.com/hubot/telegram/receive MONGODB_URL=url bin/hubot -a telegram --name "somethingbot" -l /`
-
 [![Build Status](https://travis-ci.org/pabletos/Genesis-project.svg)](https://travis-ci.org/pabletos/Genesis-project)
 
 
