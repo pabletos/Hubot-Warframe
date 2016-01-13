@@ -27,21 +27,21 @@ A Warframe tracking bot, built on the hubot framework
 
 Command | Listener ID | Description
 --- | --- | ---
-hubot start | `` | Adds user to DB and starts tracking
-hubot settings | `` | Returns settings
-hubot alerts | `` | Displays active alerts
-hubot baro | `` | Displays current Baro Ki'Teer status/inventory
-hubot darvo | `` | Displays current Darvo Daily Deal
-hubot end | `` | Hide custom keyboard (telegram only)
-hubot invasions | `` | Displays current Invasions
-hubot news | `` | Displays news
-hubot platform <platform> | `` | Changes the platform
-hubot platform | `` | Displays menu
-hubot settings | `` | Display settings menu
-hubot stop | `` | Turn off notifications
-hubot track <reward or event> | `` | Start tracking reward or event
-hubot track | `` | Tracking menu
-hubot untrack <reward or event> | ``| Stop tracking reward or event
+hubot start |  | Adds user to DB and starts tracking
+hubot settings |  | Returns settings
+hubot alerts |  | Displays active alerts
+hubot baro |  | Displays current Baro Ki'Teer status/inventory
+hubot darvo |  | Displays current Darvo Daily Deal
+hubot end |  | Hide custom keyboard (telegram only)
+hubot invasions |  | Displays current Invasions
+hubot news |   | Displays news
+hubot platform \<platform> |  | Changes the platform
+hubot platform |  | Displays menu
+hubot settings |  | Display settings menu
+hubot stop |  | Turn off notifications
+hubot track <reward or event> |  | Start tracking reward or event
+hubot track |  | Tracking menu
+hubot untrack <reward or event> |  | Stop tracking reward or event
 
 
 ## Sample Interaction
