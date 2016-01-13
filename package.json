@@ -4,7 +4,7 @@
  	"private": true,
   	"author": "nspacestd <nspacestd@users.noreply.github.com>",
   	"description": "Warframe alert bot",
-  	"main": "index.cofee",
+  	"main": "index.coffee",
   	"peerDependencies": {
     		"hubot": "^2.17.0"
   	},
