@@ -39,9 +39,9 @@ hubot platform \<platform> |  | Changes the platform
 hubot platform |  | Displays menu
 hubot settings |  | Display settings menu
 hubot stop |  | Turn off notifications
-hubot track <reward or event> |  | Start tracking reward or event
+hubot track \<reward or event> |  | Start tracking reward or event
 hubot track |  | Tracking menu
-hubot untrack <reward or event> |  | Stop tracking reward or event
+hubot untrack \<reward or event> |  | Stop tracking reward or event
 
 
 ## Sample Interaction
