@@ -142,7 +142,8 @@ Users.prototype.getSettings = function(chatID, projection, callback) {
 }
 
 /**
- * Returns an user's platform. Convenience method
+ * Returns an user's platform, or the default if the user is not in the database.
+ * Convenience method
  *
  * @param {string} chatID ID of the user
  * @param {function} callback Callback function
@@ -152,7 +153,11 @@ Users.prototype.getPlatform = function(chatID, callback) {
     if(err) {
       callback(err, null);
     } else {
-      callback(null, res.platform);
+      if(res) {
+        callback(null, res.platform);
+      } else {
+        callback(null, Users.DEFAULT_SETTINGS.platform);
+      }
     }
   });
 }
