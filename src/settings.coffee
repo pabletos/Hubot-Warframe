@@ -34,14 +34,14 @@ module.exports = (robot) ->
         robot.logger.error err
       else
         text = settingsToString settings
-        keys = ['/platform', '/track']
+        keys = ['platform', 'track']
         replyWithKeyboard robot, res, text, keys
 
   robot.respond /platform\s*(\w+)?/, (res) ->
     platform = res.match[1]
     if not platform
       text = 'Choose your platform'
-      keys = ('/platform ' + k for k of PLATFORMS)
+      keys = ('platform ' + k for k of PLATFORMS)
       replyWithKeyboard robot, res, text, keys
     else if platform of PLATFORMS
       userDB.setPlatform res.message.room, platform, (err) ->
@@ -102,6 +102,10 @@ module.exports = (robot) ->
 # @param array keys
 ###
 replyWithKeyboard = (robot, res, text, keys) ->
+  # Add robot name or alias at the beginning of each key
+  name = robot.alias or (robot.name + ' ')
+  keys = (name + k for k in keys)
+
   if robot.adapterName is 'telegram'
     keys.push('/end')
 
@@ -164,7 +168,7 @@ replyWithTrackSettingsKeyboard = (robot, res, text, userDB) ->
       robot.logger.error err
     else
       keys = for t in TRACKABLE
-              if t in tracked then '/untrack ' + t
-              else '/track ' + t
+              if t in tracked then 'untrack ' + t
+              else 'track ' + t
       
       replyWithKeyboard robot, res, text, keys
