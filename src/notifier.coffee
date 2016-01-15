@@ -22,103 +22,109 @@ NOTIFICATION_INTERVAL = 60 * 1000
 
 module.exports = (robot) ->
   userDB = new Users(mongoURL)
+  setInterval check, NOTIFICATION_INTERVAL, robot, userDB
+  check robot, userDB
 
-  checkAlerts robot, userDB
-  checkInvasions robot, userDB
-  checkNews robot, userDB
-  setInterval (bot, db) ->
-    checkAlerts bot, db
-    checkInvasions bot, db
-    checkNews bot, db
-  , NOTIFICATION_INTERVAL, robot, userDB
+###*
+# Check for new alerts/invasions/news
+#
+# @param object robot
+# @param object userDB
+###
+check = (robot, userDB) ->
+  for platform of ds.PLATFORM
+    checkAlerts(robot, userDB, platform)
+    checkInvasions(robot, userDB, platform)
+    checkNews(robot, userDB, platform)
+  return
 
 ###*
 # Check for new alerts and notify them to subscribed users from userDB
 #
 # @param object robot
 # @param object userDB
+# @param string platform
 ###
-checkAlerts = (robot, userDB) ->
-  robot.logger.debug 'Checking alerts...'
-  for p, platform of ds.PLATFORM
-    do (platform) ->
-      ds.getAlerts platform, (err, alerts) ->
-        if err
-          robot.logger.error err
-        else
-          # IDs are saved in robot.brain
-          notifiedAlertIds = robot.brain.get('notifiedAlertIds' + platform) or []
-          robot.brain.set 'notifiedAlertIds' + platform, (a.id for a in alerts)
-          
-          for a in alerts when a.id not in notifiedAlertIds
-            types = a.getRewardTypes()
+checkAlerts = (robot, userDB, platform) ->
+  robot.logger.debug 'Checking alerts (' + platform + ')...'
+  ds.getAlerts ds.PLATFORM[platform], (err, alerts) ->
+    if err
+      robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedAlertIds = robot.brain.get('notifiedAlertIds' + platform) or []
+      robot.brain.set 'notifiedAlertIds' + platform, (a.id for a in alerts)
 
-            # Credit only alerts are not notified
-            if types.length
-              query = $and: [
-                {platform: platform}
-                {items:
-                  $all: types
-                }
-                {items: 'alerts'}
-              ]
-              broadcast a.toString(), query, robot, userDB
+      for a in alerts when a.id not in notifiedAlertIds
+        types = a.getRewardTypes()
+
+        # Credit only alerts are not notified
+        if types.length
+          query = $and: [
+            {platform: platform}
+            {items:
+              $all: types
+            }
+            {items: 'alerts'}
+          ]
+          broadcast a.toString(), query, robot, userDB
+      return
 
 ###*
 # Check for new invasions and notify them to subscribed users from userDB
 #
 # @param object robot
 # @param object userDB
+# @param string platform
 ###
-checkInvasions = (robot, userDB) ->
-  robot.logger.debug 'Checking invasions...'
-  for p, platform of ds.PLATFORM
-    do (platform) ->
-      ds.getInvasions platform, (err, invasions) ->
-        if err
-          robot.logger.error err
-        else
-          # IDs are saved in robot.brain
-          notifiedInvasionIds = robot.brain.get('notifiedInvasionIds' + platform) or []
-          robot.brain.set 'notifiedInvasionIds' + platform, (i.id for i in invasions)
-          
-          for i in invasions when i.id not in notifiedInvasionIds
-            types = i.getRewardTypes()
+checkInvasions = (robot, userDB, platform) ->
+  robot.logger.debug 'Checking invasions (' + platform + ')...'
+  ds.getInvasions ds.PLATFORM[platform], (err, invasions) ->
+    if err
+      robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedInvasionIds = robot.brain.get('notifiedInvasionIds' + platform) or []
+      robot.brain.set 'notifiedInvasionIds' + platform, (i.id for i in invasions)
 
-            # Credit only invasions are not notified
-            if types.length
-              query = $and: [
-                {platform: platform}
-                {items:
-                  $all: types
-                }
-                {items: 'invasions'}
-              ]
-              broadcast i.toString(), query, robot, userDB
+      for i in invasions when i.id not in notifiedInvasionIds
+        types = i.getRewardTypes()
+
+        # Credit only invasions are not notified
+        if types.length
+          query = $and: [
+            {platform: platform}
+            {items:
+              $all: types
+            }
+            {items: 'invasions'}
+          ]
+          broadcast i.toString(), query, robot, userDB
+      return
 
 ###*
 # Check for unread news and notify them to subscribed users from userDB
 #
 # @param object robot
 # @param object userDB
+# @param string platform
 ###
-checkNews = (robot, userDB) ->
-  robot.logger.debug 'Checking news...'
-  for p, platform of ds.PLATFORM
-    do (platform) ->
-      ds.getNews platform, (err, news) ->
-        if err
-          robot.logger.error err
-        else
-          # IDs are saved in robot.brain
-          notifiedNewsIds = robot.brain.get('notifiedNewsIds' + platform) or []
-          robot.brain.set 'notifiedNewsIds' + platform, (n.id for n in news)
-          
-          for n in news when n.id not in notifiedNewsIds
-            broadcast 'News: ' + n.toString(false),
-              items: 'news'
-              platform: platform
-            , robot, userDB
+checkNews = (robot, userDB, platform) ->
+  robot.logger.debug 'Checking news (' + platform + ')...'
+  ds.getNews ds.PLATFORM[platform], (err, news) ->
+    if err
+      robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedNewsIds = robot.brain.get('notifiedNewsIds' + platform) or []
+      robot.brain.set 'notifiedNewsIds' + platform, (n.id for n in news)
+
+      for n in news when n.id not in notifiedNewsIds
+        broadcast 'News: ' + n.toString(false),
+          items: 'news'
+          platform: platform
+        , robot, userDB
+      return
 
 ###*
 # Broadcast a message to all subscribed users that match a query

@@ -16,7 +16,7 @@ var Users = function(mongoURL) {
 
 // Default settings for new users
 Users.DEFAULT_SETTINGS = {
-    platform: platforms.PC,
+    platform: 'PC',
     items: [
       'alerts',
       'invasions',

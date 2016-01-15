@@ -44,7 +44,7 @@ module.exports = (robot) ->
       keys = ('/platform ' + k for k of PLATFORMS)
       replyWithKeyboard robot, res, text, keys
     else if platform of PLATFORMS
-      userDB.setPlatform res.message.room, PLATFORMS[platform], (err) ->
+      userDB.setPlatform res.message.room, platform, (err) ->
         if err
           robot.logger.error err
         else
@@ -135,12 +135,7 @@ replyWithKeyboard = (robot, res, text, keys) ->
 settingsToString = (settings) ->
   lines = []
 
-  platform = switch settings.platform
-    when PLATFORMS.PC then 'PC'
-    when PLATFORMS.PS4 then 'PS4'
-    when PLATFORMS.X1 then 'Xbox One'
-
-  lines.push 'Your platform is ' + platform
+  lines.push 'Your platform is ' + settings.platform.replace('X1', 'Xbox One')
 
   lines.push 'Alerts are ' + if 'alerts' in settings.items then 'ON' else 'OFF'
   lines.push 'Invasions are ' + if 'invasions' in settings.items then 'ON' else 'OFF'
