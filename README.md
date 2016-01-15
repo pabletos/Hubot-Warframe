@@ -1,27 +1,30 @@
-#Cephalon Genesis
-A Warframe tracking bot, built on the hubot framework
+#Hubot-Warframe
+A [Hubot](https://hubot.github.com/) module for tracking Warframe alerts, invasions and more.
 
-[![Build Status](https://travis-ci.org/pabletos/Genesis-project.svg)](https://travis-ci.org/pabletos/Genesis-project)
+[![Build Status](https://travis-ci.org/pabletos/Hubot-Warframe.svg)](https://travis-ci.org/pabletos/Hubot-Warframe)
 
 
 ## Installation via NPM --- not currently functioning
 
-1. Install the __Genesis-project__ module as a Hubot dependency by running:
+1. Install the __Hubot-Warframe__ module as a Hubot dependency by running:
 
     ```
-    npm install --save Genesis-project
+    npm install --save hubot-warframe
     ```
 
-2. Enable the module by adding the __hubot-wikia__ entry to your `external-scripts.json` file:
+2. Add this to your `external-scripts.json` file:
 
     ```json
     [
-        "Genesis-project"
+        "hubot-warframe"
     ]
     ```
 
 3. Run your bot and see below for available config / commands
 
+## Configuration
+
+hubot-warframe requires a MongoDB server. It uses the **MONGODB_URL** environment variable for determining where to connect to
 
 ## Commands
 
