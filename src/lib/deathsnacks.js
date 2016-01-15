@@ -32,7 +32,7 @@ function getJSON(url, callback) {
       callback(err, null);
     } else if(response.statusCode !== 200) {
       var error;
-      error = new Error(url + ' returned HTTP status ' + responde.statusCode);
+      error = new Error(url + ' returned HTTP status ' + response.statusCode);
       callback(error, null);
     } else {
       var data;
