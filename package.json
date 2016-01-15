@@ -1,9 +1,17 @@
 {
 	"name": "hubot-warframe",
 	"version": "0.0.0",
- 	"private": true,
-  	"author": "nspacestd <nspacestd@users.noreply.github.com>",
-  	"description": "Warframe alert bot",
+	"author": "nspacestd <nspacestd@gmail.com>",
+	"description": "Warframe module for Hubot",
+	"keywords": [
+		"hubot",
+		"warframe"
+	],
+	"homepage": "https://github.com/pabletos/Hubot-Warframe",
+	"bugs": {
+		"url": "https://github.com/pabletos/Hubot-Warframe/issues"
+	},
+	"license": "MIT",
   	"main": "index.coffee",
   	"peerDependencies": {
     		"hubot": "^2.17.0"
@@ -12,12 +20,13 @@
      		"mongodb": "^2.1.2",
 		"request": "^2.67.0"
   	},
-  	"engines": {
-    		"node": "0.10.x"
-  	},
-  	"readme":  "echo \"Error: no test specified\" && exit 1",
+	"devDependencies": {
+		"hubot": "^2.17.0",
+		"coffee-script": "^1.10.0",
+		"mocha": "^2.3.4"
+	},
   	"scripts": {
-    		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "script/test"
    	},
    	"repository": {
 		"type": "git",
