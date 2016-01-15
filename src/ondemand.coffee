@@ -34,7 +34,9 @@ module.exports = (robot) ->
           if err
             robot.logger.error err
           else
-            message = (alert.toString() for alert in data).join('\n\n')
+            message =
+              if data then (alert.toString() for alert in data).join('\n\n')
+              else 'There are no alerts at the moment'
             res.send message
 
   robot.respond /invasions/, (res) ->
@@ -46,7 +48,9 @@ module.exports = (robot) ->
           if err
             robot.logger.error err
           else
-            message = (invasion.toString() for invasion in data).join('\n\n')
+            message =
+              if data then (invasion.toString() for invasion in data).join('\n\n')
+              else 'There are no invasions at the moment'
             res.send message
 
   robot.respond /darvo/, (res) ->
@@ -58,7 +62,9 @@ module.exports = (robot) ->
           if err
             robot.logger.error err
           else
-            message = (deal.toString() for deal in data).join('\n\n')
+            message =
+              if data then(deal.toString() for deal in data).join('\n\n')
+              else 'There is no daily deal at the moment'
             res.send message
 
   robot.respond /news/, (res) ->
@@ -70,22 +76,26 @@ module.exports = (robot) ->
           if err
             robot.logger.error err
           else
-            if robot.adapterName is 'telegram'
-              # Send with Markdown
-              message = (news.toString(true, true) for news in data).join('\n\n')
-              robot.emit 'telegram:invoke', 'sendMessage',
-                chat_id: res.message.room
-                text: message
-                parse_mode: 'Markdown'
-                disable_web_page_preview: true
-              , (err, response) ->
-                if err
-                  robot.logger.error err
+            if data
+              if robot.adapterName is 'telegram'
+                # Send with Markdown
+                message = (news.toString(true, true) for news in data).join('\n\n')
+                robot.emit 'telegram:invoke', 'sendMessage',
+                  chat_id: res.message.room
+                  text: message
+                  parse_mode: 'Markdown'
+                  disable_web_page_preview: true
+                , (err, response) ->
+                  if err
+                    robot.logger.error err
 
-            # No Telegram
+              # No Telegram
+              else
+                message = (news.toString(true, false) for news in data).join('\n\n')
+                res.send message
+            # No news
             else
-              message = (news.toString(true, false) for news in data).join('\n\n')
-              res.send message
+              res.send 'There are no news at the moment'
 
   robot.respond /baro/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
