@@ -108,7 +108,8 @@ Users.prototype.remove = function(chatID, callback) {
 }
 
 /**
- * Returns an user's settings
+ * Returns an user's settings, adds the user to the database
+ * if it doesn't exist
  *
  * @param {string} chatID ID of the user
  * @param {object} projection Query projection
@@ -119,22 +120,31 @@ Users.prototype.getSettings = function(chatID, projection, callback) {
     if(err) {
       callback(err, null);
     } else {
-      var query, c;
+      var filter, update, options, c;
 
       c = db.collection(USERS_COLLECTION);
+      projection._id = false;
 
-      query = {
+      filter = {
         chatID: chatID
       };
 
-      projection._id = false;
+      update = {
+        $setOnInsert: Users.DEFAULT_SETTINGS
+      };
 
-      c.find(query).limit(1).project(projection).next(function(err, doc) {
+      options = {
+        upsert: true,
+        projection: projection,
+        returnOriginal: false
+      }
+
+      c.findOneAndUpdate(filter, update, options, function(err, r) {
         db.close();
         if(err) {
           callback(err, null);
         } else {
-          callback(null, doc);
+          callback(null, r.value);
         }
       });
     }
