@@ -63,7 +63,7 @@ checkAlerts = (robot, userDB, platform) ->
           query = $and: [
             {platform: platform}
             {items:
-              $all: types
+              $in: types
             }
             {items: 'alerts'}
           ]
@@ -95,7 +95,7 @@ checkInvasions = (robot, userDB, platform) ->
           query = $and: [
             {platform: platform}
             {items:
-              $all: types
+              $in: types
             }
             {items: 'invasions'}
           ]
