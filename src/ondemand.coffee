@@ -35,7 +35,7 @@ module.exports = (robot) ->
             robot.logger.error err
           else
             message =
-              if data then (alert.toString() for alert in data).join('\n\n')
+              if data.length then (alert.toString() for alert in data).join('\n\n')
               else 'There are no alerts at the moment'
             res.send message
 
@@ -49,7 +49,7 @@ module.exports = (robot) ->
             robot.logger.error err
           else
             message =
-              if data then (invasion.toString() for invasion in data).join('\n\n')
+              if data.length then (invasion.toString() for invasion in data).join('\n\n')
               else 'There are no invasions at the moment'
             res.send message
 
@@ -63,7 +63,7 @@ module.exports = (robot) ->
             robot.logger.error err
           else
             message =
-              if data then(deal.toString() for deal in data).join('\n\n')
+              if data.length then(deal.toString() for deal in data).join('\n\n')
               else 'There is no daily deal at the moment'
             res.send message
 
@@ -76,7 +76,7 @@ module.exports = (robot) ->
           if err
             robot.logger.error err
           else
-            if data
+            if data.length
               if robot.adapterName is 'telegram'
                 # Send with Markdown
                 message = (news.toString(true, true) for news in data).join('\n\n')
@@ -106,5 +106,8 @@ module.exports = (robot) ->
           if err
             robot.logger.error err
           else
-            res.send data.toString()
+            if data?
+              res.send data.toString()
+            else
+              res.send 'No info about Baro'
 

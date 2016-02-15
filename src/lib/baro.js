@@ -26,7 +26,7 @@ Baro.prototype.toString = function() {
     ' at ' + this.location;
   }
 
-  var baroString = '';
+  var baroString = util.format('Void Trader at %s\n\n', this.location);
   for(i in this.manifest) {
     baroString += util.format('== %s ==\n' +
                               '- price: %d ducats + %dcr -\n\n',

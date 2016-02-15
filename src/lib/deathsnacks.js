@@ -154,7 +154,11 @@ exports.getBaro = function(platform, callback) {
     if(err) {
       callback(err, null);
     } else {
-      callback(null, new Baro(data[0]));
+      if(data.length) {
+        callback(null, new Baro(data[0]));
+      } else {
+        callback(null, null);
+      }
     }
   });
 }
@@ -171,13 +175,17 @@ exports.getNews = function(platform, callback) {
     if(err) {
       callback(err, null);
     } else {
-      var news = [];
-      // Discard last (empty) line
-      data.pop();
-      for(var i in data) {
-          news.push(new News(data[i]))
+      if(data.length) {
+        var news = [];
+        // Discard last (empty) line
+        data.pop();
+        for(var i in data) {
+            news.push(new News(data[i]))
+        }
+        callback(null, news);
+      } else {
+        callback(null, []);
       }
-      callback(null, news);
     }
   });
 }
