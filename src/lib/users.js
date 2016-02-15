@@ -30,6 +30,7 @@ Users.DEFAULT_SETTINGS = {
       'voidKey',
       'skin',
       'weapon',
+      'mutalistCoordinate',
       'other'
     ]
 };

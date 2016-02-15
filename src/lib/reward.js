@@ -82,6 +82,7 @@ Reward.TYPES = {
   RESOURCE: 'resource',
   NIGHTMARE_MOD: 'nightmareMod',
   CLANTECH: 'clantech',
+  MUTALIST_COORDINATE: 'mutalistCoordinate',
   OTHER: 'other'
 }
 
@@ -145,6 +146,8 @@ Reward.typeToString = function(type) {
       return 'Nightmare Mods';
     case Reward.TYPES.CLANTECH:
       return 'ClanTech resources';
+    case Reward.TYPES.MUTALIST_COORDINATE:
+      return 'Mutalist Alad V Coordinates';
     case Reward.TYPES.OTHER:
       return 'Other rewards';
     default:
@@ -175,6 +178,9 @@ function getItemType(item) {
   }
   else if(/nitain/i.test(item)) {
     return Reward.TYPES.NITAIN;
+  }
+  else if(/mutalist/i.test(item)) {
+    return Reward.TYPES.MUTALIST_COORDINATE;
   }
   // Skins have already been caught
   else if(/dagger/i.test(item) || /sword/i.test(item) ||
