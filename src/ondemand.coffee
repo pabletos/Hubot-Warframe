@@ -17,8 +17,11 @@
 # Author:
 #   nspacestd
 
+util = require('util')
+
 Users = require('./lib/users.js')
 ds = require('./lib/deathsnacks.js')
+wikia = require('./lib/wikia.js')
 
 mongoURL = process.env.MONGODB_URL
 
@@ -111,3 +114,15 @@ module.exports = (robot) ->
             else
               res.send 'No info about Baro'
 
+  robot.respond /wiki\s*([\w\s-]+)?/, (res) ->
+    query = res.match[1]
+    if not query
+      res.reply 'Please specify a search term'
+    else
+      wikia.wikiaSearch query, (err, data) ->
+        if err
+          robot.logger.error err
+        else if not data
+          res.reply 'Not found'
+        else
+          res.send util.format('[%s](%s)', data.title, data.url.replace('\\', ''))
