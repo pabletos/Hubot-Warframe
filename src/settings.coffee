@@ -29,7 +29,7 @@ module.exports = (robot) ->
   userDB = new Users(mongoURL)
 
   robot.respond /settings/i, (res) ->
-    userDB.getSettings res.message.room, {}, (err, settings) ->
+    userDB.getSettings res.message.room, {}, true, (err, settings) ->
       if err
         robot.logger.error err
       else

@@ -110,13 +110,14 @@ Users.prototype.remove = function(chatID, callback) {
 
 /**
  * Returns an user's settings, adds the user to the database
- * if it doesn't exist
+ * if it doesn't exist when insert is true
  *
  * @param {string} chatID ID of the user
  * @param {object} projection Query projection
+ * @param {boolean} insert True to insert a non-existent user
  * @param {function} callback Callback function
  */
-Users.prototype.getSettings = function(chatID, projection, callback) {
+Users.prototype.getSettings = function(chatID, projection, insert, callback) {
   MongoClient.connect(this.mongoURL, function(err, db) {
     if(err) {
       callback(err, null);
@@ -130,24 +131,35 @@ Users.prototype.getSettings = function(chatID, projection, callback) {
         chatID: chatID
       };
 
-      update = {
-        $setOnInsert: Users.DEFAULT_SETTINGS
-      };
+      if(insert) {
+        update = {
+          $setOnInsert: Users.DEFAULT_SETTINGS
+        };
 
-      options = {
-        upsert: true,
-        projection: projection,
-        returnOriginal: false
-      }
-
-      c.findOneAndUpdate(filter, update, options, function(err, r) {
-        db.close();
-        if(err) {
-          callback(err, null);
-        } else {
-          callback(null, r.value);
+        options = {
+          upsert: true,
+          projection: projection,
+          returnOriginal: false
         }
-      });
+
+        c.findOneAndUpdate(filter, update, options, function(err, r) {
+          db.close();
+          if(err) {
+            callback(err, null);
+          } else {
+            callback(null, r.value);
+          }
+        });
+      } else {
+        c.find(filter).limit(1).project(projection).next(function(err, doc) {
+          db.close();
+          if(err) {
+            callback(err, null);
+          } else {
+            callback(null, doc);
+          }
+        });
+      }
     }
   });
 }
@@ -160,7 +172,7 @@ Users.prototype.getSettings = function(chatID, projection, callback) {
  * @param {function} callback Callback function
  */
 Users.prototype.getPlatform = function(chatID, callback) {
-  this.getSettings(chatID, {platform: true}, function(err, res) {
+  this.getSettings(chatID, {platform: true}, false, function(err, res) {
     if(err) {
       callback(err, null);
     } else {
@@ -174,13 +186,14 @@ Users.prototype.getPlatform = function(chatID, callback) {
 }
 
 /**
- * Returns an user's tracked items. Convenience method
+ * Returns an user's tracked items, creating a new entry if needed.
+ * Convenience method
  *
  * @param {string} chatID ID of the user
  * @param {function} callback Callback function
  */
 Users.prototype.getTrackedItems = function(chatID, callback) {
-  this.getSettings(chatID, {items: true}, function(err, res) {
+  this.getSettings(chatID, {items: true}, true, function(err, res) {
     if(err) {
       callback(err, null);
     } else {
