@@ -87,7 +87,7 @@ module.exports = (robot) ->
                   chat_id: res.message.room
                   text: message
                   parse_mode: 'Markdown'
-                  disable_web_page_preview: true
+                  disable_web_page_preview: 1
                 , (err, response) ->
                   if err
                     robot.logger.error err
