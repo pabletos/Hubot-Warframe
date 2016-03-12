@@ -23,7 +23,7 @@ NOTIFICATION_INTERVAL = 60 * 1000
 module.exports = (robot) ->
   userDB = new Users(mongoURL)
   setInterval check, NOTIFICATION_INTERVAL, robot, userDB
-  check robot, userDB
+  setTimeout check, 5000, robot, userDB
 
 ###*
 # Check for new alerts/invasions/news
