@@ -16,11 +16,13 @@
 #
 # Author:
 #   nspacestd
+#   aliasfalse
 
 util = require('util')
 
 Users = require('./lib/users.js')
 ds = require('./lib/deathsnacks.js')
+ws = require('./lib/worldstate.js')
 wikia = require('./lib/wikia.js')
 
 mongoURL = process.env.MONGODB_URL
@@ -126,3 +128,12 @@ module.exports = (robot) ->
           res.reply 'Not found'
         else
           res.send util.format('[%s](%s)', data.title, data.url.replace('\\', ''))
+  
+  robot.respond /sortie/, (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        return robot.logger.error err
+      ws.getSortie platform, (err, sortie) ->
+        if err
+          return robot.logger.error err
+        res.send sortie.toString()
