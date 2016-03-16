@@ -8,11 +8,12 @@
 #   MONGODB_URL - MongoDB url
 #
 # Commands:
-#   hubot alerts - Display alerts
+#   hubot alerts    - Display alerts
 #   hubot invasions - Display invasions
-#   hubot darvo - Display daily deals
-#   hubot news - Display news
-#   hubot baro - Display current Baro status/inventory
+#   hubot darvo     - Display daily deals
+#   hubot news      - Display news
+#   hubot baro      - Display current Baro status/inventory
+#   hubot sortie    - Display current sortie missions
 #
 # Author:
 #   nspacestd
