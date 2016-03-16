@@ -17,7 +17,7 @@
 # Author:
 #   nspacestd
 
-PLATFORMS = require('./lib/deathsnacks.js').PLATFORM
+platforms = require('./lib/platforms.json')
 Reward = require('./lib/reward.js')
 Users = require('./lib/users.js')
 
@@ -41,9 +41,9 @@ module.exports = (robot) ->
     platform = res.match[1]
     if not platform
       text = 'Choose your platform'
-      keys = ('platform ' + k for k of PLATFORMS)
+      keys = ('platform ' + k for k in platforms)
       replyWithKeyboard robot, res, text, keys
-    else if platform of PLATFORMS
+    else if platform in platforms
       userDB.setPlatform res.message.room, platform, (err) ->
         if err
           robot.logger.error err

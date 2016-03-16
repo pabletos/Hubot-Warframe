@@ -14,7 +14,7 @@ const NEWS  = 'news_raw.txt';
 const LIBRARY  = 'library_target.json';
 const BARO  = 'voidtraders.json';
 
-exports.PLATFORM = {
+platformURL = {
   PC : '',
   PS4 : 'ps4/',
   X1 : 'xbox/'
@@ -80,11 +80,11 @@ function getRaw(url, callback) {
  * Return an array of Alert objects representing currently active alerts
  * on a given platform.
  *
- * @param {string}   platform   The platform, must be an element of PLATFORMS
+ * @param {string}   platform   The platform
  * @param {function} callback   Callback function
  */
 exports.getAlerts = function(platform, callback) {
-  getJSON(API_URL + platform + ALERT, function(err, data) {
+  getJSON(API_URL + platformURL[platform] + ALERT, function(err, data) {
     if(err) {
       callback(err, null);
     } else {
@@ -104,11 +104,11 @@ exports.getAlerts = function(platform, callback) {
  * Return an array of Invasion objects representing currently active invasions
  * on a given platform.
  *
- * @param {string}   platform   The platform, must be an element of PLATFORMS
+ * @param {string}   platform   The platform
  * @param {function} callback   Callback function
  */
 exports.getInvasions = function(platform, callback) {
-  getJSON(API_URL + platform + INVASION, function(err, data) {
+  getJSON(API_URL + platformURL[platform] + INVASION, function(err, data) {
     if(err) {
       callback(err, null);
     } else {
@@ -125,11 +125,11 @@ exports.getInvasions = function(platform, callback) {
  * Return an array of Deal objects representing currently active deals
  * on a given platform.
  *
- * @param {string}   platform   The platform, must be an element of PLATFORMS
+ * @param {string}   platform   The platform
  * @param {function} callback   Callback function
  */
 exports.getDeals = function(platform, callback) {
-  getJSON(API_URL + platform + DEAL, function(err, data) {
+  getJSON(API_URL + platformURL[platform] + DEAL, function(err, data) {
     if(err) {
       callback(err, null);
     } else {
@@ -146,11 +146,11 @@ exports.getDeals = function(platform, callback) {
  * Return a Baro object containting info about the Void Trader
  * on a given platform.
  *
- * @param {string}   platform   The platform, must be an element of PLATFORMS
+ * @param {string}   platform   The platform
  * @param {function} callback   Callback function
  */
 exports.getBaro = function(platform, callback) {
-  getJSON(API_URL + platform + BARO, function(err, data) {
+  getJSON(API_URL + platformURL[platform] + BARO, function(err, data) {
     if(err) {
       callback(err, null);
     } else {
@@ -167,11 +167,11 @@ exports.getBaro = function(platform, callback) {
  * Return an array of News objects representing currently active news
  * on a given platform.
  *
- * @param {string}   platform   The platform, must be an element of PLATFORMS
+ * @param {string}   platform   The platform
  * @param {function} callback   Callback function
  */
 exports.getNews = function(platform, callback) {
-  getRaw(API_URL + platform + NEWS, function(err, data) {
+  getRaw(API_URL + platformURL[platform] + NEWS, function(err, data) {
     if(err) {
       callback(err, null);
     } else {

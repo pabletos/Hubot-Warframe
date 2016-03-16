@@ -16,6 +16,7 @@
 util = require('util')
 Users = require('./lib/users.js')
 ds = require('./lib/deathsnacks.js')
+platforms = require('./lib/platforms.json')
 
 mongoURL = process.env.MONGODB_URL
 NOTIFICATION_INTERVAL = 60 * 1000
@@ -32,7 +33,7 @@ module.exports = (robot) ->
 # @param object userDB
 ###
 check = (robot, userDB) ->
-  for platform of ds.PLATFORM
+  for platform in platforms
     checkAlerts(robot, userDB, platform)
     checkInvasions(robot, userDB, platform)
     checkNews(robot, userDB, platform)
@@ -47,7 +48,7 @@ check = (robot, userDB) ->
 ###
 checkAlerts = (robot, userDB, platform) ->
   robot.logger.debug 'Checking alerts (' + platform + ')...'
-  ds.getAlerts ds.PLATFORM[platform], (err, alerts) ->
+  ds.getAlerts platform, (err, alerts) ->
     if err
       robot.logger.error err
     else
@@ -79,7 +80,7 @@ checkAlerts = (robot, userDB, platform) ->
 ###
 checkInvasions = (robot, userDB, platform) ->
   robot.logger.debug 'Checking invasions (' + platform + ')...'
-  ds.getInvasions ds.PLATFORM[platform], (err, invasions) ->
+  ds.getInvasions platform, (err, invasions) ->
     if err
       robot.logger.error err
     else
@@ -111,7 +112,7 @@ checkInvasions = (robot, userDB, platform) ->
 ###
 checkNews = (robot, userDB, platform) ->
   robot.logger.debug 'Checking news (' + platform + ')...'
-  ds.getNews ds.PLATFORM[platform], (err, news) ->
+  ds.getNews platform, (err, news) ->
     if err
       robot.logger.error err
     else

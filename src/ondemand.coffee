@@ -33,7 +33,7 @@ module.exports = (robot) ->
       if err
         robot.logger.error err
       else
-        ds.getAlerts ds.PLATFORM[platform], (err, data) ->
+        ds.getAlerts platform, (err, data) ->
           if err
             robot.logger.error err
           else
@@ -47,7 +47,7 @@ module.exports = (robot) ->
       if err
         robot.logger.error err
       else
-        ds.getInvasions ds.PLATFORM[platform], (err, data) ->
+        ds.getInvasions platform, (err, data) ->
           if err
             robot.logger.error err
           else
@@ -61,7 +61,7 @@ module.exports = (robot) ->
       if err
         robot.logger.error err
       else
-        ds.getDeals ds.PLATFORM[platform], (err, data) ->
+        ds.getDeals platform, (err, data) ->
           if err
             robot.logger.error err
           else
@@ -75,7 +75,7 @@ module.exports = (robot) ->
       if err
         robot.logger.error err
       else
-        ds.getNews ds.PLATFORM[platform], (err, data) ->
+        ds.getNews platform, (err, data) ->
           if err
             robot.logger.error err
           else
@@ -105,7 +105,7 @@ module.exports = (robot) ->
       if err
         robot.logger.error err
       else
-        ds.getBaro ds.PLATFORM[platform], (err, data) ->
+        ds.getBaro platform, (err, data) ->
           if err
             robot.logger.error err
           else
