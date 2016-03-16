@@ -29,7 +29,7 @@ Deal.prototype.toString = function() {
                                this.item, dsUtil.lineEnd,
                                this.salePrice, this.originalPrice, dsUtil.lineEnd,
                                this.sold, this.total, dsUtil.lineEnd,
-                               this.getETAString(), dsUtil.blockEnd);
+                               this.getETAString(), dsUtil.blockEnd;
   return dealString;
 }
 

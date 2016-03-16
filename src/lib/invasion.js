@@ -41,10 +41,11 @@ Invasion.prototype.toString = function() {
                        '%s (%s)%s' +
                        '%s%s' +
                        '%d% - %s%s',
-                       this.node, this.planet, dsUtil.lineEnd, this.desc, this.type2, dsUtil.lineEnd,
+                       this.node, this.planet, dsUtil.lineEnd,
+                       this.desc, this.type2, dsUtil.lineEnd,
                        this.reward2.toString(), dsUtil.lineEnd,
                        Math.round(this.completion * 100) / 100,
-                       this.ETA, dsUtil.blockEnd);
+                       this.ETA, dsUtil.blockEnd;
   }
 
   return util.format('%s (%s) - %s%s' +

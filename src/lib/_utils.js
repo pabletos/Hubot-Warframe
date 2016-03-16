@@ -10,7 +10,7 @@ module.exports = {
          *
          * @return {string}
          */
-        timeDeltaToString: function (millis) {
+        timeDeltaToString = function (millis) {
             var seconds = millis / 1000;
 
             if (seconds >= 86400) { // Seconds in a day
@@ -21,32 +21,26 @@ module.exports = {
             } else {
                 return util.format('%dm', Math.floor(seconds / 60));
             }
-        },
+        };
 
         /**
          * Returns the line return/end value from the environment variable or the default '\n'
          *
          * @return {string} The configured line return/end value
          */
-        lineEnd: function () {
-            return process.env.GENESIS_LINE_END || '\n';
-        },
+        var lineEnd: process.env.GENESIS_LINE_END || '\n';
 
         /**
          * Returns the block end value from the environment variable or the default ' '
          *
          * @return {string} The configured block end value
          */
-        blockEnd: function () {
-            return process.env.GENESIS_BLOCK_END || ' ';
-        },
+        var blockEnd = process.env.GENESIS_BLOCK_END || ' ';
 
         /**
          * Returns the double line return from the environment variable or the default '\n\n'
          *
          * @return {string} The configured double line return value
          */
-        doubleReturn: function () {
-            return process.env.GENESIS_DOUBLE_RET || '\n\n';
-        }
+        var doubleReturn = process.env.GENESIS_DOUBLE_RET || '\n\n';
 };
