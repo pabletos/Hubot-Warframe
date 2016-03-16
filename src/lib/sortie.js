@@ -27,11 +27,10 @@ Sortie.prototype.toString = function () {
     return 'None'
   }
 
-  var sortieString = util.format('== %s ==%s', this.boss, doubleReturn);
+  var sortieString = util.format('    == %s ==%s', this.boss, doubleReturn);
   
   this.variants.forEach(function(variant, i) {
-    sortieString += util.format('%d: %s - %s - %s%s',
-                                i,
+    sortieString += util.format('    %s (%s) %s%s',
                                 variant.planet,
                                 variant.missionType,
                                 variant.modifier,
