@@ -5,7 +5,10 @@
 #   None
 #
 # Configuration:
-#   MONGODB_URL - MongoDB url
+#   MONGODB_URL         - MongoDB url
+#   GENESIS_LINE_END    - Configuragble line-return character
+#   GENESIS_BLOCK_END   - Configuragble string for ending blocks
+#   GENESIS_DOUBLE_RET  - Configurable string for double-line returns
 #
 # Commands:
 #   None
