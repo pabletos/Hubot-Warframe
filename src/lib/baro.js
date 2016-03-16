@@ -36,7 +36,7 @@ Baro.prototype.toString = function() {
                               lineEnd,
                               this.manifest[i].PrimePrice,
                               this.manifest[i].RegularPrice,
-                              doubleReturn;
+                              doubleReturn);
   }
 
   baroString += 'Trader departing in ' + this.getEndString();
