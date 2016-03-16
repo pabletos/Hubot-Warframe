@@ -1,7 +1,7 @@
 var util = require('util');
 var dsUtil = require('./_utils.js');
-var lineEnd = process.env.GENESIS_LINE_END || '\n';
-var blockEnd = process.env.GENESIS_BLOCK_END || ' ';
+var lineEnd = process.env.HUBOT_LINE_END || '\n';
+var blockEnd = process.env.HUBOT_BLOCK_END || ' ';
 
 /**
  * Create a new deal instance

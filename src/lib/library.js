@@ -1,7 +1,7 @@
 util = require('util');
-var lineEnd = process.env.GENESIS_LINE_END || '\n';
-var blockEnd = process.env.GENESIS_BLOCK_END || ' ';
-var doubleReturn = process.env.GENESIS_DOUBLE_RET || '\n\n';
+var lineEnd = process.env.HUBOT_LINE_END || '\n';
+var blockEnd = process.env.HUBOT_BLOCK_END || ' ';
+var doubleReturn = process.env.HUBOT_DOUBLE_RET || '\n\n';
 
 /**
  * Create a new Library target instance

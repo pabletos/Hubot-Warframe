@@ -1,7 +1,7 @@
 var util = require('util');
 var dsUtil = require('./_utils.js');
-var lineEnd = process.env.GENESIS_LINE_END || '\n';
-var doubleReturn = process.env.GENESIS_DOUBLE_RET || '\n\n';
+var lineEnd = process.env.HUBOT_LINE_END || '\n';
+var doubleReturn = process.env.HUBOT_DOUBLE_RET || '\n\n';
 
 /**
  * Create a new baro instance

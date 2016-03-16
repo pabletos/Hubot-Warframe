@@ -3,7 +3,7 @@ var dsUtil = require('./_utils.js');
 
 var sortieData = require('./sortieData.json');
 
-var doubleReturn = process.env.GENESIS_DOUBLE_RET || '\n\n';
+var doubleReturn = process.env.HUBOT_DOUBLE_RET || '\n\n';
 
 /**
  * Create a new sortie instance
