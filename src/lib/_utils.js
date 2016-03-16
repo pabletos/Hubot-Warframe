@@ -28,7 +28,7 @@ module.exports = {
          *
          * @return {string} The configured line return/end value
          */
-        var lineEnd: process.env.GENESIS_LINE_END || '\n';
+        var lineEnd = process.env.GENESIS_LINE_END || '\n';
 
         /**
          * Returns the block end value from the environment variable or the default ' '
