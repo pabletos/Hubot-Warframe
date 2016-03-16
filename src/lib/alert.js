@@ -1,6 +1,8 @@
 var util = require('util');
 var dsUtil = require('./_utils.js');
 var Reward = require('./reward.js');
+var lineEnd = process.env.GENESIS_LINE_END || '\n';
+var blockEnd = process.env.GENESIS_BLOCK_END  || ' ';
 
 /** Create a new alert instance
  *
@@ -33,14 +35,14 @@ var Alert = function(data) {
  * @return {string} The new string object
  */
 Alert.prototype.toString = function() {
-  var alertString = util.format('%s\n' +
-                                '%s (%s)\n' +
-                                '%s\n' +
-                                'level %d - %d\n' +
-                                'Expires in %s',
-                                this.location, this.missionType, this.faction,
-                                this.reward.toString(), this.minLevel,
-                                this.maxLevel, this.getETAString());
+  var alertString = util.format('%s%s' +
+                                '%s (%s)%s' +
+                                '%s%s' +
+                                'level %d - %d%s' +
+                                'Expires in %s%s',
+                                this.location, lineEnd, this.missionType, this.faction, lineEnd,
+                                this.reward.toString(), lineEnd, this.minLevel,
+                                this.maxLevel, lineEnd, this.getETAString(), blockEnd);
 
   return alertString;
 }

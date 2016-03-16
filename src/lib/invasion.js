@@ -1,6 +1,8 @@
 var util = require('util');
 var dsUtil = require('./_utils.js');
 var Reward = require('./reward.js');
+var lineEnd = process.env.GENESIS_LINE_END || '\n';
+var blockEnd = process.env.GENESIS_BLOCK_END  || ' ';
 
 /**
  * Create a new invasion instance
@@ -37,24 +39,24 @@ var Invasion = function(data) {
  */
 Invasion.prototype.toString = function() {
   if(this.faction1 === 'Infestation') {
-    return util.format('%s (%s)\n' +
-                       '%s (%s)\n' +
-                       '%s\n' +
-                       '%d% - %s',
-                       this.node, this.planet, this.desc, this.type2,
-                       this.reward2.toString(),
+    return util.format('%s (%s)%s' +
+                       '%s (%s)%s' +
+                       '%s%s' +
+                       '%d% - %s%s',
+                       this.node, this.planet, lineEnd, this.desc, this.type2, lineEnd,
+                       this.reward2.toString(), lineEnd,
                        Math.round(this.completion * 100) / 100,
-                       this.ETA);
+                       this.ETA, blockEnd);
   }
 
-  return util.format('%s (%s) - %s\n' +
-                     '%s (%s, %s) vs.\n' +
-                     '%s (%s, %s)\n' +
-                     '%d% - %s',
-                     this.node, this.planet, this.desc, this.faction1,
-                     this.type1, this.reward1.toString(), this.faction2,
-                     this.type2, this.reward2.toString(),
-                     Math.round(this.completion * 100) / 100, this.ETA);
+  return util.format('%s (%s) - %s%s' +
+                     '%s (%s, %s) vs.%s' +
+                     '%s (%s, %s)%s' +
+                     '%d% - %s%s',
+                     this.node, this.planet, this.desc, lineEnd,
+					 this.faction1, this.type1, this.reward1.toString(), lineEnd,
+					 this.faction2, this.type2, this.reward2.toString(),lineEnd,
+                     Math.round(this.completion * 100) / 100, this.ETA, blockEnd);
 }
 
 /**
