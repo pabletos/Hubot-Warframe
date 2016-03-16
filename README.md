@@ -26,25 +26,32 @@ A [Hubot](https://hubot.github.com/) module for tracking Warframe alerts, invasi
 
 hubot-warframe requires a MongoDB server. It uses the **MONGODB_URL** environment variable for determining where to connect to
 
+Environment Variable | Description | Example
+--- | --- | ---
+MONGODB_URL | connection url for mongodb | `mongodb://<host>:<port>/<database>`
+GENESIS_LINE_END | Configuragble line-return character | `\n`
+GENESIS_BLOCK_END | Configuragble string for ending blocks  | `-------`
+GENESIS_DOUBLE_RET | Configurable string for double-line returns | `\n\n`
+
 ## Commands
 
 Command | Listener ID | Description
 --- | --- | ---
-hubot start |  | Adds user to DB and starts tracking
-hubot settings |  | Returns settings
-hubot alerts |  | Displays active alerts
-hubot baro |  | Displays current Baro Ki'Teer status/inventory
-hubot darvo |  | Displays current Darvo Daily Deal
-hubot end |  | Hide custom keyboard (telegram only)
-hubot invasions |  | Displays current Invasions
-hubot news |   | Displays news
-hubot platform \<platform> |  | Changes the platform
-hubot platform |  | Displays menu
-hubot settings |  | Display settings menu
-hubot stop |  | Turn off notifications
-hubot track \<reward or event> |  | Start tracking reward or event
-hubot track |  | Tracking menu
-hubot untrack \<reward or event> |  | Stop tracking reward or event
+`hubot start` |  | Adds user to DB and starts tracking
+`hubot settings` |  | Returns settings
+`hubot alerts` |  | Displays active alerts
+`hubot baro` |  | Displays current Baro Ki'Teer status/inventory
+`hubot darvo` |  | Displays current Darvo Daily Deal
+`hubot end` |  | Hide custom keyboard (telegram only)
+`hubot invasions` |  | Displays current Invasions
+`hubot news` |   | Displays news
+`hubot platform <platform>` |  | Changes the platform
+`hubot platform` |  | Displays menu
+`hubot settings` |  | Display settings menu
+`hubot stop` |  | Turn off notifications
+`hubot track <reward or event>` |  | Start tracking reward or event
+`hubot track` |  | Tracking menu
+`hubot untrack <reward or event>` |  | Stop tracking reward or event
 
 
 ## Sample Interaction
