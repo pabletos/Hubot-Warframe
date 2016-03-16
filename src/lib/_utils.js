@@ -10,7 +10,7 @@ module.exports = {
          *
          * @return {string}
          */
-        timeDeltaToString = function (millis) {
+        var timeDeltaToString = function (millis) {
             var seconds = millis / 1000;
 
             if (seconds >= 86400) { // Seconds in a day
