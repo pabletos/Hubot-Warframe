@@ -32,7 +32,7 @@ Library.prototype.toString = function() {
   }
 
   var libraryString = util.format('Target: %s%s' +
-                                  'Scans needed: %d\n' +
+                                  'Scans needed: %d%s' +
                                   'Progress: %d',
                                   this.target, lineEnd,
                                   this.scans, lineEnd,
