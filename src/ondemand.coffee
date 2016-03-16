@@ -5,18 +5,18 @@
 #   None
 #
 # Configuration:
-#   MONGODB_URL         - MongoDB url
-#   GENESIS_LINE_END    - Configuragble line-return character
-#   GENESIS_BLOCK_END   - Configuragble string for ending blocks
-#   GENESIS_DOUBLE_RET  - Configurable string for double-line returns
+#   MONGODB_URL - MongoDB url
+#   GENESIS_LINE_END - Configuragble line-return character
+#   GENESIS_BLOCK_END - Configuragble string for ending blocks
+#   GENESIS_DOUBLE_RET - Configurable string for double-line returns
 #
 # Commands:
-#   hubot alerts    - Display alerts
+#   hubot alerts - Display alerts
 #   hubot invasions - Display invasions
-#   hubot darvo     - Display daily deals
-#   hubot news      - Display news
-#   hubot baro      - Display current Baro status/inventory
-#   hubot sortie    - Display current sortie missions
+#   hubot darvo - Display daily deals
+#   hubot news - Display news
+#   hubot baro - Display current Baro status/inventory
+#   hubot sortie - Display current sortie missions
 #
 # Author:
 #   nspacestd
