@@ -1,7 +1,7 @@
-var util = require('util')
-var dsUtil = require('./_utils.js')
+var util = require('util');
+var dsUtil = require('./_utils.js');
 
-var sortieData = require('./sortieData.json')
+var sortieData = require('./sortieData.json');
 
 /**
  * Create a new sortie instance
@@ -25,14 +25,18 @@ Sortie.prototype.toString = function () {
     return 'None'
   }
 
-  var sortieString = '| ' + this.boss + ' |\n\n'
+  var sortieString = util.format('== %s ==%s', this.boss, dsUtil.doubleReturn);
   
   this.variants.forEach(function(variant, i) {
-    sortieString += util.format('%d: %s - %s - %s\n\n', i, variant.planet,
-                                variant.missionType, variant.modifier)
+    sortieString += util.format('%d: %s - %s - %s%s',
+                                i,
+                                variant.planet,
+                                variant.missionType,
+                                variant.modifier,
+                                dsUtil.doubleReturn);
   })
 
-  return sortieString
+  return sortieString;
 }
 
 /**

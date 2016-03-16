@@ -22,12 +22,14 @@ var Deal = function(data) {
  * @return {string} The new string
  */
 Deal.prototype.toString = function() {
-  var dealString = util.format('Daily Deal: %s\n' +
-                               '%dp (original %dp)\n' +
-                               '%d / %d sold\n' +
+  var dealString = util.format('Daily Deal: %s%s' +
+                               '%dp (original %dp)%s' +
+                               '%d / %d sold%s' +
                                'Expires in %s',
-                               this.item, this.salePrice, this.originalPrice,
-                               this.sold, this.total, this.getETAString());
+                               this.item, dsUtil.lineEnd,
+                               this.salePrice, this.originalPrice, dsUtil.lineEnd,
+                               this.sold, this.total, dsUtil.lineEnd,
+                               this.getETAString(), dsUtil.blockEnd);
   return dealString;
 }
 

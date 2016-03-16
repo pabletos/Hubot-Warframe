@@ -1,5 +1,7 @@
 var util = require('util');
 var dsUtil = require('./_utils.js');
+var lineEnd = process.env.GENESIS_LINE_END || '\n';
+var doubleReturn = process.env.GENESIS_DOUBLE_RET || '\n\n';
 
 /**
  * Create a new baro instance
@@ -26,13 +28,15 @@ Baro.prototype.toString = function() {
     ' at ' + this.location;
   }
 
-  var baroString = util.format('Void Trader at %s\n\n', this.location);
+  var baroString = util.format('Void Trader at %s', this.location, doubleReturn);
   for(i in this.manifest) {
-    baroString += util.format('== %s ==\n' +
-                              '- price: %d ducats + %dcr -\n\n',
+    baroString += util.format('== %s ==%s' +
+                              '- price: %d ducats + %dcr -%s',
                               this.manifest[i].ItemType,
+                              dsUtil.lineEnd,
                               this.manifest[i].PrimePrice,
-                              this.manifest[i].RegularPrice);
+                              this.manifest[i].RegularPrice,
+                              dsUtil.doubleReturn);
   }
 
   baroString += 'Trader departing in ' + this.getEndString();
