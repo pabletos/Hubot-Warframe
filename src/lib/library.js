@@ -1,4 +1,7 @@
 util = require('util');
+var lineEnd = process.env.GENESIS_LINE_END || '\n';
+var blockEnd = process.env.GENESIS_BLOCK_END || ' ';
+var doubleReturn = process.env.GENESIS_DOUBLE_RET || '\n\n';
 
 /**
  * Create a new Library target instance
@@ -28,10 +31,12 @@ Library.prototype.toString = function() {
     return 'No active target';
   }
 
-  var libraryString = util.format('Target: %s\n' +
+  var libraryString = util.format('Target: %s%s' +
                                   'Scans needed: %d\n' +
-                                  'Progress: %d', this.target, this.scans,
-                                  Math.round(100 * this.progress) / 100);
+                                  'Progress: %d',
+                                  this.target, lineEnd,
+                                  this.scans, lineEnd,
+                                  Math.round(100 * this.progress) / 100, blockEnd);
 
   return libraryString;
 }

@@ -1,5 +1,7 @@
 var util = require('util');
 var dsUtil = require('./_utils.js');
+var lineEnd = process.env.GENESIS_LINE_END || '\n';
+var blockEnd = process.env.GENESIS_BLOCK_END || ' ';
 
 /**
  * Create a new deal instance
@@ -26,10 +28,10 @@ Deal.prototype.toString = function() {
                                '%dp (original %dp)%s' +
                                '%d / %d sold%s' +
                                'Expires in %s',
-                               this.item, dsUtil.lineEnd,
-                               this.salePrice, this.originalPrice, dsUtil.lineEnd,
-                               this.sold, this.total, dsUtil.lineEnd,
-                               this.getETAString(), dsUtil.blockEnd;
+                               this.item, lineEnd,
+                               this.salePrice, this.originalPrice, lineEnd,
+                               this.sold, this.total, lineEnd,
+                               this.getETAString(), blockEnd;
   return dealString;
 }
 
