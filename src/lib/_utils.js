@@ -41,5 +41,5 @@ module.exports = {
         } else {
             return util.format('%dm', Math.floor(seconds / 60));
         }
-    };
-};
+    }
+}
