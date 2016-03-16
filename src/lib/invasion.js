@@ -48,7 +48,7 @@ Invasion.prototype.toString = function() {
                        this.desc, this.type2, lineEnd,
                        this.reward2.toString(), lineEnd,
                        Math.round(this.completion * 100) / 100,
-                       this.ETA, blockEnd;
+                       this.ETA, blockEnd);
   }
 
   return util.format('%s (%s) - %s%s' +
