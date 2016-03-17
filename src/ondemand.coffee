@@ -130,8 +130,10 @@ module.exports = (robot) ->
           robot.logger.error err
         else if not data
           res.reply 'Not found'
-        else
+        else if robot.adapterName is 'telegram'
           res.send util.format('[%s](%s)', data.title, data.url.replace('\\', ''))
+        else
+	  res.send util.format('%s: %s', data.title, data.url.replace('\\', ''))
   
   robot.respond /sortie/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
