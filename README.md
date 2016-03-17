@@ -29,9 +29,9 @@ hubot-warframe requires a MongoDB server. It uses the **MONGODB_URL** environmen
 Environment Variable | Description | Example
 --- | --- | ---
 MONGODB_URL | connection url for mongodb | `mongodb://<host>:<port>/<database>`
-GENESIS_LINE_END | Configuragble line-return character | `\n`
-GENESIS_BLOCK_END | Configuragble string for ending blocks  | `-------`
-GENESIS_DOUBLE_RET | Configurable string for double-line returns | `\n\n`
+HUBOT_LINE_END | Configuragble line-return character | `\n`
+HUBOT_BLOCK_END | Configuragble string for ending blocks  | `-------`
+HUBOT_DOUBLE_RET | Configurable string for double-line returns | `\n\n`
 
 ## Commands
 
