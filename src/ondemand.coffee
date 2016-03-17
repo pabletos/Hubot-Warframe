@@ -133,7 +133,7 @@ module.exports = (robot) ->
         else if robot.adapterName is 'telegram'
           res.send util.format('[%s](%s)', data.title, data.url.replace('\\', ''))
         else
-	  res.send util.format('%s: %s', data.title, data.url.replace('\\', ''))
+          res.send util.format('%s: %s', data.title, data.url.replace('\\', ''))
   
   robot.respond /sortie/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
