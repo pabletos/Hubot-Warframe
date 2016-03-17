@@ -1,5 +1,7 @@
 var util = require('util');
 var dsUtil = require('./_utils.js');
+var lineEnd = process.env.HUBOT_LINE_END || '\n';
+var blockEnd = process.env.HUBOT_BLOCK_END || ' ';
 
 /**
  * Create a new deal instance
@@ -22,12 +24,14 @@ var Deal = function(data) {
  * @return {string} The new string
  */
 Deal.prototype.toString = function() {
-  var dealString = util.format('Daily Deal: %s\n' +
-                               '%dp (original %dp)\n' +
-                               '%d / %d sold\n' +
+  var dealString = util.format('Daily Deal: %s%s' +
+                               '%dp (original %dp)%s' +
+                               '%d / %d sold%s' +
                                'Expires in %s',
-                               this.item, this.salePrice, this.originalPrice,
-                               this.sold, this.total, this.getETAString());
+                               this.item, lineEnd,
+                               this.salePrice, this.originalPrice, lineEnd,
+                               this.sold, this.total, lineEnd,
+                               this.getETAString(), blockEnd);
   return dealString;
 }
 

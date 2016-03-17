@@ -6,6 +6,9 @@
 #
 # Configuration:
 #   MONGODB_URL - MongoDB url
+#   HUBOT_LINE_END - Configuragble line-return character
+#   HUBOT_BLOCK_END - Configuragble string for ending blocks
+#   HUBOT_DOUBLE_RET - Configurable string for double-line returns
 #
 # Commands:
 #   hubot alerts - Display alerts
@@ -13,6 +16,7 @@
 #   hubot darvo - Display daily deals
 #   hubot news - Display news
 #   hubot baro - Display current Baro status/inventory
+#   hubot sortie - Display current sortie missions
 #
 # Author:
 #   nspacestd
@@ -126,8 +130,10 @@ module.exports = (robot) ->
           robot.logger.error err
         else if not data
           res.reply 'Not found'
-        else
+        else if robot.adapterName is 'telegram'
           res.send util.format('[%s](%s)', data.title, data.url.replace('\\', ''))
+        else
+          res.send util.format('%s: %s', data.title, data.url.replace('\\', ''))
   
   robot.respond /sortie/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->

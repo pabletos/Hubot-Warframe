@@ -1,7 +1,9 @@
-var util = require('util')
-var dsUtil = require('./_utils.js')
+var util = require('util');
+var dsUtil = require('./_utils.js');
 
-var sortieData = require('./sortieData.json')
+var sortieData = require('./sortieData.json');
+
+var doubleReturn = process.env.HUBOT_DOUBLE_RET || '\n\n';
 
 /**
  * Create a new sortie instance
@@ -25,14 +27,17 @@ Sortie.prototype.toString = function () {
     return 'None'
   }
 
-  var sortieString = '| ' + this.boss + ' |\n\n'
+  var sortieString = util.format('    == %s ==%s', this.boss, doubleReturn);
   
   this.variants.forEach(function(variant, i) {
-    sortieString += util.format('%d: %s - %s - %s\n\n', i, variant.planet,
-                                variant.missionType, variant.modifier)
+    sortieString += util.format('    %s (%s) %s%s',
+                                variant.planet,
+                                variant.missionType,
+                                variant.modifier,
+                                doubleReturn);
   })
 
-  return sortieString
+  return sortieString;
 }
 
 /**
