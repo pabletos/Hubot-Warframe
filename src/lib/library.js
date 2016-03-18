@@ -1,7 +1,4 @@
 util = require('util');
-var lineEnd = process.env.HUBOT_LINE_END || '\n';
-var blockEnd = process.env.HUBOT_BLOCK_END || ' ';
-var doubleReturn = process.env.HUBOT_DOUBLE_RET || '\n\n';
 
 /**
  * Create a new Library target instance
@@ -34,9 +31,9 @@ Library.prototype.toString = function() {
   var libraryString = util.format('Target: %s%s' +
                                   'Scans needed: %d%s' +
                                   'Progress: %d',
-                                  this.target, lineEnd,
-                                  this.scans, lineEnd,
-                                  Math.round(100 * this.progress) / 100, blockEnd);
+                                  this.target, dsUtil.lineEnd,
+                                  this.scans, dsUtil.lineEnd,
+                                  Math.round(100 * this.progress) / 100, dsUtil.blockEnd);
 
   return libraryString;
 }

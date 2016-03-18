@@ -1,7 +1,5 @@
 var util = require('util');
 var dsUtil = require('./_utils.js');
-var lineEnd = process.env.HUBOT_LINE_END || '\n';
-var doubleReturn = process.env.HUBOT_DOUBLE_RET || '\n\n';
 
 /**
  * Create a new baro instance
@@ -28,15 +26,15 @@ Baro.prototype.toString = function() {
     ' at ' + this.location;
   }
 
-  var baroString = util.format('Void Trader at %s', this.location, doubleReturn);
+  var baroString = util.format('Void Trader at %s', this.location, dsUtil.doubleReturn);
   for(i in this.manifest) {
     baroString += util.format('== %s ==%s' +
                               '- price: %d ducats + %dcr -%s',
                               this.manifest[i].ItemType,
-                              lineEnd,
+                              dsUtil.lineEnd,
                               this.manifest[i].PrimePrice,
                               this.manifest[i].RegularPrice,
-                              doubleReturn);
+                              dsUtil.doubleReturn);
   }
 
   baroString += 'Trader departing in ' + this.getEndString();

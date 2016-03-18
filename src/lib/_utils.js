@@ -19,4 +19,16 @@ module.exports.timeDeltaToString = function (millis) {
     } else {
         return util.format('%dm', Math.floor(seconds / 60));
     }
+};
+
+module.exports.generatePaddingString = function(paddingLength) {
+    var str = "";
+    for(i = 0; i<paddingLength; i++ ){
+        str += " ";
+    }
+    return str;
 }
+
+module.exports.doubleReturn = process.env.HUBOT_DOUBLE_RET || '\n\n';
+module.exports.lineEnd = process.env.HUBOT_LINE_END || '\n';
+module.exports.blockEnd = process.env.HUBOT_BLOCK_END || ' ';
