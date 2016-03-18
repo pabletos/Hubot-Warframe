@@ -24,9 +24,12 @@ Sortie.prototype.toString = function () {
   if(this.isExpired()){
     return 'None'
   }
-  var sortieStringNoAdjust = util.format('== %s ==%s', this.boss, dsUtil.doubleReturn);
-  var centerPadding = (60 - sortieStringNoAdjust.length)/2;
-  var sortieString = util.format('%s== %s ==%s', dsUtil.generatePaddingString(centerPadding), this.boss, dsUtil.doubleReturn);
+  var sortieString = util.format('%s== %s ==%s', 
+    dsUtil.generatePaddingString(
+        (60 - util.format('== %s ==%s', 
+        this.boss, 
+        dsUtil.doubleReturn).length)/2), 
+    this.boss, dsUtil.doubleReturn);
   
   this.variants.forEach(function(variant, i) {
     sortieString += util.format('%s (%s) %s%s',
