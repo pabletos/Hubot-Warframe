@@ -30,6 +30,9 @@ Sortie.prototype.toString = function () {
         this.boss, 
         dsUtil.doubleReturn).length)/2), 
     this.boss, dsUtil.doubleReturn);
+
+  sortieString += util.format('Ends in %d%d', this.getETAString(),
+                              dsUtil.doubleReturn);
   
   this.variants.forEach(function(variant, i) {
     sortieString += util.format('%s (%s) %s%s',
