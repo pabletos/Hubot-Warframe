@@ -3,8 +3,6 @@ var dsUtil = require('./_utils.js');
 
 var sortieData = require('./sortieData.json');
 
-var doubleReturn = process.env.HUBOT_DOUBLE_RET || '\n\n';
-
 /**
  * Create a new sortie instance
  *
@@ -26,15 +24,19 @@ Sortie.prototype.toString = function () {
   if(this.isExpired()){
     return 'None'
   }
-
-  var sortieString = util.format('    == %s ==%s', this.boss, doubleReturn);
+  var sortieString = util.format('%s== %s ==%s', 
+    dsUtil.generatePaddingString(
+        (60 - util.format('== %s ==%s', 
+        this.boss, 
+        dsUtil.doubleReturn).length)/2), 
+    this.boss, dsUtil.doubleReturn);
   
   this.variants.forEach(function(variant, i) {
-    sortieString += util.format('    %s (%s) %s%s',
+    sortieString += util.format('%s (%s) %s%s',
                                 variant.planet,
                                 variant.missionType,
                                 variant.modifier,
-                                doubleReturn);
+                                dsUtil.doubleReturn);
   })
 
   return sortieString;
