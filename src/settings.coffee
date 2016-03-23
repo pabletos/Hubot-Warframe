@@ -26,7 +26,7 @@ Users = require('./lib/users.js')
 
 mongoURL = process.env.MONGODB_URL
 
-TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news']
+TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news', 'all']
 
 module.exports = (robot) ->
   userDB = new Users(mongoURL)
@@ -95,16 +95,18 @@ module.exports = (robot) ->
       robot.emit 'telegram:invoke', 'sendMessage', opts, (err, response) ->
         robot.logger.error err if err
 
-###*
-# Reply to res.message with a custom keyboard. Text is the text of the message,
-# keys is an array of strings, each one being a key
-#
-# @param object robot
-# @param object res
-# @param string text
-# @param array keys
-###
+
 replyWithKeyboard = (robot, res, text, keys) ->
+  ###
+  # Reply to res.message with a custom keyboard. Text is the text of the message,
+  # keys is an array of strings, each one being a key
+  #
+  # @param object robot
+  # @param object res
+  # @param string text
+  # @param array keys
+  ###
+  
   # Add robot name or alias at the beginning of each key
   name = robot.alias or (robot.name + ' ')
   keys = (name + k for k in keys)
@@ -132,14 +134,15 @@ replyWithKeyboard = (robot, res, text, keys) ->
     # Non-telegram adapter, send a list of commands
     res.reply text + '\n\n' + keys.join('\n')
 
-###*
-# Return a string representation of an user's current settings
-#
-# @param object settings
-#
-# @return string
-###
 settingsToString = (settings) ->
+  ###
+  # Return a string representation of an user's current settings
+  #
+  # @param object settings
+  #
+  # @return string
+  ###
+  
   lines = []
 
   lines.push 'Your platform is ' + settings.platform.replace('X1', 'Xbox One')
@@ -156,16 +159,16 @@ settingsToString = (settings) ->
 
   return lines.concat(trackedRewards).join('\n')
 
-###*
-# Send a track/untrack keyboard to the sender of res.message, based on his
-# current settings. Convenience function
-#
-# @param object robot
-# @param object res
-# @param string text
-# @param object userDB
-###
 replyWithTrackSettingsKeyboard = (robot, res, text, userDB) ->
+  ###
+  # Send a track/untrack keyboard to the sender of res.message, based on his
+  # current settings. Convenience function
+  #
+  # @param object robot
+  # @param object res
+  # @param string text
+  # @param object userDB
+  ###
   userDB.getTrackedItems res.message.room, (err, tracked) ->
     if err
       robot.logger.error err

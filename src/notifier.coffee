@@ -29,27 +29,28 @@ module.exports = (robot) ->
   setInterval check, NOTIFICATION_INTERVAL, robot, userDB
   setTimeout check, 5000, robot, userDB
 
-###*
-# Check for new alerts/invasions/news
-#
-# @param object robot
-# @param object userDB
-###
 check = (robot, userDB) ->
+  ###
+  # Check for new alerts/invasions/news
+  #
+  # @param object robot
+  # @param object userDB
+  ###
   for platform in platforms
     checkAlerts(robot, userDB, platform)
     checkInvasions(robot, userDB, platform)
     checkNews(robot, userDB, platform)
   return
 
-###*
-# Check for new alerts and notify them to subscribed users from userDB
-#
-# @param object robot
-# @param object userDB
-# @param string platform
-###
 checkAlerts = (robot, userDB, platform) ->
+  ###
+  # Check for new alerts and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  
   robot.logger.debug 'Checking alerts (' + platform + ')...'
   ds.getAlerts platform, (err, alerts) ->
     if err
@@ -74,14 +75,14 @@ checkAlerts = (robot, userDB, platform) ->
           broadcast a.toString(), query, robot, userDB
       return
 
-###*
-# Check for new invasions and notify them to subscribed users from userDB
-#
-# @param object robot
-# @param object userDB
-# @param string platform
-###
 checkInvasions = (robot, userDB, platform) ->
+  ###
+  # Check for new invasions and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
   robot.logger.debug 'Checking invasions (' + platform + ')...'
   ds.getInvasions platform, (err, invasions) ->
     if err
@@ -106,14 +107,14 @@ checkInvasions = (robot, userDB, platform) ->
           broadcast i.toString(), query, robot, userDB
       return
 
-###*
-# Check for unread news and notify them to subscribed users from userDB
-#
-# @param object robot
-# @param object userDB
-# @param string platform
-###
 checkNews = (robot, userDB, platform) ->
+  ###
+  # Check for unread news and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
   robot.logger.debug 'Checking news (' + platform + ')...'
   ds.getNews platform, (err, news) ->
     if err
@@ -130,15 +131,15 @@ checkNews = (robot, userDB, platform) ->
         , robot, userDB
       return
 
-###*
-# Broadcast a message to all subscribed users that match a query
-#
-# @param string message
-# @param object query
-# @param object robot
-# @param object userDB
-###
 broadcast = (message, query, robot, userDB) ->
+  ###
+  # Broadcast a message to all subscribed users that match a query
+  #
+  # @param string message
+  # @param object query
+  # @param object robot
+  # @param object userDB
+  ###
   robot.logger.debug 'Broadcasting to: %s', util.inspect(query, {depth: null})
   userDB.broadcast query, (err, chatID) ->
     if err
