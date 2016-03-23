@@ -150,6 +150,8 @@ Reward.typeToString = function(type) {
       return 'Mutalist Alad V Coordinates';
     case Reward.TYPES.OTHER:
       return 'Other rewards';
+    case 'all':
+      return 'All';
     default:
       return 'Unrecognized type';
   }

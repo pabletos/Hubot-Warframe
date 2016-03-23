@@ -16,23 +16,24 @@ var Users = function(mongoURL) {
 
 // Default settings for new users
 Users.DEFAULT_SETTINGS = {
-    platform: 'PC',
-    items: [
-      'alerts',
-      'invasions',
-      'news',
-      'helmet',
-      'clantech',
-      'nightmareMod',
-      'aura',
-      'resource',
-      'nitain',
-      'voidKey',
-      'skin',
-      'weapon',
-      'mutalistCoordinate',
-      'other'
-    ]
+  platform: 'PC',
+  items: [
+    'alerts',
+    'invasions',
+    'news',
+    'helmet',
+    'clantech',
+    'nightmareMod',
+    'aura',
+    'resource',
+    'nitain',
+    'voidKey',
+    'skin',
+    'weapon',
+    'mutalistCoordinate',
+    'other',
+    'all'
+  ]
 };
 
 /**
@@ -258,17 +259,31 @@ Users.prototype.setItemTrack = function(chatID, item, value, callback) {
       };
       
       if(value) {
-        update = {
-          $addToSet: {
-            items: item
-          }
-        };
+        if (item === 'all') {
+          update = {
+            $set: {
+              items: Users.DEFAULT_SETTINGS.items
+            }
+          };
+        } else {
+          update = {
+            $addToSet: {
+              items: item
+            }
+          };
+        }
       } else {
-        update = {
-          $pull: {
-            items: item
-          }
-        };
+        if (item === 'all') {
+          update = {
+            $set: {items: []}
+          };
+        } else {
+          update = {
+            $pull: {
+              items: item
+            }
+          };
+        }
       }
 
       c.updateOne(query, update, function(err, r) {
