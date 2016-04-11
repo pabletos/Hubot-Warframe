@@ -39,6 +39,7 @@ ds = require('./lib/deathsnacks.js')
 ws = require('./lib/worldstate.js')
 wikia = require('./lib/wikia.js')
 library = require('./lib/library.js')
+dsUtil = require('./lib/_utils.js')
 
 mongoURL = process.env.MONGODB_URL
 
@@ -141,10 +142,8 @@ module.exports = (robot) ->
           robot.logger.error err
         else if not data
           res.reply 'Not found'
-        else if robot.adapterName is 'telegram'
-          res.send util.format('[%s](%s)', data.title, data.url.replace('\\', ''))
-        else
-          res.send util.format('%s: %s', data.title, data.url.replace('\\', ''))
+        else 
+          res.send util.format('%s%s%s%s%s', dsUtil.linkBegin, data.title, dsUtil.linkMid, data.url.replace('\\', ''), dsUtil.linkEnd)
   
   robot.respond /sortie/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
@@ -159,7 +158,5 @@ module.exports = (robot) ->
     res.send 'No info about Synthesis Targets, Simaris has left us alone'
         
   robot.respond /chart/, (res) ->
-    if robot.adapterName is 'telegram'
-      res.send util.format('[%s](%s)', 'Chart', 'http://morningstar-wf.com/chart/chart-6.png')
-    else
-      res.send util.format('%s: %s', 'Chart', 'http://morningstar-wf.com/chart/chart-6.png')
+    res.send util.format('%s%s%s%s%s', dsUtil.linkBegin, 'Chart', dsUtil.linkMid, 'http://morningstar-wf.com/chart/chart-6.png', dsUtil.linkEnd)
+    
