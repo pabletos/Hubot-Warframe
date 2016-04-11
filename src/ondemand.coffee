@@ -38,7 +38,6 @@ Users = require('./lib/users.js')
 ds = require('./lib/deathsnacks.js')
 ws = require('./lib/worldstate.js')
 wikia = require('./lib/wikia.js')
-library = require('./lib/library.js')
 dsUtil = require('./lib/_utils.js')
 
 mongoURL = process.env.MONGODB_URL
