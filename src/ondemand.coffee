@@ -9,6 +9,15 @@
 #   HUBOT_LINE_END - Configuragble line-return character
 #   HUBOT_BLOCK_END - Configuragble string for ending blocks
 #   HUBOT_DOUBLE_RET - Configurable string for double-line returns
+#   HUBOT_MD_LINK_BEGIN - Configurable string for double-line returns
+#   HUBOT_MD_LINK_MID - Configurable string for double-line returns
+#   HUBOT_MD_LINK_END - Configurable string for double-line returns
+#   HUBOT_MD_BOLD - Configurable string for double-line returns
+#   HUBOT_MD_ITALIC - Configurable string for double-line returns
+#   HUBOT_MD_UNDERLINE - Configurable string for double-line returns
+#   HUBOT_MD_STRIKE - Configurable string for double-line returns
+#   HUBOT_MD_CODE_SINGLE - Configurable string for double-line returns
+#   HUBOT_MD_CODE_BLOCK - Configurable string for double-line returns
 #
 # Commands:
 #   hubot alerts - Display alerts
@@ -17,6 +26,7 @@
 #   hubot news - Display news
 #   hubot baro - Display current Baro status/inventory
 #   hubot sortie - Display current sortie missions
+#   hubot simaris - Display current Synthesis target
 #
 # Author:
 #   nspacestd
@@ -28,6 +38,7 @@ Users = require('./lib/users.js')
 ds = require('./lib/deathsnacks.js')
 ws = require('./lib/worldstate.js')
 wikia = require('./lib/wikia.js')
+dsUtil = require('./lib/_utils.js')
 
 mongoURL = process.env.MONGODB_URL
 
@@ -130,10 +141,8 @@ module.exports = (robot) ->
           robot.logger.error err
         else if not data
           res.reply 'Not found'
-        else if robot.adapterName is 'telegram'
-          res.send util.format('[%s](%s)', data.title, data.url.replace('\\', ''))
-        else
-          res.send util.format('%s: %s', data.title, data.url.replace('\\', ''))
+        else 
+          res.send util.format('%s%s%s%s%s', dsUtil.linkBegin, data.title, dsUtil.linkMid, data.url.replace('\\', ''), dsUtil.linkEnd)
   
   robot.respond /sortie/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
@@ -143,3 +152,10 @@ module.exports = (robot) ->
         if err
           return robot.logger.error err
         res.send sortie.toString()
+      
+  robot.respond /simaris/, (res) ->
+    res.send 'No info about Synthesis Targets, Simaris has left us alone'
+        
+  robot.respond /chart/, (res) ->
+    res.send util.format('%s%s%s%s%s', dsUtil.linkBegin, 'Chart', dsUtil.linkMid, 'http://morningstar-wf.com/chart/chart-6.png', dsUtil.linkEnd)
+    
