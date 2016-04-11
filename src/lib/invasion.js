@@ -37,22 +37,22 @@ var Invasion = function(data) {
  */
 Invasion.prototype.toString = function() {
   if(this.faction1 === 'Infestation') {
-    return util.format('%s (%s)%s' +
+    return util.format('%s%s (%s)%s' +
                        '%s (%s)%s' +
                        '%s%s' +
                        '%d% - %s%s',
-                       this.node, this.planet, dsUtil.lineEnd,
+                       dsUtil.codeMulti, this.node, this.planet, dsUtil.lineEnd,
                        this.desc, this.type2, dsUtil.lineEnd,
                        this.reward2.toString(), dsUtil.lineEnd,
                        Math.round(this.completion * 100) / 100,
                        this.ETA, dsUtil.blockEnd);
   }
 
-  return util.format('%s (%s) - %s%s' +
+  return util.format('%s%s (%s) - %s%s' +
                      '%s (%s, %s) vs.%s' +
                      '%s (%s, %s)%s' +
                      '%d% - %s%s',
-                     this.node, this.planet, this.desc, dsUtil.lineEnd,
+                     dsUtil.codeMulti, this.node, this.planet, this.desc, dsUtil.lineEnd,
 					 this.faction1, this.type1, this.reward1.toString(), dsUtil.lineEnd,
 					 this.faction2, this.type2, this.reward2.toString(),dsUtil.lineEnd,
                      Math.round(this.completion * 100) / 100, this.ETA, dsUtil.blockEnd);

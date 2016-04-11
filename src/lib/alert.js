@@ -33,12 +33,12 @@ var Alert = function(data) {
  * @return {string} The new string object
  */
 Alert.prototype.toString = function() {
-  var alertString = util.format('%s%s' +
+  var alertString = util.format('%s%s%s' +
                                 '%s (%s)%s' +
                                 '%s%s' +
                                 'level %d - %d%s' +
                                 'Expires in %s%s',
-                                this.location, dsUtil.lineEnd,
+                                dsUtil.codeMulti, this.location, dsUtil.lineEnd,
                                 this.missionType, this.faction, dsUtil.lineEnd,
                                 this.reward.toString(), dsUtil.lineEnd,
                                 this.minLevel, this.maxLevel, dsUtil.lineEnd,

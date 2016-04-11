@@ -24,11 +24,8 @@ Sortie.prototype.toString = function () {
   if(this.isExpired()){
     return 'None'
   }
-  var sortieString = util.format('%s== %s ==%s', 
-    dsUtil.generatePaddingString(
-        (60 - util.format('== %s ==%s', 
-        this.boss, 
-        dsUtil.doubleReturn).length)/2), 
+  var sortieString = util.format('%s%s%s', 
+    dsUtil.codeMulti, 
     this.boss, dsUtil.doubleReturn);
 
   sortieString += util.format('Ends in %s%s', this.getETAString(),
@@ -41,7 +38,7 @@ Sortie.prototype.toString = function () {
                                 variant.modifier,
                                 dsUtil.doubleReturn);
   })
-
+  sortieString +=dsUtil.blockEnd;
   return sortieString;
 }
 

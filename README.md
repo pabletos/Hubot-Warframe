@@ -32,6 +32,15 @@ MONGODB_URL | connection url for mongodb | `mongodb://<host>:<port>/<database>`
 HUBOT_LINE_END | Configuragble line-return character | `\n`
 HUBOT_BLOCK_END | Configuragble string for ending blocks  | `-------`
 HUBOT_DOUBLE_RET | Configurable string for double-line returns | `\n\n`
+HUBOT_MD_LINK_BEGIN | Configurable string for double-line returns | ` `
+HUBOT_MD_LINK_MID | Configurable string for double-line returns | ` `
+HUBOT_MD_LINK_END | Configurable string for double-line returns | ` `
+HUBOT_MD_BOLD | Configurable string for double-line returns | ` `
+HUBOT_MD_ITALIC | Configurable string for double-line returns | ` `
+HUBOT_MD_UNDERLINE | Configurable string for double-line returns | ` `
+HUBOT_MD_STRIKE | Configurable string for double-line returns | ` `
+HUBOT_MD_CODE_SINGLE | Configurable string for double-line returns | ` `
+HUBOT_MD_CODE_BLOCK | Configurable string for double-line returns | ` `
 
 ## Commands
 
@@ -52,7 +61,7 @@ Command | Listener ID | Description
 `hubot track <reward or event>` |  | Start tracking reward or event
 `hubot track` |  | Tracking menu
 `hubot untrack <reward or event>` |  | Stop tracking reward or event
-
+`hubot simaris` |  | Get Synthesis target tracking
 
 ## Sample Interaction
 
