@@ -62,6 +62,12 @@ Command | Listener ID | Description
 `hubot track` |  | Tracking menu
 `hubot untrack <reward or event>` |  | Stop tracking reward or event
 `hubot simaris` |  | Get Synthesis target tracking
+`hubot update` |  | Display current update
+`hubot primeaccess` |  | Display current Prime Access news
+`hubot damage` |  | Display link to Damage 2.0 infographic
+`hubot armor`  |  | Display instructions for calculating armor
+`hubot armor <current armor>` |  | Display current damage resistance and amount of corrosive procs required to strip it
+`hubot armor <base armor> <base level> <current level>`  Display the current armor, damage resistance, and necessary corrosive procs to strip armor.
 
 ## Sample Interaction
 

@@ -21,12 +21,25 @@ module.exports.timeDeltaToString = function (millis) {
     }
 };
 
-module.exports.generatePaddingString = function(paddingLength) {
-    var str = "";
-    for(i = 0; i<paddingLength; i++ ){
-        str += " ";
-    }
-    return str;
+module.exports.damageReduction = function (currentArmor) {
+  var damageRes = parseInt(currentArmor) / (parseInt(currentArmor) + 300) * 100;
+  return util.format("%d% damage reduction", damageRes);
+};
+
+module.exports.armorFull = function (baseArmor, baseLevel, currentLevel) {
+  var armor = parseInt(baseArmor) * (1 + (Math.pow((parseInt(currentLevel) - parseInt(baseLevel)),1.75) / 200));
+  var armorString = util.format("At level %s your enemy would have %d Armor %s %s", 
+                     currentLevel, armor, process.env.HUBOT_LINE_END || '\n', 
+                     this.damageReduction(armor))
+
+  return util.format('%s %s %s', armorString, this.lineEnd, this.armorStrip(armor))
+};
+
+module.exports.armorStrip = function (armor) {
+  var armorStripValue = 8*Math.log(parseInt(armor));
+  
+  return util.format("You will need %d corrosive procs to strip your enemy of armor.", 
+                                     armorStripValue)
 }
 
 module.exports.doubleReturn = process.env.HUBOT_DOUBLE_RET || '\n\n';
