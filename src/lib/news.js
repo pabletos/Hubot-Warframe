@@ -49,7 +49,7 @@ News.prototype.toString = function(showElapsedTime, markdown) {
     text = text.replace(/\[/, '(');
     text = text.replace(/\]/, ')');
 
-    formatString = '%s%s%s%s%s%s%s'
+    formatString = '%s%s%s%s%s%s'
   }
 
   return util.format(formatString, elapsedTime, dsUtil.linkBegin, text, dsUtil.linkMid, this.link, dsUtil.linkEnd);
