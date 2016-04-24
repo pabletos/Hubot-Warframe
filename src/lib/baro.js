@@ -25,15 +25,15 @@ Baro.prototype.toString = function() {
     return util.format('%sBaro is not here yet, he will arrive in %s at %s%s', dsUtil.codeMulti, this.getStartString(), this.location, dsUtil.blockEnd);
   }
 
-  var baroString = util.format('%s%sVoid Trader at %s', dsUtil.codeMulti, this.location, dsUtil.doubleReturn);
+  var baroString = util.format('%sVoid Trader at %s%s', dsUtil.codeMulti, this.location, dsUtil.doubleReturn);
   for(i in this.manifest) {
-    baroString += util.format('%s - price: %d ducats + %dcr -%s',
+    baroString += util.format('%s - price: %d ducats + %dcr%s',
                               this.manifest[i].ItemType,
                               this.manifest[i].PrimePrice,
                               this.manifest[i].RegularPrice,
                               dsUtil.doubleReturn);
   }
-  baroString += util.format('Trader departing in %s%s', this.getEndString(), dsUtil.codeMultiEnd);
+  baroString += util.format('Trader departing in %s%s', this.getEndString(), dsUtil.codeMulti);
   return baroString;
 }
 
