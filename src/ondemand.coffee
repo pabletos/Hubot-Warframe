@@ -34,6 +34,14 @@
 #   hubot armor - Display instructions for calculating armor
 #   hubot armor <current armor> - Display current damage resistance and amount of corrosive procs required to strip it
 #   hubot armor <base armor> <base level> <current level> - Display the current armor, damage resistance, and necessary corrosive procs to strip armor.
+#   hubot shield - Display instructions for calculating shields
+#   hubot shield <base shields> <base level> <current level> - Display the current shields.
+#   hubot conclave - Display usage for conclave command
+#   hubot conclave all - Display all conclave challenges
+#   hubot conclave daily - Display active daily conclave challenges
+#   hubot conclave weekly - Display active weekly conclave challenges
+#   hubot enemies - Display list of active persistent enemies where they were last found
+#   hubot rewards - Display link to VoiD_Glitch's rewards table
 #
 # Author:
 #   nspacestd
@@ -208,30 +216,134 @@ module.exports = (robot) ->
                          dsUtil.linkMid, 'http://morningstar-wf.com/chart/Damage_2.0_Resistance_Flowchart.png', 
                          dsUtil.linkEnd, dsUtil.lineEnd, 
                          courtesy, dsUtil.blockEnd)
-
-  robot.respond /armor\s+(\d*)\s+(\d*)\s+(\d*)\s*/, (res) ->
-    if not robot.done
-      armor = res.match[1]
-      baseLevel = res.match[2]
-      currentLevel = res.match[3]
-
-      robot.logger.debug armor
-      robot.logger.debug baseLevel
-      robot.logger.debug currentLevel
-      robot.done = true
-      res.send util.format('%s%s%s', dsUtil.codeMulti, dsUtil.armorFull(armor, baseLevel, currentLevel), dsUtil.blockEnd)
-      
-  robot.respond /armor\s+(\d+)/, (res) ->
-    if not robot.done
-      armor = res.match[1]
-      robot.logger.debug armor
-      robot.done = true
-      res.send util.format('%s%s%s %s %s', dsUtil.codeMulti, dsUtil.damageReduction(armor), dsUtil.lineEnd, dsUtil.armorStrip(armor), dsUtil.blockEnd)
+  
+   robot.respond /armor(?:\s+([\d\s]+))?/, (res) ->
+    pattern3Params = new RegExp(/^(\d+)(?:\s+(\d+)\s+(\d+))?$/)
+    pattern1Param = new RegExp(/^(\d+)$/)
+    robot.logger.debug util.format('matched armor command. matching string: %s', res.match[1])
+    params = res.match[1]
     
-  robot.respond /armor/, (res) ->
-    if not robot.done
-      prompt = util.format('%s%s%s', dsUtil.codeMulti, 'possible uses include:\n' +
-                    'armor (Base Armor) (Base Level) (Current Level) calculate armor and stats.\n' +
-                    'armor (Current Armor)\n', dsUtil.blockEnd)
-      robot.done = true
-      res.send prompt
+    if pattern3Params.test(params)
+      armor = params.match(pattern3Params)[1]
+      baseLevel = params.match(pattern3Params)[2]
+      currentLevel = params.match(pattern3Params)[3]
+      
+      if(typeof baseLevel == 'undefined')
+        robot.logger.debug 'Entered 1-param armor'
+        armorString = util.format('%s%s%s %s %s',
+                                dsUtil.codeMulti, dsUtil.damageReduction(armor), 
+                                dsUtil.lineEnd, dsUtil.armorStrip(armor), dsUtil.blockEnd)
+      else
+        robot.logger.debug 'Entered 3-param armor'
+        armorString = util.format('%s%s%s', 
+                                dsUtil.codeMulti, dsUtil.armorFull(armor, baseLevel, currentLevel), 
+                                dsUtil.blockEnd)
+
+            
+    else
+      robot.logger.debug 'Entered 0-param armor'
+      armorInstruct3 = 'armor (Base Armor) (Base Level) (Current Level) calculate armor and stats.'
+      armorInstruct1 = 'armor (Current Armor) Calculate damage resistance.'
+      armorString = util.format('%sPossible uses include:%s%s%s%s%s', 
+                                dsUtil.codeMulti, dsUtil.lineEnd, 
+                                armorInstruct3, dsUtil.lineEnd, 
+                                armorInstruct1, dsUtil.blockEnd)
+    res.send armorString
+   
+  robot.respond /shield(?:\s+([\d\s]+))?/, (res) ->
+    pattern3Params = new RegExp(/^(\d+)(?:\s+(\d+)\s+(\d+))?$/)
+    robot.logger.debug util.format('matched shield command. matching string: %s', res.match[1])
+    params = res.match[1]
+    
+    if pattern3Params.test(params)
+      shields = params.match(pattern3Params)[1]
+      baseLevel = params.match(pattern3Params)[2]
+      currentLevel = params.match(pattern3Params)[3]
+      
+      robot.logger.debug 'Entered 3-param shield'
+      shieldString = dsUtil.shieldString dsUtil.shieldCalc(shields, baseLevel, currentLevel), currentLevel    
+    else
+      robot.logger.debug 'Entered 0-param shield'
+      shieldInstruct3 = 'shields (Base Shelds) (Base Level) (Current Level) calculate shields and stats.'
+      shieldString = util.format('%sPossible uses include:%s%s%s', 
+                                dsUtil.codeMulti, dsUtil.lineEnd, 
+                                shieldInstruct3, dsUtil.blockEnd)
+    res.send shieldString
+    
+  robot.respond /conclave(?:\s+([\w+\s]+))?/, (res) ->
+    robot.logger.debug util.format('matched conclave command. matching string: %s', res.match[1])
+    params = res.match[1]
+    challengeFormat = '%s%s%s'
+    noChallengeString = util.format('%sNo Challenges%s',  dsUtil.codeMulti, dsUtil.blockEnd)
+    allRegExp = new RegExp(/^(all)$/)
+    dailyRegExp = new RegExp(/^(daily)$/)
+    weeklyRegExp = new RegExp(/^(weekly)$/)
+    
+    
+    if allRegExp.test(params)
+      robot.logger.debug 'Entered all challenge'
+      userDB.getPlatform res.message.room, (err, platform) ->
+        if err
+          return robot.logger.error err
+        ws.getConclaveAll platform, (err, challenge) ->
+          if err 
+            res.send
+            return robot.logger.error err
+          if challenge != ''
+            res.send util.format(challengeFormat, dsUtil.codeMulti, challenge, dsUtil.blockEnd)
+          else
+            res.send noChallengeString
+    
+    else if dailyRegExp.test(params)
+      robot.logger.debug 'Entered daily challenge'
+      userDB.getPlatform res.message.room, (err, platform) ->
+        if err
+          return robot.logger.error err
+        ws.getConclaveDailies platform, (err, challenge) ->
+          if err 
+            return robot.logger.error err
+          if challenge != ''
+            res.send util.format(challengeFormat, dsUtil.codeMulti, challenge, dsUtil.blockEnd)
+          else
+            res.send noChallengeString
+    
+    else if weeklyRegExp.test(params)
+      robot.logger.debug 'Entered weekly challenge'
+      userDB.getPlatform res.message.room, (err, platform) ->
+        if err
+          return robot.logger.error err
+        ws.getConclaveWeeklies platform, (err, challenge) ->
+          if err
+            return robot.logger.error err
+          if challenge != ''
+            res.send util.format(challengeFormat, dsUtil.codeMulti, challenge, dsUtil.blockEnd)
+          else
+            res.send noChallengeString
+    else
+      robot.logger.debug 'Entered null challenge'
+      conclaveInstructAll = 'conclave all - print all conclave challenges.'
+      conclaveInstructWeekly = 'conclave weekly - print weekly conclave challenges.'
+      conclaveInstructDaily = 'conclave daily - print conclave daily challenges.'
+      res.send util.format('%sPossible uses include:%s%s%s%s%s%s', 
+                                    dsUtil.codeMulti, dsUtil.lineEnd, 
+                                    conclaveInstructAll, dsUtil.lineEnd, 
+                                    conclaveInstructWeekly, dsUtil.lineEnd, 
+                                    conclaveInstructDaily, dsUtil.blockEnd)
+  robot.respond /enemies/, (res) ->
+    robot.logger.debug 'Entered persistent enemies command'
+    noEnemiesString = util.format '%sOperator, there is no sign of enemies, stay alert.%s', 
+                        dsUtil.codeMulti, dsUtil.blockEnd
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+          return robot.logger.error err
+        ws.getPersistentEnemies platform, (err, enemies) ->
+          if err 
+            res.send noEnemiesString
+            return robot.logger.error err
+          if enemies != ''
+            res.send util.format '%s%s%s', dsUtil.codeMulti, enemies, dsUtil.blockEnd
+          else
+            res.send noEnemiesString
+  robot.respond /rewards/, (res) ->
+    res.send util.format('%sMission rewards: http://rewards.morningstar-wf.com%s', 
+                           dsUtil.codeMulti, dsUtil.blockEnd)

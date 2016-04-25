@@ -1,0 +1,61 @@
+{
+  "agentTypes": {
+    "/Lotus/Types/Enemies/Acolytes/StrikerAcolyteAgent": {
+      "value": "Angst"
+    },
+    "/Lotus/Types/Enemies/Acolytes/RogueAcolyteAgent": {
+      "value": "Mania"
+    },
+    "/Lotus/Types/Enemies/Acolytes/ControlAcolyteAgent": {
+      "value": "Torment"
+    },
+    "/Lotus/Types/Enemies/Acolytes/DuellistAcolyteAgent": {
+      "value": "Violence"
+    },
+    "/Lotus/Types/Enemies/Acolytes/HeavyAcolyteAgent": {
+      "value": "Malice"
+    },
+    "/Lotus/Types/Enemies/Acolytes/AreaCasterAcolyteAgent": {
+      "value": "Misery"
+    }
+  },
+  "locTags": {
+    "/Lotus/Language/Game/BurstCasterAcolyte": {
+      "value": "Angst"
+    },
+    "/Lotus/Language/Game/RogueAcolyte": {
+      "value": "Mania"
+    },
+    "/Lotus/Language/Game/ControlAcolyte": {
+      "value": "Torment"
+    },
+    "/Lotus/Language/Game/DuellistAcolyte": {
+      "value": "Violence"
+    },
+    "/Lotus/Language/Game/HeavyAcolyte": {
+      "value": "Malice"
+    },
+    "/Lotus/Language/Game/AreaCasterAcolyte": {
+      "value": "Misery"
+    }
+  },
+  "regions": [
+    "0"
+    , "1"
+    , "2"
+    , "Mars"
+    , "4"
+    , "Saturn"
+    , "6"
+    , "7"
+    , "Pluto"
+    , "Ceres"
+    , "10"
+    , "Sedna"
+    , "12"
+    , "13"
+    , "14"
+    , "Phobos"
+    , "16"
+  ]
+}
