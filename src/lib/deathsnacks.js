@@ -189,3 +189,65 @@ exports.getNews = function(platform, callback) {
     }
   });
 }
+
+/**
+ * Return an array of Update objects representing currently active update
+ * on a given platform.
+ *
+ * @param {string}   platform   The platform
+ * @param {function} callback   Callback function
+ */
+exports.getUpdate = function(platform, callback) {
+  getRaw(API_URL + platformURL[platform] + NEWS, function(err, data) {
+    if(err) {
+      callback(err, null);
+    } else {
+      if(data.length) {
+        var update = [];
+        // Discard last (empty) line
+        data.pop();
+        for(var i in data) {
+            var isUpdate = data[i].indexOf("update") > -1;
+            var isHotfix = data[i].indexOf("hotfix") > -1;
+            if(isUpdate || isHotfix){
+              update.push(new News(data[i]));
+            }
+        }
+        callback(null, update);
+      } else {
+        callback(null, []);
+      }
+    }
+  });
+}
+
+
+/**
+ * Return an array of Update objects representing currently active news
+ * on a given platform.
+ *
+ * @param {string}   platform   The platform
+ * @param {function} callback   Callback function
+ */
+exports.getPrimeAccess = function(platform, callback) {
+  getRaw(API_URL + platformURL[platform] + NEWS, function(err, data) {
+    if(err) {
+      callback(err, null);
+    } else {
+      if(data.length) {
+        var access = [];
+        // Discard last (empty) line
+        data.pop();
+        for(var i in data) {
+            var isPrimeAccess = data[i].indexOf("access") > -1;
+            if(isPrimeAccess){
+              access.push(new News(data[i]));
+            }
+        }
+        callback(null, access);
+      } else {
+        callback(null, []);
+      }
+    }
+  });
+}
