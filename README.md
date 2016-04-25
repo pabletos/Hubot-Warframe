@@ -68,6 +68,8 @@ Command | Listener ID | Description
 `hubot armor`  |  | Display instructions for calculating armor
 `hubot armor <current armor>` |  | Display current damage resistance and amount of corrosive procs required to strip it
 `hubot armor <base armor> <base level> <current level>` | |  Display the current armor, damage resistance, and necessary corrosive procs to strip armor.
+`hubot shield`  |  | Display instructions for calculating armor
+`hubot shield <base shield> <base level> <current level>` | |  Display the current shields.
 `hubot conclave` |  | Display usage for conclave command
 `hubot conclave all` |  | Display all conclave challenges
 `hubot conclave daily` |  | Display active daily conclave challenges

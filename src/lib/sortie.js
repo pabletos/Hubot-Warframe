@@ -29,7 +29,7 @@ Sortie.prototype.toString = function () {
     this.boss);
 
   sortieString += util.format(': ends in %s%s', this.getETAString(),
-                              dsUtil.lineEnd);
+                              dsUtil.doubleReturn);
   
   this.variants.forEach(function(variant, i) {
     sortieString += util.format('%s (%s) %s%s',
