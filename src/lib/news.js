@@ -47,12 +47,12 @@ News.prototype.toString = function(showElapsedTime, markdown) {
     // Escape square brackets
     elapsedTime = elapsedTime.replace(/\[/, '\\[');
     text = text.replace(/\[/, '(');
-    text = text.replace(/\]/, ')');
-
-    formatString = '%s%s%s%s%s%s'
+    text = text.replace(/\]/, ')'); 
   }
 
-  return util.format(formatString, elapsedTime, dsUtil.linkBegin, text, dsUtil.linkMid, this.link, dsUtil.linkEnd);
+  this.link = this.link.replace(/\s/, '');
+  formatString = '%s%s%s%s%s%s%s%s';
+  return util.format(formatString, dsUtil.codeMulti, elapsedTime, dsUtil.linkBegin, text, dsUtil.linkMid, this.link, dsUtil.linkEnd, dsUtil.blockEnd);
 }
 
 /**

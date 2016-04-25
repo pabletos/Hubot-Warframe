@@ -30,17 +30,17 @@ Environment Variable | Description | Example
 --- | --- | ---
 MONGODB_URL | connection url for mongodb | `mongodb://<host>:<port>/<database>`
 HUBOT_LINE_END | Configuragble line-return character | `\n`
-HUBOT_BLOCK_END | Configuragble string for ending blocks  | `-------`
+HUBOT_BLOCK_END | Configuragble string for ending blocks  | \```
 HUBOT_DOUBLE_RET | Configurable string for double-line returns | `\n\n`
-HUBOT_MD_LINK_BEGIN | Configurable string for double-line returns | ` `
-HUBOT_MD_LINK_MID | Configurable string for double-line returns | ` `
-HUBOT_MD_LINK_END | Configurable string for double-line returns | ` `
-HUBOT_MD_BOLD | Configurable string for double-line returns | ` `
-HUBOT_MD_ITALIC | Configurable string for double-line returns | ` `
-HUBOT_MD_UNDERLINE | Configurable string for double-line returns | ` `
-HUBOT_MD_STRIKE | Configurable string for double-line returns | ` `
-HUBOT_MD_CODE_SINGLE | Configurable string for double-line returns | ` `
-HUBOT_MD_CODE_BLOCK | Configurable string for double-line returns | ` `
+HUBOT_MD_LINK_BEGIN | Define the beginning string for a markdown link | `(`
+HUBOT_MD_LINK_MID | Define the middle string for a markdown link | `)[`
+HUBOT_MD_LINK_END | Define the end string for a markdown link | `]`
+HUBOT_MD_BOLD | Define the string to use before and after a string to bold it | `**`
+HUBOT_MD_ITALIC | Define the string to use before and after a string to italicize it | `*`
+HUBOT_MD_UNDERLINE | Define the string to use before and after a string to underline it | `__`
+HUBOT_MD_STRIKE | Define the string to use before and after a string to strike it out | `~~`
+HUBOT_MD_CODE_SINGLE | Define the string to use before and after a string to define it as an inline block of code | \`
+HUBOT_MD_CODE_BLOCK | Define the string to use before and after a string to define it as a multi-line block of code | ```` `
 
 ## Commands
 
@@ -62,6 +62,19 @@ Command | Listener ID | Description
 `hubot track` |  | Tracking menu
 `hubot untrack <reward or event>` |  | Stop tracking reward or event
 `hubot simaris` |  | Get Synthesis target tracking
+`hubot update` |  | Display current update
+`hubot primeaccess` |  | Display current Prime Access news
+`hubot damage` |  | Display link to Damage 2.0 infographic
+`hubot armor`  |  | Display instructions for calculating armor
+`hubot armor <current armor>` |  | Display current damage resistance and amount of corrosive procs required to strip it
+`hubot armor <base armor> <base level> <current level>` | |  Display the current armor, damage resistance, and necessary corrosive procs to strip armor.
+`hubot shield`  |  | Display instructions for calculating armor
+`hubot shield <base shield> <base level> <current level>` | |  Display the current shields.
+`hubot conclave` |  | Display usage for conclave command
+`hubot conclave all` |  | Display all conclave challenges
+`hubot conclave daily` |  | Display active daily conclave challenges
+`hubot conclave weekly` |  | Display active weekly conclave challenges
+`hubot enemies` |  | Display list of active persistent enemies where they were last found
 
 ## Sample Interaction
 

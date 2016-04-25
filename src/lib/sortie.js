@@ -24,11 +24,11 @@ Sortie.prototype.toString = function () {
   if(this.isExpired()){
     return 'None'
   }
-  var sortieString = util.format('%s%s%s', 
+  var sortieString = util.format('%s%s', 
     dsUtil.codeMulti, 
-    this.boss, dsUtil.doubleReturn);
+    this.boss);
 
-  sortieString += util.format('Ends in %s%s', this.getETAString(),
+  sortieString += util.format(': ends in %s%s', this.getETAString(),
                               dsUtil.doubleReturn);
   
   this.variants.forEach(function(variant, i) {
@@ -36,7 +36,7 @@ Sortie.prototype.toString = function () {
                                 variant.planet,
                                 variant.missionType,
                                 variant.modifier,
-                                dsUtil.doubleReturn);
+                                dsUtil.lineEnd);
   })
   sortieString +=dsUtil.blockEnd;
   return sortieString;
