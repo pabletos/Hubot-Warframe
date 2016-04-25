@@ -47,8 +47,7 @@ News.prototype.toString = function(showElapsedTime, markdown) {
     // Escape square brackets
     elapsedTime = elapsedTime.replace(/\[/, '\\[');
     text = text.replace(/\[/, '(');
-    text = text.replace(/\]/, ')');
-
+    text = text.replace(/\]/, ')'); 
   }
 
   this.link = this.link.replace(/\s/, '');
