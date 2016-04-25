@@ -113,7 +113,17 @@
     },
     "/Lotus/PVPChallengeTypes/PVPTimedChallengeKillsPrimaryHARD": {
       "value": "Get kills with your primary"
+    },
+    "/Lotus/PVPChallengeTypes/PVPTimedChallengeKillsStreakDominationEASY": {
+      "value": "Dominate with your kill streaks"
+    },
+    "/Lotus/PVPChallengeTypes/PVPTimedChallengeKillsStreakDominationMEDIUM": {
+      "value": "Dominate with your kill streaks"
+    },
+    "/Lotus/PVPChallengeTypes/PVPTimedChallengeKillsStreakDominationHARD": {
+      "value": "Dominate with your kill streaks"
     }
+    
   },
   "modes": {
     "PVPMODE_ALL": {
