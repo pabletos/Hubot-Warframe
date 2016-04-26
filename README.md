@@ -1,3 +1,5 @@
+![Genesis Avatar](resources/images/cephalontransparent.png)
+
 #Hubot-Warframe
 A [Hubot](https://hubot.github.com/) module for tracking Warframe alerts, invasions and more.
 

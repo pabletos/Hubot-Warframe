@@ -1,6 +1,6 @@
 var request = require('request')
 
-var Sortie = require('./sortie.js')
+var Sorties = require('./sortie.js')
 var Challenges = require('./conclave.js')
 var Enemies = require('./persistentEnemy.js');
 
@@ -43,7 +43,7 @@ exports.getSortie = function(platform, callback) {
     if(err) {
       return callback(err);
     }
-    callback(null, new Sortie(data.Sorties[0]));
+    callback(null, new Sorties(data.Sorties[0]).toString());
   })
 }
 

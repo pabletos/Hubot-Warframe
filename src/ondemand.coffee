@@ -200,7 +200,7 @@ module.exports = (robot) ->
       ws.getSortie platform, (err, sortie) ->
         if err 
           return robot.logger.error err
-        res.send sortie.toString()
+        res.send sortie
       
   robot.respond /simaris/, (res) ->
     res.send util.format('%sNo info about Synthesis Targets, Simaris has left us alone%s', dsUtil.codeMulti, dsUtil.blockEnd)

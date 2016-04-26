@@ -4,835 +4,964 @@
       "value": "SolNode0"
     }
     , "SolNode1": {
-      "value": "SolNode1"
+      "value": "Galatea"
     }
     , "SolNode2": {
-      "value": "SolNode2"
+      "value": "Aphrodite"
     }
     , "SolNode3": {
-      "value": "SolNode3"
+      "value": "Codelia"
     }
     , "SolNode4": {
-      "value": "SolNode4"
+      "value": "Acheron"
     }
     , "SolNode5": {
       "value": "SolNode5"
     }
     , "SolNode6": {
-      "value": "SolNode6"
+      "value": "Despina"
     }
     , "SolNode7": {
-      "value": "SolNode7"
+      "value": "Epimetheus"
     }
     , "SolNode8": {
-      "value": "SolNode8"
+      "value": "Nix"
     }
     , "SolNode9": {
-      "value": "SolNode9"
+      "value": "Rosalind"
     }
     , "SolNode10": {
-      "value": "SolNode10"
+      "value": "Thebe"
     }
     , "SolNode11": {
-      "value": "SolNode11"
+      "value": "Tharsis"
     }
     , "SolNode12": {
-      "value": "SolNode12"
+      "value": "Elion"
     }
     , "SolNode13": {
-      "value": "SolNode13"
+      "value": "Bianca"
     }
     , "SolNode14": {
-      "value": "SolNode14"
+      "value": "Ultor"
     }
     , "SolNode15": {
-      "value": "SolNode15"
+      "value": "Pacific"
     }
     , "SolNode16": {
-      "value": "SolNode16"
+      "value": "Augustus"
     }
     , "SolNode17": {
-      "value": "SolNode17"
+      "value": "Proteus"
     }
     , "SolNode18": {
-      "value": "SolNode18"
+      "value": "Rhea"
     }
     , "SolNode19": {
-      "value": "SolNode19"
+      "value": "Enceladus"
     }
     , "SolNode20": {
-      "value": "SolNode20"
+      "value": "Telesto"
     }
     , "SolNode21": {
-      "value": "SolNode21"
+      "value": "Narcissus"
     }
     , "SolNode22": {
-      "value": "SolNode22"
+      "value": "Tessera"
     }
     , "SolNode23": {
-      "value": "SolNode23"
+      "value": "Cytherean"
     }
     , "SolNode24": {
-      "value": "SolNode24"
+      "value": "Oro"
     }
     , "SolNode25": {
-      "value": "SolNode25"
+      "value": "Callisto"
     }
     , "SolNode26": {
-      "value": "SolNode26"
+      "value": "Lith"
     }
     , "SolNode27": {
-      "value": "SolNode27"
+      "value": "E Prime"
     }
     , "SolNode28": {
-      "value": "SolNode28"
+      "value": "MPrime"
     }
     , "SolNode29": {
-      "value": "SolNode29"
+      "value": "Oberon"
     }
     , "SolNode30": {
-      "value": "SolNode30"
+      "value": "Olympus"
     }
     , "SolNode31": {
-      "value": "SolNode31"
+      "value": "Anthe"
     }
     , "SolNode32": {
-      "value": "SolNode32"
+      "value": "Tehys"
     }
     , "SolNode33": {
-      "value": "SolNode33"
+      "value": "Ariel"
     }
     , "SolNode34": {
-      "value": "SolNode34"
+      "value": "Sycorax"
     }
     , "SolNode35": {
-      "value": "SolNode35"
+      "value": "Arcadia"
     }
     , "SolNode36": {
-      "value": "SolNode36"
+      "value": "Martialis"
     }
     , "SolNode37": {
-      "value": "SolNode37"
+      "value": "Pallene"
     }
     , "SolNode38": {
-      "value": "SolNode38"
+      "value": "Minthe"
     }
     , "SolNode39": {
-      "value": "SolNode39"
+      "value": "Everest"
     }
     , "SolNode40": {
       "value": "SolNode40"
     }
     , "SolNode41": {
-      "value": "SolNode41"
+      "value": "Arval"
     }
     , "SolNode42": {
-      "value": "SolNode42"
+      "value": "Helene"
     }
     , "SolNode43": {
-      "value": "SolNode43"
+      "value": "Cerberus"
     }
     , "SolNode44": {
-      "value": "SolNode44"
+      "value": "Mimas"
     }
     , "SolNode45": {
-      "value": "SolNode45"
+      "value": "Ara"
     }
     , "SolNode46": {
-      "value": "SolNode46"
+      "value": "Spear"
     }
     , "SolNode47": {
-      "value": "SolNode47"
+      "value": "Janus"
     }
     , "SolNode48": {
-      "value": "SolNode48"
+      "value": "Regna"
     }
     , "SolNode49": {
-      "value": "SolNode49"
+      "value": "Larissa"
     }
     , "SolNode50": {
-      "value": "SolNode50"
+      "value": "Numa"
     }
     , "SolNode51": {
-      "value": "SolNode51"
+      "value": "Hades"
     }
     , "SolNode52": {
-      "value": "SolNode52"
+      "value": "Portia"
     }
     , "SolNode53": {
-      "value": "SolNode53"
+      "value": "Themisto"
     }
     , "SolNode54": {
-      "value": "SolNode54"
+      "value": "Silvanus"
     }
     , "SolNode55": {
-      "value": "SolNode55"
+      "value": "Methone"
     }
     , "SolNode56": {
-      "value": "SolNode56"
+      "value": "Cypress"
     }
     , "SolNode57": {
-      "value": "SolNode57"
+      "value": "Sao"
     }
     , "SolNode58": {
-      "value": "SolNode58"
+      "value": "Hellas"
     }
     , "SolNode59": {
-      "value": "SolNode59"
+      "value": "Eurasia"
     }
     , "SolNode60": {
       "value": "SolNode60"
     }
     , "SolNode61": {
-      "value": "SolNode61"
+      "value": "Ishtar"
     }
     , "SolNode62": {
-      "value": "SolNode62"
+      "value": "Neso"
     }
     , "SolNode63": {
-      "value": "SolNode63"
+      "value": "Mantle"
     }
     , "SolNode64": {
-      "value": "SolNode64"
+      "value": "Umbriel"
     }
     , "SolNode65": {
-      "value": "SolNode65"
+      "value": "Gradivus"
     }
     , "SolNode66": {
-      "value": "SolNode66"
+      "value": "Unda"
     }
     , "SolNode67": {
-      "value": "SolNode67"
+      "value": "Dione"
     }
     , "SolNode68": {
-      "value": "SolNode68"
+      "value": "Vallis"
     }
     , "SolNode69": {
-      "value": "SolNode69"
+      "value": "Ophelia"
     }
     , "SolNode70": {
-      "value": "SolNode70"
+      "value": "Cassini"
     }
     , "SolNode71": {
-      "value": "SolNode71"
+      "value": "Vesper"
     }
     , "SolNode72": {
-      "value": "SolNode72"
+      "value": "Outer Terminus"
     }
     , "SolNode73": {
-      "value": "SolNode73"
+      "value": "Ananke"
     }
     , "SolNode74": {
-      "value": "SolNode74"
+      "value": "Carme"
     }
     , "SolNode75": {
-      "value": "SolNode75"
+      "value": "Lua"
     }
     , "SolNode76": {
-      "value": "SolNode76"
+      "value": "Hydra"
     }
     , "SolNode77": {
-      "value": "SolNode77"
+      "value": "Cupid"
     }
     , "SolNode78": {
-      "value": "SolNode78"
+      "value": "Triton"
     }
     , "SolNode79": {
-      "value": "SolNode79"
+      "value": "Cambria"
     }
     , "SolNode80": {
-      "value": "SolNode80"
+      "value": "Phoebe"
     }
     , "SolNode81": {
-      "value": "SolNode81"
+      "value": "Palus"
     }
     , "SolNode82": {
-      "value": "SolNode82"
+      "value": "Calypso"
     }
     , "SolNode83": {
-      "value": "SolNode83"
+      "value": "Cressida"
     }
     , "SolNode84": {
-      "value": "SolNode84"
+      "value": "Nereid"
     }
     , "SolNode85": {
-      "value": "SolNode85"
+      "value": "Gaia"
     }
     , "SolNode86": {
-      "value": "SolNode86"
+      "value": "Aegaeon"
     }
     , "SolNode87": {
-      "value": "SolNode87"
+      "value": "Ganymede"
     }
     , "SolNode88": {
-      "value": "SolNode88"
+      "value": "Adrastea"
     }
     , "SolNode89": {
-      "value": "SolNode89"
+      "value": "Mariana"
     }
     , "SolNode90": {
-      "value": "SolNode90"
+      "value": "Miranda"
     }
     , "SolNode91": {
-      "value": "SolNode91"
+      "value": "Iapetus"
     }
     , "SolNode92": {
-      "value": "SolNode92"
+      "value": "Charon"
     }
     , "SolNode93": {
-      "value": "SolNode93"
+      "value": "Keeler"
     }
     , "SolNode94": {
-      "value": "SolNode94"
+      "value": "Apollodorus"
     }
     , "SolNode95": {
-      "value": "SolNode95"
+      "value": "Thalassa"
     }
     , "SolNode96": {
-      "value": "SolNode96"
+      "value": "Titan"
     }
     , "SolNode97": {
-      "value": "SolNode97"
+      "value": "Amalthea"
     }
     , "SolNode98": {
-      "value": "SolNode98"
+      "value": "Desdemona"
     }
     , "SolNode99": {
-      "value": "SolNode99"
+      "value": "War"
     }
     , "SolNode100": {
-      "value": "SolNode100"
+      "value": "Elara"
     }
     , "SolNode101": {
-      "value": "SolNode101"
+      "value": "Kiliken"
     }
     , "SolNode102": {
-      "value": "SolNode102"
+      "value": "Oceanum"
     }
     , "SolNode103": {
-      "value": "SolNode103"
+      "value": "Terminus"
     }
     , "SolNode104": {
-      "value": "SolNode104"
+      "value": "Fossa"
     }
     , "SolNode105": {
-      "value": "SolNode105"
+      "value": "Titania"
     }
     , "SolNode106": {
-      "value": "SolNode106"
+      "value": "Alator"
     }
     , "SolNode107": {
-      "value": "SolNode107"
+      "value": "Venera"
     }
     , "SolNode108": {
-      "value": "SolNode108"
+      "value": "Tolstoj"
     }
     , "SolNode109": {
-      "value": "SolNode109"
+      "value": "Linea"
     }
     , "SolNode110": {
-      "value": "SolNode110"
+      "value": "Hyperion"
     }
     , "SolNode111": {
-      "value": "SolNode111"
+      "value": "Juliet"
     }
     , "SolNode112": {
       "value": "SolNode112"
     }
     , "SolNode113": {
-      "value": "SolNode113"
+      "value": "Ares"
     }
     , "SolNode114": {
       "value": "SolNode114"
     }
     , "SolNode115": {
-      "value": "SolNode115"
+      "value": "Quirinus"
     }
     , "SolNode116": {
       "value": "SolNode116"
     }
     , "SolNode117": {
-      "value": "SolNode117"
+      "value": "Naiad"
     }
     , "SolNode118": {
-      "value": "SolNode118"
+      "value": "Laomedia"
     }
     , "SolNode119": {
-      "value": "SolNode119"
+      "value": "Caloris"
     }
     , "SolNode120": {
-      "value": "SolNode120"
+      "value": "Halimede"
     }
     , "SolNode121": {
-      "value": "SolNode121"
+      "value": "CArpo"
     }
     , "SolNode122": {
-      "value": "SolNode122"
+      "value": "Stephano"
     }
     , "SolNode123": {
-      "value": "SolNode123"
+      "value": "VPrime"
     }
     , "SolNode124": {
-      "value": "SolNode124"
+      "value": "Trinculo"
     }
     , "SolNode125": {
-      "value": "SolNode125"
+      "value": "Io"
     }
     , "SolNode126": {
-      "value": "SolNode126"
+      "value": "Metis"
     }
     , "SolNode127": {
-      "value": "SolNode127"
+      "value": "Psamathe"
     }
     , "SolNode128": {
-      "value": "SolNode128"
+      "value": "E Gate"
     }
     , "SolNode129": {
       "value": "SolNode129"
     }
     , "SolNode130": {
-      "value": "SolNode130"
+      "value": "Lares"
     }
     , "SolNode131": {
-      "value": "SolNode131"
+      "value": "Pallas"
     }
     , "SolNode132": {
       "value": "SolNode132"
     }
     , "SolNode133": {
-      "value": "SolNode133"
+      "value": "Vedic"
     }
     , "SolNode134": {
-      "value": "SolNode134"
+      "value": "Varro"
     }
     , "SolNode135": {
       "value": "SolNode135"
     }
     , "SolNode136": {
-      "value": "SolNode136"
+      "value": "Olla"
     }
     , "SolNode137": {
-      "value": "SolNode137"
+      "value": "Nuovo"
     }
     , "SolNode138": {
-      "value": "SolNode138"
+      "value": "Ludi"
     }
     , "SolNode139": {
-      "value": "SolNode139"
+      "value": "Lex"
     }
     , "SolNode140": {
-      "value": "SolNode140"
+      "value": "Kiste"
     }
     , "SolNode141": {
-      "value": "SolNode141"
+      "value": "Ker"
     }
     , "SolNode142": {
-      "value": "SolNode142"
+      "value": "Hapke"
     }
     , "SolNode143": {
-      "value": "SolNode143"
+      "value": "Gefion"
     }
     , "SolNode144": {
-      "value": "SolNode144"
+      "value": "Exta"
     }
     , "SolNode145": {
-      "value": "SolNode145"
+      "value": "Egeria"
     }
     , "SolNode146": {
-      "value": "SolNode146"
+      "value": "Draco"
     }
     , "SolNode147": {
-      "value": "SolNode147"
+      "value": "Cinxia"
     }
     , "SolNode148": {
-      "value": "SolNode148"
+      "value": "Cerium"
     }
     , "SolNode149": {
-      "value": "SolNode149"
+      "value": "Casta"
     }
     , "SolNode150": {
-      "value": "SolNode150"
+      "value": "Albedo"
     }
     , "SolNode151": {
-      "value": "SolNode151"
+      "value": "Acanth"
     }
     , "SolNode152": {
-      "value": "SolNode152"
+      "value": "Ascar"
     }
     , "SolNode153": {
-      "value": "SolNode153"
+      "value": "Brugia"
     }
     , "SolNode154": {
-      "value": "SolNode154"
+      "value": "Candiru"
     }
     , "SolNode155": {
-      "value": "SolNode155"
+      "value": "Cosis"
     }
     , "SolNode156": {
-      "value": "SolNode156"
+      "value": "Cyath"
     }
     , "SolNode157": {
-      "value": "SolNode157"
+      "value": "Giardia"
     }
     , "SolNode158": {
-      "value": "SolNode158"
+      "value": "Gnathos"
     }
     , "SolNode159": {
-      "value": "SolNode159"
+      "value": "Lepis"
     }
     , "SolNode160": {
-      "value": "SolNode160"
+      "value": "Histo"
     }
     , "SolNode161": {
-      "value": "SolNode161"
+      "value": "Hymeno"
     }
     , "SolNode162": {
-      "value": "SolNode162"
+      "value": "Isos"
     }
     , "SolNode163": {
-      "value": "SolNode163"
+      "value": "Ixodes"
     }
     , "SolNode164": {
-      "value": "SolNode164"
+      "value": "Kala-azar"
     }
     , "SolNode165": {
-      "value": "SolNode165"
+      "value": "Naeglar"
     }
     , "SolNode166": {
-      "value": "SolNode166"
+      "value": "Nimus"
     }
     , "SolNode167": {
-      "value": "SolNode167"
+      "value": "Oestrus"
     }
     , "SolNode168": {
-      "value": "SolNode168"
+      "value": "Phalan"
     }
     , "SolNode169": {
-      "value": "SolNode169"
+      "value": "Psoro"
     }
     , "SolNode170": {
-      "value": "SolNode170"
+      "value": "Ranova"
     }
     , "SolNode171": {
-      "value": "SolNode171"
+      "value": "Saxis"
     }
     , "SolNode172": {
-      "value": "SolNode172"
+      "value": "Xini"
     }
     , "SolNode173": {
-      "value": "SolNode173"
+      "value": "Solium"
     }
     , "SolNode174": {
-      "value": "SolNode174"
+      "value": "Sparga"
     }
     , "SolNode175": {
-      "value": "SolNode175"
+      "value": "Sporid"
     }
     , "SolNode176": {
-      "value": "SolNode176"
+      "value": "Viver"
     }
     , "SolNode177": {
-      "value": "SolNode177"
+      "value": "Kappa"
     }
     , "SolNode178": {
-      "value": "SolNode178"
+      "value": "Hyosube"
     }
     , "SolNode179": {
-      "value": "SolNode179"
+      "value": "Jengu"
     }
     , "SolNode180": {
-      "value": "SolNode180"
+      "value": "Undine"
     }
     , "SolNode181": {
-      "value": "SolNode181"
+      "value": "Adaro"
     }
     , "SolNode182": {
-      "value": "SolNode182"
+      "value": "Camenae"
     }
     , "SolNode183": {
-      "value": "SolNode183"
+      "value": "Vodyanoi"
     }
     , "SolNode184": {
-      "value": "SolNode184"
+      "value": "Rusalka"
     }
     , "SolNode185": {
-      "value": "SolNode185"
+      "value": "Berehynia"
     }
     , "SolNode186": {
-      "value": "SolNode186"
+      "value": "Phithale"
     }
     , "SolNode187": {
-      "value": "SolNode187"
+      "value": "Selkie"
     }
     , "SolNode188": {
-      "value": "SolNode188"
+      "value": "Kelpie"
     }
     , "SolNode189": {
-      "value": "SolNode189"
+      "value": "Naga"
     }
     , "SolNode190": {
-      "value": "SolNode190"
+      "value": "Nakki"
     }
     , "SolNode191": {
-      "value": "SolNode191"
+      "value": "Marid"
     }
     , "SolNode192": {
-      "value": "SolNode192"
+      "value": "Tikoloshe"
     }
     , "SolNode193": {
-      "value": "SolNode193"
+      "value": "Merrow"
     }
     , "SolNode194": {
-      "value": "SolNode194"
+      "value": "Ponaturi"
     }
     , "SolNode195": {
-      "value": "SolNode195"
+      "value": "Hydron"
     }
     , "SolNode196": {
-      "value": "SolNode196"
+      "value": "Charybdis"
     }
     , "SolNode197": {
-      "value": "SolNode197"
+      "value": "Graeae"
     }
     , "SolNode198": {
-      "value": "SolNode198"
+      "value": "Scylla"
     }
     , "SolNode199": {
-      "value": "SolNode199"
+      "value": "Yam"
     }
     , "SolNode200": {
-      "value": "SolNode200"
+      "value": "Veles"
     }
     , "SolNode201": {
-      "value": "SolNode201"
+      "value": "Tiamat"
     }
     , "SolNode202": {
-      "value": "SolNode202"
+      "value": "Yemaja"
     }
     , "SolNode203": {
-      "value": "SolNode203"
+      "value": "Abaddon"
     }
     , "SolNode204": {
-      "value": "SolNode204"
+      "value": "Armaros"
     }
     , "SolNode205": {
-      "value": "SolNode205"
+      "value": "Baal"
     }
     , "SolNode206": {
-      "value": "SolNode206"
+      "value": "Eligor"
     }
     , "SolNode207": {
-      "value": "SolNode207"
+      "value": "Gamygyn"
     }
     , "SolNode208": {
-      "value": "SolNode208"
+      "value": "Lillith"
     }
     , "SolNode209": {
-      "value": "SolNode209"
+      "value": "Morax"
     }
     , "SolNode210": {
-      "value": "SolNode210"
+      "value": "Naamah"
     }
     , "SolNode211": {
-      "value": "SolNode211"
+      "value": "Ose"
     }
     , "SolNode212": {
-      "value": "SolNode212"
+      "value": "Paimon"
     }
     , "SolNode213": {
-      "value": "SolNode213"
+      "value": "Shax"
     }
     , "SolNode214": {
-      "value": "SolNode214"
+      "value": "Sorath"
     }
     , "SolNode215": {
-      "value": "SolNode215"
+      "value": "Valac"
     }
     , "SolNode216": {
-      "value": "SolNode216"
+      "value": "Valefor"
     }
     , "SolNode217": {
-      "value": "SolNode217"
+      "value": "Orias"
     }
     , "SolNode218": {
-      "value": "SolNode218"
+      "value": "Zagan"
     }
     , "SolNode219": {
-      "value": "SolNode219"
+      "value": "Beleth"
     }
     , "SolNode220": {
-      "value": "SolNode220"
+      "value": "Kokabiel"
     }
     , "SolNode221": {
-      "value": "SolNode221"
+      "value": "Neruda"
     }
     , "SolNode222": {
-      "value": "SolNode222"
+      "value": "Eminescu"
     }
     , "SolNode223": {
-      "value": "SolNode223"
+      "value": "Beothius"
     }
     , "SolNode224": {
-      "value": "SolNode224"
+      "value": "Odin"
     }
     , "SolNode225": {
-      "value": "SolNode225"
+      "value": "Suisei"
     }
     , "SolNode226": {
-      "value": "SolNode226"
+      "value": "Pantheon"
     }
     , "SolNode227": {
-      "value": "SolNode227"
+      "value": "Verdi"
     }
-    , "SolNode228": {
-      "value": "SolNode228"
+    , "SolNode901": {
+      "value": "Caduceus"
     }
-    , "SolNode229": {
-      "value": "SolNode229"
+    , "SolNode902": {
+      "value": "Montes"
     }
-    , "SolNode230": {
-      "value": "SolNode230"
+    , "SolNode903": {
+      "value": "Erpo"
     }
-    , "SolNode231": {
-      "value": "SolNode231"
+    , "SolNode904": {
+      "value": "Syrtis"
     }
-    , "SolNode232": {
-      "value": "SolNode232"
+    , "SolNode905": {
+      "value": "Galilea"
     }
-    , "SolNode233": {
-      "value": "SolNode233"
+    , "SolNode906": {
+      "value": "Pandora"
     }
-    , "SolNode234": {
-      "value": "SolNode234"
+    , "SolNode907": {
+      "value": "Caelus"
     }
-    , "SolNode235": {
-      "value": "SolNode235"
+    , "SolNode908": {
+      "value": "Salacia"
     }
-    , "SolNode236": {
-      "value": "SolNode236"
+    , "SettlementNode1": {
+      "value": "Roche"
     }
-    , "SolNode237": {
-      "value": "SolNode237"
+    , "SettlementNode2": {
+      "value": "Skyresh"
     }
-    , "SolNode238": {
-      "value": "SolNode238"
+    , "SettlementNode3": {
+      "value": "Stickney"
     }
-    , "SolNode239": {
-      "value": "SolNode239"
+    , "SettlementNode4": {
+      "value": "Drunlo"
     }
-    , "SolNode240": {
-      "value": "SolNode240"
+    , "SettlementNode5": {
+      "value": "Grildrig"
     }
-    , "SolNode241": {
-      "value": "SolNode241"
+    , "SettlementNode6": {
+      "value": "Limtoc"
     }
-    , "SolNode242": {
-      "value": "SolNode242"
+    , "SettlementNode7": {
+      "value": "Hall"
     }
-    , "SolNode243": {
-      "value": "SolNode243"
+    , "SettlementNode8": {
+      "value": "Reldresal"
     }
-    , "SolNode244": {
-      "value": "SolNode244"
+    , "SettlementNode9": {
+      "value": "Clustril"
     }
-    , "SolNode245": {
-      "value": "SolNode245"
+    , "SettlementNode10": {
+      "value": "Kepler"
     }
-    , "SolNode246": {
-      "value": "SolNode246"
+    , "SettlementNode11": {
+      "value": "Gulliver"
     }
-    , "SolNode247": {
-      "value": "SolNode247"
+    , "SettlementNode12": {
+      "value": "Monolith"
     }
-    , "SolNode248": {
-      "value": "SolNode248"
+    , "SettlementNode13": {
+      "value": "D'Arrest"
     }
-    , "SolNode249": {
-      "value": "SolNode249"
+    , "SettlementNode14": {
+      "value": "Shklovsky"
     }
-    , "SolNode250": {
-      "value": "SolNode250"
+    , "SettlementNode15": {
+      "value": "Sharpless"
     }
-    , "SolNode251": {
-      "value": "SolNode251"
+    , "SettlementNode16": {
+      "value": "Wendell"
     }
-    , "SolNode252": {
-      "value": "SolNode252"
+    , "SettlementNode17": {
+      "value": "Flimnap"
     }
-    , "SolNode253": {
-      "value": "SolNode253"
+    , "SettlementNode18": {
+      "value": "Opik"
     }
-    , "SolNode254": {
-      "value": "SolNode254"
+    , "SettlementNode19": {
+      "value": "Todd"
     }
-    , "SolNode255": {
-      "value": "SolNode255"
+    , "SettlementNode20": {
+      "value": "Iliad"
     }
-    , "SolNode256": {
-      "value": "SolNode256"
+    , "MercuryHUB" : {
+      "value": "Larunda Relay"
     }
-    , "SolNode257": {
-      "value": "SolNode257"
+    , "VenusHUB" : {
+      "value": "Vesper Relay"
     }
-    , "SolNode258": {
-      "value": "SolNode258"
+    , "EarthHUB" : {
+      "value": "Strata Relay"
     }
-    , "SolNode259": {
-      "value": "SolNode259"
+    , "SaturnHUB" : {
+      "value": "Kronia Relay"
     }
-    , "SolNode260": {
-      "value": "SolNode260"
+    , "ErisHUB" : {
+      "value": "Kuiper Relay"
     }
-    , "SolNode261": {
-      "value": "SolNode261"
+    , "EuropaHUB" : {
+      "value": "Leonov Relay"
     }
-    , "SolNode262": {
-      "value": "SolNode262"
+    , "PlutoHUB" : {
+      "value": "Orcus Relay"
     }
-    , "SolNode263": {
-      "value": "SolNode263"
+    , "EventNode0": {
+      "value" : "Balor"
     }
-    , "SolNode264": {
-      "value": "SolNode264"
+    , "EventNode1": {
+      "value" : "Tethra"
     }
-    , "SolNode265": {
-      "value": "SolNode265"
+    , "EventNode2": {
+      "value" : "Operation Gate Crash"
     }
-    , "SolNode266": {
-      "value": "SolNode266"
+    , "EventNode3": {
+      "value" : "Elatha"
     }
-    , "SolNode267": {
-      "value": "SolNode267"
+    , "EventNode4": {
+      "value" : "Bres"
     }
-    , "SolNode268": {
-      "value": "SolNode268"
+    , "EventNode5": {
+      "value" : "Birog"
     }
-    , "SolNode269": {
-      "value": "SolNode269"
+    , "EventNode6": {
+      "value" : "Tyl Reygor Seal Lab"
     }
-    , "SolNode270": {
-      "value": "SolNode270"
+    , "EventNode7": {
+      "value" : "Buarainech"
     }
-    , "SolNode271": {
-      "value": "SolNode271"
+    , "EventNode8": {
+      "value" : "Corb"
     }
-    , "SolNode272": {
-      "value": "SolNode272"
+    , "EventNode9": {
+      "value" : "Operation Gate Crash Pt. 2"
     }
-    , "SolNode273": {
-      "value": "SolNode273"
+    , "EventNode10": {
+      "value" : "Lugh"
     }
-    , "SolNode274": {
-      "value": "SolNode274"
+    , "EventNode11": {
+      "value" : "Nemed"
     }
-    , "SolNode275": {
-      "value": "SolNode275"
+    , "EventNode12": {
+      "value" : "Operation Cryotic Front"
     }
-    , "SolNode276": {
-      "value": "SolNode276"
+    , "EventNode13": {
+      "value" : "Shifting Sands"
     }
-    , "SolNode277": {
-      "value": "SolNode277"
+    , "EventNode14": {
+      "value" : "Gate Crash"
+    }
+    , "EventNode15": {
+      "value" : "Operation Cryotic Front"
+    }
+    , "EventNode16": {
+      "value" : "Operation Cryotic Front"
+    }
+    , "EventNode17": {
+      "value" : "Operation Cryotic Front"
+    }
+    , "EventNode18": {
+      "value" : "Operation Blackout Pt. 1"
+    }
+    , "EventNode19": {
+      "value" : "Operation Blackout Pt. 1"
+    }
+    , "EventNode20": {
+      "value" : "Tyl Regor Sea Lab"
+    }
+    , "EventNode22": {
+      "value" : "Tyl Regor Sea Lab"
+    }
+    , "PvpNopde0": {
+      "value" : "ConclaveCTF"
+    }
+    , "PvpNopde1": {
+      "value" : "Conclave"
+    }
+    , "PvpNopde3": {
+      "value" : "ConclaveCTF"
+    }
+    , "PvpNopde4": {
+      "value" : "Conclave"
+    }
+    , "PvpNopde5": {
+      "value" : "Conclave"
+    }
+    , "PvpNopde6": {
+      "value" : "Conclave"
+    }
+    , "PvpNopde7": {
+      "value" : "Conclave"
+    }
+    , "PvpNopde8": {
+      "value" : "Conclave"
+    }
+    , "PvpNopde9": {
+      "value" : "ConclaveTDM"
+    }
+    , "PvpNopde10": {
+      "value" : "ConclaveDM"
+    }
+    , "ClanNode0": {
+      "value" : "Romula"
+    }
+    , "ClanNode1": {
+      "value" : "Malva"
+    }
+    , "ClanNode2": {
+      "value" : "Coba"
+    }
+    , "ClanNode3": {
+      "value" : "Tikal"
+    }
+    , "ClanNode4": {
+      "value" : "Sinai"
+    }
+    , "ClanNode5": {
+      "value" : "Cameria"
+    }
+    , "ClanNode6": {
+      "value" : "Larzac"
+    }
+    , "ClanNode7": {
+      "value" : "Cholistan"
+    }
+    , "ClanNode8": {
+      "value" : "Kadesh"
+    }
+    , "ClanNode9": {
+      "value" : "Wahiba"
+    }
+    , "ClanNode10": {
+      "value" : "Memphis"
+    }
+    , "ClanNode11": {
+      "value" : "Zeugma"
+    }
+    , "ClanNode12": {
+      "value" : "Caracol"
+    }
+    , "ClanNode13": {
+      "value" : "Piscinas"
+    }
+    , "ClanNode14": {
+      "value" : "Amarna"
+    }
+    , "ClanNode15": {
+      "value" : "Sangeru"
+    }
+    , "ClanNode16": {
+      "value" : "Ur"
+    }
+    , "ClanNode17": {
+      "value" : "Assur"
+    }
+    , "ClanNode18": {
+      "value" : "Akkad"
+    }
+    , "ClanNode19": {
+      "value" : "Zabala"
+    }
+    , "ClanNode20": {
+      "value" : "Yursa"
+    }
+    , "ClanNode21": {
+      "value" : "Kelashin"
+    }
+    , "ClanNode22": {
+      "value" : "Seimeni"
+    }
+    , "ClanNode23": {
+      "value" : "Gabii"
+    }
+    , "ClanNode24": {
+      "value" : "Sechura"
+    }
+    , "ClanNode25": {
+      "value" : "Hieracon"
     }
   }
 }
