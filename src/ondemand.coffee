@@ -345,5 +345,5 @@ module.exports = (robot) ->
           else
             res.send noEnemiesString
   robot.respond /rewards/, (res) ->
-    res.send util.format('%sMission rewards: http://rewards.morningstar-wf.com%s', 
-                           dsUtil.codeMulti, dsUtil.blockEnd)
+    res.send util.format('%sMission rewards%shttp://rewards.morningstar-wf.com%s',
+                           dsUtil.linkBegin, dsUtil.linkMid, dsUtil.linkEnd)
