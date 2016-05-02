@@ -1,0 +1,195 @@
+{
+  "/lotus/language/g1quests/kelaeventtitle": {
+    "name": "Operation: Rathuum"
+  }
+  , "/lotus/language/g1quests/kelaeventbonustitle": {
+    "name": "ENDLESS RATHUUM"
+  }
+  , "/lotus/language/g1quests/kelaeventgoala": {
+    "name": "Judgement Points Earned"
+  }
+  , "/lotus/language/g1quests/kelaeventgoalb": {
+    "name": "Kela Defeated"
+  }
+  , "/lotus/language/g1quests/kelaeventgoalc": {
+    "name": "Executioners Defeated"
+  }
+  , "/lotus/language/items/kelaeventbadgename": {
+    "name": "RATHUUM BADGE"
+    , "desc": "Awarded to those who stood against Kela De Thaym and her Executioners."
+  }
+  , "/lotus/language/sigils/kelaeventsigilname": {
+    "name": "RATHUUM SIGIL"
+    , "desc": "A sigil commemorating the liberation of defectors from the Grineer."
+  }
+  , "/lotus/language/items/furaxwraithname": {
+    "name": "FURAX WRAITH"
+    , "desc": "These Wraith gauntlets have been augmented for power."
+  }
+  , "/lotus/language/items/kelaeventdogtagname": {
+    "name": "RATHUUM PRISONER COORDINATES"
+    , "desc": "To be delivered to Steel Meridian or chosen Syndicate in the relay."
+  }
+  , "/lotus/language/items/orokinreactor": {
+    "name": "OROKIN REACTOR"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengegamemodewins": {
+    "name": "Win a timed match"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengegamemodecomplete": {
+    "name": "Finish a match"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengeotherchallengecompleteany": {
+    "name": "Finish a challenge"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengeweeklystandardset": {
+    "name": "the standard set of weekly challenges"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsmeleeeasy": {
+    "name": "Kill enemies with melee"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsmeleemedium": {
+    "name": "Kill enemies with melee"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsmeleehard": {
+    "name": "Kill enemies with melee"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillstargetinaireasy": {
+    "name": "Kill enemies in the air"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillstargetinairmedium": {
+    "name": "Kill enemies in the air"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillstargetinairhard": {
+    "name": "Kill enemies in the air"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengematchcompleteeasy": {
+    "name": "Win a timed match"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengematchcompletemedium": {
+    "name": "Win a timed match"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengematchcompletehard": {
+    "name": "Win a timed match"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillssecondaryeasy": {
+    "name": "Kill enemies with a secondary"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillssecondarymedium": {
+    "name": "Kill enemies with a secondary"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillssecondaryhard": {
+    "name": "Kill enemies with a secondary"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillswhileinaireasy": {
+    "name": "Kill enemies while in the air"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillswhileinairmedium": {
+    "name": "Kill enemies while in the air"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillswhileinairhard": {
+    "name": "Kill enemies while in the air"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillswhileslidingeasy": {
+    "name": "Kill enemies while sliding"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillswhileslidingmedium": {
+    "name": "Kill enemies while sliding"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillswhileslidinghard": {
+    "name": "Kill enemies while sliding"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedaffectorsupereverything": {
+    "name": "Kill enemies while sliding"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengeflagreturneasy": {
+    "name": "Return the Cephalon"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengeflagreturnmedium": {
+    "name": "Return the Cephalon"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengeflagreturnhard": {
+    "name": "Return the Cephalon"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillspowereasy": {
+    "name": "Kill enemies fast"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillspowermedium": {
+    "name": "Kill enemies fast"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillspowerhard": {
+    "name": "Kill enemies fast"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsstreakstopped_easy": {
+    "name": "Stop a kill Streak"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsstreakstopped_medium": {
+    "name": "Stop a kill Streak"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsstreakstopped_hard": {
+    "name": "Stop a kill Streak"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsstreakeasy": {
+    "name": "Get a kill streak"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsstreakmedium": {
+    "name": "Get a kill streak"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsstreakhard": {
+    "name": "Get a kill streak"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsprimaryeasy": {
+    "name": "Get kills with your primary"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsprimarymedium": {
+    "name": "Get kills with your primary"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsprimaryhard": {
+    "name": "Get kills with your primary"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsstreakdominationeasy": {
+    "name": "Dominate with your kill streaks"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsstreakdominationmedium": {
+    "name": "Dominate with your kill streaks"
+  }
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsstreakdominationhard": {
+    "name": "Dominate with your kill streaks"
+  }
+  , "/lotus/language/game/burstcasteracolyte": {
+    "name": "Angst"
+  }
+  , "/lotus/language/game/rogueacolyte": {
+    "name": "Mania"
+  }
+  , "/lotus/language/game/controlacolyte": {
+    "name": "Torment"
+  }
+  , "/lotus/language/game/duellistacolyte": {
+    "name": "Violence"
+  }
+  , "/lotus/language/game/heavyacolyte": {
+    "name": "Malice"
+  }
+  , "/lotus/language/game/areacasteracolyte": {
+    "name": "Misery"
+  }
+  , "/lotus/types/enemies/acolytes/strikeracolyteagent": {
+    "name": "Angst"
+  }
+  , "/lotus/types/enemies/acolytes/rogueacolyteagent": {
+    "name": "Mania"
+  }
+  , "/lotus/types/enemies/acolytes/controlacolyteagent": {
+    "name": "Torment"
+  }
+  , "/lotus/types/enemies/acolytes/duellistacolyteagent": {
+    "name": "Violence"
+  }
+  , "/lotus/types/enemies/acolytes/heavyacolyteagent": {
+    "name": "Malice"
+  }
+  , "/lotus/types/enemies/acolytes/areacasteracolyteagent": {
+    "name": "Misery"
+  }
+}

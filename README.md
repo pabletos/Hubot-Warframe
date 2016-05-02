@@ -43,6 +43,7 @@ HUBOT_MD_UNDERLINE | Define the string to use before and after a string to under
 HUBOT_MD_STRIKE | Define the string to use before and after a string to strike it out | `~~`
 HUBOT_MD_CODE_SINGLE | Define the string to use before and after a string to define it as an inline block of code | \`
 HUBOT_MD_CODE_BLOCK | Define the string to use before and after a string to define it as a multi-line block of code | ```` `
+HUBOT_WARFRAME_LANG_PATH | Define the path to the languages.json in order to allow a custom string set to be defined. This will default to the included `languages.json` included with the module. | `./languages.json`
 
 ## Commands
 

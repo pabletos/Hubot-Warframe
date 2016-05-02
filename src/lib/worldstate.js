@@ -3,6 +3,8 @@ var request = require('request')
 var Sorties = require('./sortie.js')
 var Challenges = require('./conclave.js')
 var Enemies = require('./persistentEnemy.js');
+var Events = require('./events.js');
+
 
 const platformURL = {
   PC: 'http://content.warframe.com/dynamic/worldState.php',
@@ -44,7 +46,7 @@ exports.getSortie = function(platform, callback) {
       return callback(err);
     }
     callback(null, new Sorties(data.Sorties[0]).toString());
-  })
+  });
 }
 
 exports.getConclaveDailies = function(platform, callback){
@@ -53,7 +55,7 @@ exports.getConclaveDailies = function(platform, callback){
             return callback(err);
         }
         callback(null, new Challenges(data.PVPChallengeInstances).getDailies());
-    })
+    });
 }
 
 exports.getConclaveWeeklies = function(platform, callback) {
@@ -62,7 +64,7 @@ exports.getConclaveWeeklies = function(platform, callback) {
             return callback(err);
         }
         callback(null, new Challenges(data.PVPChallengeInstances).getWeeklies());
-    })
+    });
 }
 
 exports.getConclaveAll = function(platform, callback) {
@@ -71,7 +73,7 @@ exports.getConclaveAll = function(platform, callback) {
             return callback(err);
         }
         callback(null, new Challenges(data.PVPChallengeInstances).getAll());
-    })
+    });
 }
 
 exports.getPersistentEnemies = function(platform, callback) {
@@ -80,5 +82,14 @@ exports.getPersistentEnemies = function(platform, callback) {
             return callback(err);
         }
         callback(null, new Enemies(data.PersistentEnemies).getAll());
-    })
+    });
+}
+
+exports.getEvent = function(platform, callback) {
+  getWorldState(platform, function(err, data){
+        if(err) {
+            return callback(err);
+        }
+        callback(null, new Evemts(data.Goals).getAll());
+    });
 }

@@ -62,3 +62,4 @@ module.exports.strike = process.env.HUBOT_MD_STRIKE || ' ';
 module.exports.codeLine = process.env.HUBOT_MD_CODE_SINGLE || ' ';
 module.exports.codeMulti = process.env.HUBOT_MD_CODE_BLOCK || ' ';
 module.exports.allowLewd = process.env.HUBOT_ALLOW_DIRTY_JOKES || false;
+module.exports.stringsPath = process.env.HUBOT_WARFRAME_LANG_PATH || './languages.json';

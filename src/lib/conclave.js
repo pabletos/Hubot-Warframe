@@ -1,6 +1,7 @@
 var util = require('util');
 var dsUtil = require('./_utils.js');
 var conclaveData = require('./conclaveData.json');
+var strings = require(dsUtil.stringsPath);
 
 /**
  * Create a new ConclaveChallenge instance
@@ -73,7 +74,7 @@ var Challenge = function(data) {
       return;
     }
     this.id = data._id.$id;
-    this.challengeRef = conclaveData.challenges[data.challengeTypeRefID].value;
+    this.challengeRef = strings[data.challengeTypeRefID.toLowerCase()].name;
     this.expiry = dsUtil.timeDeltaToString(data.endDate.sec - Date.now());
     this.endDate = data.endDate.sec;
     this.amount = parseInt(data.params[0].v);
@@ -129,7 +130,12 @@ Challenge.prototype.isExpired = function(){
  * @return {boolean} truthy if challenge has any undefined parameters
  */
 Challenge.prototype.isAnyParamUndefined = function () {
-  return typeof this.id === "undefined" || typeof this.challengeRef === "undefined" || typeof this.expiry === "undefined" || typeof this.amount === "undefined" || typeof this.category === "undefined" || typeof this.mode === "undefined"
+  return typeof this.id === "undefined" 
+    || typeof this.challengeRef === "undefined" 
+    || typeof this.expiry === "undefined" 
+    || typeof this.amount === "undefined" 
+    || typeof this.category === "undefined" 
+    || typeof this.mode === "undefined"
 }
 
 module.exports = Challenges;

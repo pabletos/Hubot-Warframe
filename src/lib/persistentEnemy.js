@@ -1,7 +1,8 @@
 var util = require('util');
 var dsUtil = require('./_utils.js');
 var persistentEnemyData = require('./persistentEnemyData.json');
-var solNodes = require('./solNodes.json')
+var solNodes = require('./solNodes.json');
+var strings = require(dsUtil.stringsPath);
 
 /**
  * Create a new Enemies instance
@@ -69,8 +70,8 @@ var Enemy = function(data) {
       return;
     }
     this.id = data._id.$id;
-    this.agentType = persistentEnemyData.agentTypes[data.AgentType].value;
-    this.locationTag = persistentEnemyData.locTags[data.LocTag].value;
+    this.agentType = strings[data.AgentType].name;
+    this.locationTag = strings[data.LocTag].name;
     this.rank = data.Rank;
     this.healthPercent = parseFloat(data.HealthPercent);
     this.fleeDamage = parseFloat(data.FleeDamage);
