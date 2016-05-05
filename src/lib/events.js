@@ -65,14 +65,14 @@ var Event = function(data) {
     this.scoreLocTag = eventsData.scoreLogTags[data.ScoreLogTag].value;
     this.rewards = []
     
-    this.rewards.push(new Reward(data.RewardInterim.credits, 
-                                     data.RewardInterim.xp, 
-                                     data.RewardInterim.items, 
-                                     data.RewardInterim.countedItems));
-    this.rewards.push(new Reward(data.RewardInterim2.credits, 
-                                     data.RewardInterim2.xp, 
-                                     data.RewardInterim2.items, 
-                                     data.RewardInterim2.countedItems));
+    for (var k in data) {
+      if (k.indexOf('RewardInterim') !== -1) {
+        this.rewards.push(new Reward(k.credits
+          , k.xp
+          , k.items
+          , k.countedItems));
+      }
+    }
 
   } catch (err) {
     console.log(JSON.stringify(data));
@@ -118,6 +118,7 @@ Event.prototype.isAnyParamUndefined = function () {
     || typeof this.scoreVariable === "undefined"
     || typeof this.scoreMaximumTag === "undefined"
     || typeof this.scoreLocTag === "undefined"
+    || this.rewards.length < 1
   
 }
 
@@ -133,7 +134,26 @@ var Reward = function(credits, xp, itemStrings, countedItemStrings) {
   for (var indexCountedItems = 0; indexCountedItems < countedItemStrings.length; indexCountedItems++) {
     this.countedItems.push(strings[countedItemStrings[indexItems].toLowerCase()].name);
   }
-  
+}
+
+Reward.prototype.toString = function() {
+  var rewardString = '';
+  if (this.credits) {
+    rewardString += '#{this.credits}cr ';
+  }
+  if(this.xp) {
+    rewardString += '#{this.xp} affinity ';
+  }
+  if(this.items.length > 0){
+    this.items.forEach(function(item){
+      rewardString += '#{item} ';
+    });
+  }
+  if(this.countedItems.length > 0){
+    this.countedItems.forEach(function(countedItem){
+      rewardString += '#{countedItem} ';
+    });
+  }
 }
 
 module.exports = Events;
