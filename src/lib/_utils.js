@@ -1,4 +1,5 @@
 var util = require('util');
+var md = require('hubot-markdown');
 
 /**
  * Converts the difference between two Date object to a String.
@@ -29,10 +30,10 @@ module.exports.damageReduction = function (currentArmor) {
 module.exports.armorFull = function (baseArmor, baseLevel, currentLevel) {
   var armor = parseInt(baseArmor) * (1 + (Math.pow((parseInt(currentLevel) - parseInt(baseLevel)),1.75) / 200));
   var armorString = util.format("At level %s your enemy would have %d Armor %s %s", 
-                     currentLevel, armor, this.lineEnd, 
+                     currentLevel, armor, md.lineEnd, 
                      this.damageReduction(armor))
 
-  return util.format('%s %s %s', armorString, this.lineEnd, this.armorStrip(armor))
+  return util.format('%s %s %s', armorString, md.lineEnd, this.armorStrip(armor))
 };
 
 module.exports.armorStrip = function (armor) {
@@ -46,10 +47,10 @@ module.exports.shieldCalc = function(baseShields, baseLevel, currentLevel) {
 };
 
 module.exports.shieldString = function(shields, level) {
-  return util.format("%sAt level %s, your enemy would have %d Shields.%s", this.codeMulti, level, shields, this.blockEnd)
+  return util.format("%sAt level %s, your enemy would have %d Shields.%s", md.codeMulti, level, shields, md.blockEnd)
 }
 
-module.exports.doubleReturn = process.env.HUBOT_DOUBLE_RET || '\n\n';
+/*module.exports.doubleReturn = process.env.HUBOT_DOUBLE_RET || '\n\n';
 module.exports.lineEnd = process.env.HUBOT_LINE_END || '\n';
 module.exports.blockEnd = process.env.HUBOT_BLOCK_END || ' ';
 module.exports.linkBegin = process.env.HUBOT_MD_LINK_BEGIN || ' ';
@@ -60,6 +61,5 @@ module.exports.italic = process.env.HUBOT_MD_ITALIC || ' ';
 module.exports.underline = process.env.HUBOT_MD_UNDERLINE || ' ';
 module.exports.strike = process.env.HUBOT_MD_STRIKE || ' ';
 module.exports.codeLine = process.env.HUBOT_MD_CODE_SINGLE || ' ';
-module.exports.codeMulti = process.env.HUBOT_MD_CODE_BLOCK || ' ';
-module.exports.allowLewd = process.env.HUBOT_ALLOW_DIRTY_JOKES || false;
+module.exports.codeMulti = process.env.HUBOT_MD_CODE_BLOCK || ' ';*/
 module.exports.stringsPath = process.env.HUBOT_WARFRAME_LANG_PATH || './languages.json';

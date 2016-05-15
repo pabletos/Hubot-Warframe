@@ -1,6 +1,7 @@
 var util = require('util');
 var dsUtil = require('./_utils.js');
 var Reward = require('./reward.js');
+var md = require('hubot-markdown');
 
 /**
  * Create a new invasion instance
@@ -41,21 +42,21 @@ Invasion.prototype.toString = function() {
                        '%s (%s)%s' +
                        '%s%s' +
                        '%d% - %s%s',
-                       dsUtil.codeMulti, this.node, this.planet, dsUtil.lineEnd,
-                       this.desc, this.type2, dsUtil.lineEnd,
-                       this.reward2.toString(), dsUtil.lineEnd,
+                       md.codeMulti, this.node, this.planet, md.lineEnd,
+                       this.desc, this.type2, md.lineEnd,
+                       this.reward2.toString(), md.lineEnd,
                        Math.round(this.completion * 100) / 100,
-                       this.ETA, dsUtil.blockEnd);
+                       this.ETA, md.blockEnd);
   }
 
   return util.format('%s%s (%s) - %s%s' +
                      '%s (%s, %s) vs.%s' +
                      '%s (%s, %s)%s' +
                      '%d% - %s%s',
-                     dsUtil.codeMulti, this.node, this.planet, this.desc, dsUtil.lineEnd,
-					 this.faction1, this.type1, this.reward1.toString(), dsUtil.lineEnd,
-					 this.faction2, this.type2, this.reward2.toString(),dsUtil.lineEnd,
-                     Math.round(this.completion * 100) / 100, this.ETA, dsUtil.blockEnd);
+                     md.codeMulti, this.node, this.planet, this.desc, md.lineEnd,
+					 this.faction1, this.type1, this.reward1.toString(), md.lineEnd,
+					 this.faction2, this.type2, this.reward2.toString(), md.lineEnd,
+                     Math.round(this.completion * 100) / 100, this.ETA, md.blockEnd);
 }
 
 /**

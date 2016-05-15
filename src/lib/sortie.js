@@ -1,5 +1,6 @@
 var util = require('util');
 var dsUtil = require('./_utils.js');
+var md = require('hubot-markdown');
 
 var sortieData = require('./sortieData.json');
 
@@ -34,19 +35,19 @@ Sorties.prototype.toString = function () {
     return 'None'
   }
   var sortieString = util.format('%s%s', 
-    dsUtil.codeMulti, 
+    md.codeMulti, 
     this.boss);
 
   sortieString += util.format(': ends in %s%s', this.getETAString(),
-                              dsUtil.doubleReturn);
+                              md.doubleReturn);
   this.variants.forEach(function(sortie, i) {
     sortieString += util.format('%s (%s) %s%s',
                                 sortie.planet,
                                 sortie.missionType,
                                 sortie.modifier,
-                                dsUtil.lineEnd);
+                                md.lineEnd);
   })
-  sortieString +=dsUtil.blockEnd;
+  sortieString += md.blockEnd;
   return sortieString;
 }
 

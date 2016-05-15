@@ -5,7 +5,9 @@
   , "/lotus/language/g1quests/kelaeventbonustitle": {
     "name": "ENDLESS RATHUUM"
   }
-  , "/lotus/language/g1quests/kelaeventgoala": {
+  ,"/lotus/language/g1quests/kelaeventtitleb": {
+    "name": "KELA DE THAYM'S COURT"
+  }, "/lotus/language/g1quests/kelaeventgoala": {
     "name": "Judgement Points Earned"
   }
   , "/lotus/language/g1quests/kelaeventgoalb": {
@@ -147,13 +149,13 @@
   , "/lotus/pvpchallengetypes/pvptimedchallengekillsprimaryhard": {
     "name": "Get kills with your primary"
   }
-  , "/lotus/pvpchallengetypes/pvptimedchallengekillsstreakdominationeasy": {
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsstreakdomination_easy": {
     "name": "Dominate with your kill streaks"
   }
-  , "/lotus/pvpchallengetypes/pvptimedchallengekillsstreakdominationmedium": {
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsstreakdomination_medium": {
     "name": "Dominate with your kill streaks"
   }
-  , "/lotus/pvpchallengetypes/pvptimedchallengekillsstreakdominationhard": {
+  , "/lotus/pvpchallengetypes/pvptimedchallengekillsstreakdomination_hard": {
     "name": "Dominate with your kill streaks"
   }
   , "/lotus/language/game/burstcasteracolyte": {
@@ -191,5 +193,26 @@
   }
   , "/lotus/types/enemies/acolytes/areacasteracolyteagent": {
     "name": "Misery"
+  },
+  "/lotus/storeitems/types/items/syndicatedogtags/kelaeventdogtag" : {
+    "name": "Grineer Defector's Location"
+  }, "/lotus/storeitems/types/items/miscitems/orokinreactor" : {
+    "name" : "Orokin Reactor"
+  }, "/lotus/storeitems/weapons/tenno/melee/fist/furaxwraith" : {
+    "name" : "Furax Wraith"
+  }, "/lotus/pvpchallengetypes/pvptimedchallengekillsheadshotseasu" : {
+    "name" : "Kill your enemies with headshots"
+  }, "/lotus/pvpchallengetypes/pvptimedchallengekillsheadshotsmedium" : {
+    "name" : "Kill your enemies with headshots"
+  }, "/lotus/pvpchallengetypes/pvptimedchallengekillsheadshotshard" : {
+    "name" : "Kill your enemies with headshots"
+  }, "/lotus/pvpchallengetypes/pvptimedaffectorsuperenergy" : {
+    "name" : "Keep your energy at maximum"
+  },"/lotus/pvpchallengetypes/pvptimedchallengeflagcaptureeasy" : {
+    "name" : "Win a match"
+  },"/lotus/pvpchallengetypes/pvptimedchallengeflagcapturemedium" : {
+    "name" : "Win a match"
+  },"/lotus/pvpchallengetypes/pvptimedchallengeflagcapturehard" : {
+    "name" : "Win a match"
   }
 }

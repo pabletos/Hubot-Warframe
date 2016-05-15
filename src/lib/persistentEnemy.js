@@ -3,6 +3,7 @@ var dsUtil = require('./_utils.js');
 var persistentEnemyData = require('./persistentEnemyData.json');
 var solNodes = require('./solNodes.json');
 var strings = require(dsUtil.stringsPath);
+var md = require('hubot-markdown');
 
 /**
  * Create a new Enemies instance
@@ -93,7 +94,7 @@ var Enemy = function(data) {
  * @return (string) The new string object
  */
 Enemy.prototype.toString = function () {
-  return util.format('%s last discovered at %s (%s). %sIt has %d% health remaining and is currently %s%s', this.agentType, this.lastDiscoveredAt, this.region, dsUtil.lineEnd, this.healthPercent, this.isDiscovered ? 'discovered' : 'not discovered', dsUtil.lineEnd);
+  return util.format('%s last discovered at %s (%s). %sIt has %d% health remaining and is currently %s%s', this.agentType, this.lastDiscoveredAt, this.region, md.lineEnd, this.healthPercent, this.isDiscovered ? 'discovered' : 'not discovered', md.lineEnd);
 }
 
 /**

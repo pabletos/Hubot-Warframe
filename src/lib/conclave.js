@@ -2,6 +2,7 @@ var util = require('util');
 var dsUtil = require('./_utils.js');
 var conclaveData = require('./conclaveData.json');
 var strings = require(dsUtil.stringsPath);
+var md = require('hubot-markdown');
 
 /**
  * Create a new ConclaveChallenge instance
@@ -111,7 +112,7 @@ Challenge.prototype.isWeekly = function(){
  * @return (string) The new string object
  */
 Challenge.prototype.toString = function () {
-  return util.format('%s on %s %s times in a %s%s', this.challengeRef, this.mode, this.amount, this.category, dsUtil.lineEnd);
+  return util.format('%s on %s %s times in a %s%s', this.challengeRef, this.mode, this.amount, this.category, md.lineEnd);
 }
 
 /**

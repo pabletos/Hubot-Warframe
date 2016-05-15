@@ -2103,7 +2103,7 @@
             "Rescue",
             "Sabotage",
             "Spy",
-            "Interception",
+            "Sabotage",
             "Mobile Defense",
             "Interception",
             "Spy",
@@ -3119,7 +3119,7 @@
             "Defense",
             "Mobile Defense",
             "Interception",
-            "Spy",
+            "Hive",
             "Assassination"
           ]
         },
@@ -3410,8 +3410,8 @@
     "+ Enemy armor/shield",
     "Environmental hazard",
     "Enemy damage resistance",
-    "Energy Reduction",
-    "Eximus Stronghold",
+    "Energy reduction",
+    "Eximus stronghold",
     "Weapon restriction"
   ]
 }

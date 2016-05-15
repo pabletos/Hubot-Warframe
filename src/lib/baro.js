@@ -1,5 +1,6 @@
 var util = require('util');
 var dsUtil = require('./_utils.js');
+var md = require('hubot-markdown');
 
 /**
  * Create a new baro instance
@@ -22,17 +23,17 @@ var Baro = function(data) {
  */
 Baro.prototype.toString = function() {
   if(!this.isActive()) {
-    return util.format('%sBaro is not here yet, he will arrive in %s at %s%s', dsUtil.codeMulti, this.getStartString(), this.location, dsUtil.blockEnd);
+    return util.format('%sBaro is not here yet, he will arrive in %s at %s%s', md.codeMulti, this.getStartString(), this.location, md.blockEnd);
   }
-  var baroString = util.format('%sVoid Trader at %s%s', dsUtil.codeMulti, this.location, dsUtil.doubleReturn);
+  var baroString = util.format('%sVoid Trader at %s%s', md.codeMulti, this.location, md.doubleReturn);
   for(i in this.manifest) {
     baroString += util.format('%s - price: %d ducats + %dcr%s',
                               this.manifest[i].ItemType,
                               this.manifest[i].PrimePrice,
                               this.manifest[i].RegularPrice,
-                              dsUtil.lineEnd);
+                              md.lineEnd);
   }
-  baroString += util.format('Trader departing in %s%s', this.getEndString(), dsUtil.blockEnd);
+  baroString += util.format('Trader departing in %s%s', this.getEndString(), md.blockEnd);
 
   return baroString;
 }

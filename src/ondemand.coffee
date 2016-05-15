@@ -6,48 +6,39 @@
 #
 # Configuration:
 #   MONGODB_URL - MongoDB url
-#   HUBOT_LINE_END - Configuragble line-return character
-#   HUBOT_BLOCK_END - Configuragble string for ending blocks
-#   HUBOT_DOUBLE_RET - Configurable string for double-line returns
-#   HUBOT_MD_LINK_BEGIN - Configurable string for double-line returns
-#   HUBOT_MD_LINK_MID - Configurable string for double-line returns
-#   HUBOT_MD_LINK_END - Configurable string for double-line returns
-#   HUBOT_MD_BOLD - Configurable string for double-line returns
-#   HUBOT_MD_ITALIC - Configurable string for double-line returns
-#   HUBOT_MD_UNDERLINE - Configurable string for double-line returns
-#   HUBOT_MD_STRIKE - Configurable string for double-line returns
-#   HUBOT_MD_CODE_SINGLE - Configurable string for double-line returns
-#   HUBOT_MD_CODE_BLOCK - Configurable string for double-line returns
+#   HUBOT_WARFRAME_LANG_PATH - Configurable path for language.json` files.
 #
 # Commands:
 #   hubot alerts - Display alerts
-#   hubot invasions - Display invasions
-#   hubot darvo - Display daily deals
-#   hubot news - Display news
-#   hubot baro - Display current Baro status/inventory
-#   hubot sortie - Display current sortie missions
-#   hubot simaris - Display current Synthesis target
-#   hubot update - Display current update
-#   hubot primeaccess - Display current Prime Access news
-#   hubot chart - Display link to Warframe progression chart
-#   hubot damage - Display link to Damage 2.0 infographic
 #   hubot armor - Display instructions for calculating armor
 #   hubot armor <current armor> - Display current damage resistance and amount of corrosive procs required to strip it
 #   hubot armor <base armor> <base level> <current level> - Display the current armor, damage resistance, and necessary corrosive procs to strip armor.
-#   hubot shield - Display instructions for calculating shields
-#   hubot shield <base shields> <base level> <current level> - Display the current shields.
+#   hubot baro - Display current Baro status/inventory
+#   hubot chart - Display link to Warframe progression chart
 #   hubot conclave - Display usage for conclave command
 #   hubot conclave all - Display all conclave challenges
 #   hubot conclave daily - Display active daily conclave challenges
 #   hubot conclave weekly - Display active weekly conclave challenges
+#   hubot damage - Display link to Damage 2.0 infographic
+#   hubot darvo - Display daily deals
 #   hubot enemies - Display list of active persistent enemies where they were last found
+#   hubot invasions - Display invasions
+#   hubot news - Display news
+#   hubot primeaccess - Display current Prime Access news
+#   hubot update - Display current update
 #   hubot rewards - Display link to VoiD_Glitch's rewards table
+#   hubot shield - Display instructions for calculating shields
+#   hubot shield <base shields> <base level> <current level> - Display the current shields.
+#   hubot simaris - Display current Synthesis target
+#   hubot sortie - Display current sortie missions
+#   hubot tutorial focus - Display link to focus tutorial video
 #
 # Author:
 #   nspacestd
 #   aliasfalse
 
 util = require('util')
+md = require('hubot-markdown')
 
 Users = require('./lib/users.js')
 ds = require('./lib/deathsnacks.js')
@@ -72,7 +63,7 @@ module.exports = (robot) ->
           else
             message =
               if data.length then (alert.toString() for alert in data).join('\n\n')
-              else util.format('%sThere are no alerts at the moment%s', dsUtil.codeMulti, dsUtil.blockEnd)
+              else "#{md.codeMulti}Operator, there are no alerts at the moment#{md.blockEnd}"
             res.send message
 
   robot.respond /invasions/, (res) ->
@@ -86,7 +77,7 @@ module.exports = (robot) ->
           else
             message =
               if data.length then (invasion.toString() for invasion in data).join('\n\n')
-              else util.format('%sThere are no invasions at the moment%s', dsUtil.codeMulti, dsUtil.blockEnd)
+              else "#{md.codeMulti}Operator, there are no invasions at the moment#{md.blockEnd}"
             res.send message
 
   robot.respond /darvo/, (res) ->
@@ -100,7 +91,8 @@ module.exports = (robot) ->
           else
             message =
               if data.length then(deal.toString() for deal in data).join('\n\n')
-              else util.format('%sThere is no daily deal at the moment%s', dsUtil.codeMulti, dsUtil.blockEnd)
+              else "#{md.codeMulti}Operator, there is no daily deal at the moment#{md.blockEnd}"
+
             res.send message
 
   robot.respond /news/, (res) ->
@@ -131,7 +123,7 @@ module.exports = (robot) ->
                 res.send message
             # No news
             else
-              res.send util.format('%sThere is no news at the moment%s', dsUtil.codeMulti, dsUtil.blockEnd)
+              res.send "#{md.codeMulti}Operator, there is no news at the moment#{md.blockEnd}"
               
   robot.respond /update/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
@@ -147,7 +139,7 @@ module.exports = (robot) ->
               res.send message
             # No updates
             else
-              res.send util.format('%sThere are no updates at the moment%s', dsUtil.codeMulti, dsUtil.blockEnd)
+              res.send "#{md.codeMulti}Operator, there are no updates at the moment#{md.blockEnd}"
   
   robot.respond /primeaccess/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
@@ -163,7 +155,7 @@ module.exports = (robot) ->
               res.send message
             # No prime access news
             else
-              res.send util.format('%sThere there is no information pertaining to Prime Access at the moment%s', dsUtil.codeMulti, dsUtil.blockEnd)
+              res.send "#{md.codeMulti}Operator, there is no information pertaining to Prime Access at the moment#{md.blockEnd}"
 
   robot.respond /baro/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
@@ -177,22 +169,8 @@ module.exports = (robot) ->
             if data?
               res.send data.toString()
             else
-              res.send util.format('%sNo info about Baro%s', dsUtil.codeMulti, dsUtil.blockEnd)
+              res.send util.format('%sNo info about Baro%s', md.codeMulti, md.blockEnd)
 
-  robot.respond /wiki\s*([\w\s-]+)?/, (res) ->
-    query = res.match[1]
-    if not query
-      res.reply 'Please specify a search term'
-    else
-      wikia.wikiaSearch query, (err, data) ->
-        if err
-          robot.logger.error err
-        else if not data
-          res.reply util.format('%sNot found%s', dsUtil.codeMulti, dsUtil.blockEnd)
-        else 
-          res.send util.format('%s%s%s%s%s%s%s', dsUtil.codeMulti, dsUtil.linkBegin, data.title, dsUtil.linkMid, 
-            data.url.replace('\\', ''), dsUtil.linkEnd, dsUtil.blockEnd)
-  
   robot.respond /sortie/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
@@ -203,21 +181,17 @@ module.exports = (robot) ->
         res.send sortie
       
   robot.respond /simaris/, (res) ->
-    res.send util.format('%sNo info about Synthesis Targets, Simaris has left us alone%s', dsUtil.codeMulti, dsUtil.blockEnd)
+    res.send "#{md.codeMulti}No info about Synthesis Targets, Simaris has left us alone#{md.blockEnd}"
         
   robot.respond /chart/, (res) ->
-    res.send util.format('%s%s%s%s%s%s%s', dsUtil.codeMulti, dsUtil.linkBegin, 'Chart', dsUtil.linkMid, 'http://morningstar-wf.com/chart/chart-6.png', dsUtil.linkEnd, dsUtil.blockEnd)
+    res.send "#{md.codeMulti}#{md.linkBegin}Chart#{md.linkMid}http://chart.morningstar-wf.com/#{md.linkEnd}#{md.blockEnd}"
 
-  robot.respond /damage/, (res) ->
-    courtesy = util.format('courtesy %s Telkhines %shttps://forums.warframe.com/profile/713011-telkhines/%s', 
-                                     dsUtil.linkBegin, dsUtil.linkMid, dsUtil.linkEnd)
-    
-    res.send util.format('%s%s%s%s%s%s%s%s%s', dsUtil.codeMulti, dsUtil.linkBegin, 'Damage 2.0', 
-                         dsUtil.linkMid, 'http://morningstar-wf.com/chart/Damage_2.0_Resistance_Flowchart.png', 
-                         dsUtil.linkEnd, dsUtil.lineEnd, 
-                         courtesy, dsUtil.blockEnd)
+  robot.respond /damage/, (res) ->  
+    res.send util.format('%s%s%s%s%s%s%s%s%s', md.codeMulti, md.linkBegin, 'Damage 2.0', 
+                         md.linkMid, 'http://morningstar-wf.com/chart/Damage_2.0_Resistance_Flowchart.png', 
+                         md.linkEnd, md.blockEnd)
   
-   robot.respond /armor(?:\s+([\d\s]+))?/, (res) ->
+  robot.respond /armor(?:\s+([\d\s]+))?/, (res) ->
     pattern3Params = new RegExp(/^(\d+)(?:\s+(\d+)\s+(\d+))?$/)
     pattern1Param = new RegExp(/^(\d+)$/)
     robot.logger.debug util.format('matched armor command. matching string: %s', res.match[1])
@@ -231,13 +205,13 @@ module.exports = (robot) ->
       if(typeof baseLevel == 'undefined')
         robot.logger.debug 'Entered 1-param armor'
         armorString = util.format('%s%s%s %s %s',
-                                dsUtil.codeMulti, dsUtil.damageReduction(armor), 
-                                dsUtil.lineEnd, dsUtil.armorStrip(armor), dsUtil.blockEnd)
+                                md.codeMulti, dsUtil.damageReduction(armor), 
+                                md.lineEnd, dsUtil.armorStrip(armor), md.blockEnd)
       else
         robot.logger.debug 'Entered 3-param armor'
         armorString = util.format('%s%s%s', 
-                                dsUtil.codeMulti, dsUtil.armorFull(armor, baseLevel, currentLevel), 
-                                dsUtil.blockEnd)
+                                md.codeMulti, dsUtil.armorFull(armor, baseLevel, currentLevel), 
+                                md.blockEnd)
 
             
     else
@@ -245,9 +219,9 @@ module.exports = (robot) ->
       armorInstruct3 = 'armor (Base Armor) (Base Level) (Current Level) calculate armor and stats.'
       armorInstruct1 = 'armor (Current Armor) Calculate damage resistance.'
       armorString = util.format('%sPossible uses include:%s%s%s%s%s', 
-                                dsUtil.codeMulti, dsUtil.lineEnd, 
-                                armorInstruct3, dsUtil.lineEnd, 
-                                armorInstruct1, dsUtil.blockEnd)
+                                md.codeMulti, md.lineEnd, 
+                                armorInstruct3, md.lineEnd, 
+                                armorInstruct1, md.blockEnd)
     res.send armorString
    
   robot.respond /shield(?:\s+([\d\s]+))?/, (res) ->
@@ -265,20 +239,17 @@ module.exports = (robot) ->
     else
       robot.logger.debug 'Entered 0-param shield'
       shieldInstruct3 = 'shields (Base Shelds) (Base Level) (Current Level) calculate shields and stats.'
-      shieldString = util.format('%sPossible uses include:%s%s%s', 
-                                dsUtil.codeMulti, dsUtil.lineEnd, 
-                                shieldInstruct3, dsUtil.blockEnd)
+      shieldString = "#{md.codeMulti}Possible uses include:#{md.lineEnd}#{shieldInstruct3}#{md.blockEnd}"
     res.send shieldString
     
   robot.respond /conclave(?:\s+([\w+\s]+))?/, (res) ->
     robot.logger.debug util.format('matched conclave command. matching string: %s', res.match[1])
     params = res.match[1]
     challengeFormat = '%s%s%s'
-    noChallengeString = util.format('%sNo Challenges%s',  dsUtil.codeMulti, dsUtil.blockEnd)
+    noChallengeString = util.format('%sNo Challenges%s',  md.codeMulti, md.blockEnd)
     allRegExp = new RegExp(/^(all)$/)
     dailyRegExp = new RegExp(/^(daily)$/)
     weeklyRegExp = new RegExp(/^(weekly)$/)
-    
     
     if allRegExp.test(params)
       robot.logger.debug 'Entered all challenge'
@@ -290,7 +261,7 @@ module.exports = (robot) ->
             res.send
             return robot.logger.error err
           if challenge != ''
-            res.send util.format(challengeFormat, dsUtil.codeMulti, challenge, dsUtil.blockEnd)
+            res.send util.format(challengeFormat, md.codeMulti, challenge, md.blockEnd)
           else
             res.send noChallengeString
     
@@ -303,7 +274,7 @@ module.exports = (robot) ->
           if err 
             return robot.logger.error err
           if challenge != ''
-            res.send util.format(challengeFormat, dsUtil.codeMulti, challenge, dsUtil.blockEnd)
+            res.send util.format(challengeFormat, md.codeMulti, challenge, md.blockEnd)
           else
             res.send noChallengeString
     
@@ -316,7 +287,7 @@ module.exports = (robot) ->
           if err
             return robot.logger.error err
           if challenge != ''
-            res.send util.format(challengeFormat, dsUtil.codeMulti, challenge, dsUtil.blockEnd)
+            res.send util.format(challengeFormat, md.codeMulti, challenge, md.blockEnd)
           else
             res.send noChallengeString
     else
@@ -325,14 +296,14 @@ module.exports = (robot) ->
       conclaveInstructWeekly = 'conclave weekly - print weekly conclave challenges.'
       conclaveInstructDaily = 'conclave daily - print conclave daily challenges.'
       res.send util.format('%sPossible uses include:%s%s%s%s%s%s', 
-                                    dsUtil.codeMulti, dsUtil.lineEnd, 
-                                    conclaveInstructAll, dsUtil.lineEnd, 
-                                    conclaveInstructWeekly, dsUtil.lineEnd, 
-                                    conclaveInstructDaily, dsUtil.blockEnd)
+                                    md.codeMulti, md.lineEnd, 
+                                    conclaveInstructAll, md.lineEnd, 
+                                    conclaveInstructWeekly, md.lineEnd, 
+                                    conclaveInstructDaily, md.blockEnd)
   robot.respond /enemies/, (res) ->
     robot.logger.debug 'Entered persistent enemies command'
     noEnemiesString = util.format '%sOperator, there is no sign of enemies, stay alert.%s', 
-                        dsUtil.codeMulti, dsUtil.blockEnd
+                        md.codeMulti, md.blockEnd
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
           return robot.logger.error err
@@ -341,9 +312,15 @@ module.exports = (robot) ->
             res.send noEnemiesString
             return robot.logger.error err
           if enemies != ''
-            res.send util.format '%s%s%s', dsUtil.codeMulti, enemies, dsUtil.blockEnd
+            res.send util.format '%s%s%s', md.codeMulti, enemies, md.blockEnd
           else
             res.send noEnemiesString
   robot.respond /rewards/, (res) ->
-    res.send util.format('%sMission rewards: http://rewards.morningstar-wf.com%s', 
-                           dsUtil.codeMulti, dsUtil.blockEnd)
+    res.send "#{md.codeMulti}#{md.linkBegin}Mission rewards #{md.linkMid} http://rewards.morningstar-wf.com#{md.linkEnd}#{md.blockEnd}"
+  robot.respond /tutorial(.+)/, (res) ->
+    tutorial = res.match[1]
+    focusReg = /\sfocus/
+    if focusReg.test tutorial
+      res.send "#{md.codeBlock}#{md.linkBegin}Warframe Focus #{md.linkMid} https://www.youtube.com/watch?v=IMltFZ97oXc #{md.linkEnd}#{md.blockEnd}"
+    else
+      res.send "#{md.codeBlock}Apologies, Operator, there is no such tutorial registered in my system.#{md.blockEnd}"

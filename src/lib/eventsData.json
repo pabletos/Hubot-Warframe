@@ -2,6 +2,10 @@
   "tags": {
     "KelaEvent": {
       "value": "Operation: Rathuum"
+    }, "KelaEventB" : {
+      "value": "Operation: Rathuum pt. 2"
+    }, "KelaEventBonus": {
+      "value": "Endless Rathuum"
     }
   },
   "scoreVariables": {

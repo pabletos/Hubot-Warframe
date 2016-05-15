@@ -1,5 +1,6 @@
 var util = require('util');
 var dsUtil = require('./_utils.js');
+var md = require('hubot-markdown');
 
 /**
  * Create a new deal instance
@@ -26,11 +27,11 @@ Deal.prototype.toString = function() {
                                '%dp (original %dp)%s' +
                                '%d / %d sold%s' +
                                'Expires in %s%s',
-                               dsUtil.codeMulti,
-                               this.item, dsUtil.lineEnd,
-                               this.salePrice, this.originalPrice, dsUtil.lineEnd,
-                               this.sold, this.total, dsUtil.lineEnd,
-                               this.getETAString(), dsUtil.blockEnd);
+                               md.codeMulti,
+                               this.item, md.lineEnd,
+                               this.salePrice, this.originalPrice, md.lineEnd,
+                               this.sold, this.total, md.lineEnd,
+                               this.getETAString(), md.blockEnd);
   return dealString;
 }
 
