@@ -164,7 +164,7 @@ module.exports = (robot) ->
                                     conclaveInstructDaily, md.blockEnd)
   robot.respond /damage/, (res) ->  
     damageURL = 'http://morningstar-wf.com/chart/Damage_2.0_Resistance_Flowchart.png'
-    res.send "${md.codeMulti}#{md.linkBegin}Damage 2.0#{md.linkMid}#{damageURL}#{md.linkEnd}#{md.blockEnd}"
+    res.send "#{md.codeMulti}#{md.linkBegin}Damage 2.0#{md.linkMid}#{damageURL}#{md.linkEnd}#{md.blockEnd}"
   robot.respond /darvo/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
@@ -232,7 +232,7 @@ module.exports = (robot) ->
       setTimeout (-> res.send worldStates[platform].getUpdatesString()), 300
 
   robot.respond /rewards/, (res) ->
-    res.send "#{md.codeMulti}#{md.linkBegin}Mission rewards #{md.linkMid} http://rewards.morningstar-wf.com#{md.linkEnd}#{md.blockEnd}"
+    res.send "#{md.codeMulti}#{md.linkBegin}Mission rewards#{md.linkMid}http://rewards.morningstar-wf.com#{md.linkEnd}#{md.blockEnd}"
     
   robot.respond /shield(?:\s+([\d\s]+))?/, (res) ->
     pattern3Params = new RegExp(/^(\d+)(?:\s+(\d+)\s+(\d+))?$/)
@@ -265,6 +265,6 @@ module.exports = (robot) ->
     tutorial = res.match[1]
     focusReg = /\sfocus/
     if focusReg.test tutorial
-      res.send "#{md.codeMulti}#{md.linkBegin}Warframe Focus #{md.linkMid} https://www.youtube.com/watch?v=IMltFZ97oXc #{md.linkEnd}#{md.blockEnd}"
+      res.send "#{md.codeMulti}#{md.linkBegin}Warframe Focus#{md.linkMid}https://www.youtube.com/watch?v=IMltFZ97oXc#{md.linkEnd}#{md.blockEnd}"
     else
       res.send "#{md.codeMulti}Apologies, Operator, there is no such tutorial registered in my system.#{md.blockEnd}"
