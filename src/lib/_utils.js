@@ -50,16 +50,4 @@ module.exports.shieldString = function(shields, level) {
   return util.format("%sAt level %s, your enemy would have %d Shields.%s", md.codeMulti, level, shields, md.blockEnd)
 }
 
-/*module.exports.doubleReturn = process.env.HUBOT_DOUBLE_RET || '\n\n';
-module.exports.lineEnd = process.env.HUBOT_LINE_END || '\n';
-module.exports.blockEnd = process.env.HUBOT_BLOCK_END || ' ';
-module.exports.linkBegin = process.env.HUBOT_MD_LINK_BEGIN || ' ';
-module.exports.linkMid = process.env.HUBOT_MD_LINK_MID || ' ';
-module.exports.linkEnd = process.env.HUBOT_MD_LINK_END || ' ';
-module.exports.bold = process.env.HUBOT_MD_BOLD || ' ';
-module.exports.italic = process.env.HUBOT_MD_ITALIC || ' ';
-module.exports.underline = process.env.HUBOT_MD_UNDERLINE || ' ';
-module.exports.strike = process.env.HUBOT_MD_STRIKE || ' ';
-module.exports.codeLine = process.env.HUBOT_MD_CODE_SINGLE || ' ';
-module.exports.codeMulti = process.env.HUBOT_MD_CODE_BLOCK || ' ';*/
-module.exports.stringsPath = process.env.HUBOT_WARFRAME_LANG_PATH || './languages.json';
+module.exports.stringsPath = process.env.HUBOT_WARFRAME_LANG_PATH || '../../resources/dataFiles/languages.json';

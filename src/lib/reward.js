@@ -102,10 +102,10 @@ Reward.prototype.toString = function() {
     tokens.push(util.format('%d %s', this.countedItems[i].ItemCount,
 				this.countedItems[i].ItemType));
   }
-
   if(this.credits) {
-    tokens.push(this.credits + ' credits');
+    tokens.push(this.credits + 'cr');
   }
+  
   return tokens.join(' + ');
 }
 

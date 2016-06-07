@@ -6,7 +6,6 @@
 #
 # Configuration:
 #   MONGODB_URL - MongoDB url
-#   HUBOT_WARFRAME_LANG_PATH - Configurable path for language.json` files.
 #
 # Commands:
 #   hubot alerts - Display alerts
@@ -22,6 +21,7 @@
 #   hubot damage - Display link to Damage 2.0 infographic
 #   hubot darvo - Display daily deals
 #   hubot enemies - Display list of active persistent enemies where they were last found
+#   hubot event - Display information about current event
 #   hubot invasions - Display invasions
 #   hubot news - Display news
 #   hubot primeaccess - Display current Prime Access news
@@ -42,15 +42,22 @@ md = require('hubot-markdown')
 
 Users = require('./lib/users.js')
 ds = require('./lib/deathsnacks.js')
-ws = require('./lib/worldstate.js')
-wikia = require('./lib/wikia.js')
+Worldstate = require('warframe-worldstate-parser')
 dsUtil = require('./lib/_utils.js')
 
 mongoURL = process.env.MONGODB_URL
 
 module.exports = (robot) ->
-  armorTriggered = false
   userDB = new Users(mongoURL)
+  
+  worldStates = 
+    PC: null
+    PS4: null
+    X1:  null
+  
+  checkWorldstate = (platform) ->
+    if worldStates[platform] == null
+      worldStates[platform] = new Worldstate(platform)
   
   robot.respond /alerts/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
@@ -65,132 +72,6 @@ module.exports = (robot) ->
               if data.length then (alert.toString() for alert in data).join('\n\n')
               else "#{md.codeMulti}Operator, there are no alerts at the moment#{md.blockEnd}"
             res.send message
-
-  robot.respond /invasions/, (res) ->
-    userDB.getPlatform res.message.room, (err, platform) ->
-      if err
-        robot.logger.error err
-      else
-        ds.getInvasions platform, (err, data) ->
-          if err
-            robot.logger.error err
-          else
-            message =
-              if data.length then (invasion.toString() for invasion in data).join('\n\n')
-              else "#{md.codeMulti}Operator, there are no invasions at the moment#{md.blockEnd}"
-            res.send message
-
-  robot.respond /darvo/, (res) ->
-    userDB.getPlatform res.message.room, (err, platform) ->
-      if err
-        robot.logger.error err
-      else
-        ds.getDeals platform, (err, data) ->
-          if err
-            robot.logger.error err
-          else
-            message =
-              if data.length then(deal.toString() for deal in data).join('\n\n')
-              else "#{md.codeMulti}Operator, there is no daily deal at the moment#{md.blockEnd}"
-
-            res.send message
-
-  robot.respond /news/, (res) ->
-    userDB.getPlatform res.message.room, (err, platform) ->
-      if err
-        robot.logger.error err
-      else
-        ds.getNews platform, (err, data) ->
-          if err
-            robot.logger.error err
-          else
-            if data.length
-              if robot.adapterName is 'telegram'
-                # Send with Markdown
-                message = (news.toString(true, true) for news in data).join('\n\n')
-                robot.emit 'telegram:invoke', 'sendMessage',
-                  chat_id: res.message.room
-                  text: message
-                  parse_mode: 'Markdown'
-                  disable_web_page_preview: 1
-                , (err, response) ->
-                  if err
-                    robot.logger.error err
-
-              # No Telegram
-              else
-                message = (news.toString(true, false) for news in data).join('\n\n')
-                res.send message
-            # No news
-            else
-              res.send "#{md.codeMulti}Operator, there is no news at the moment#{md.blockEnd}"
-              
-  robot.respond /update/, (res) ->
-    userDB.getPlatform res.message.room, (err, platform) ->
-      if err
-        robot.logger.error err
-      else
-        ds.getUpdate platform, (err, data) ->
-          if err
-            robot.logger.error err
-          else
-            if data.length
-              message = (update.toString(true, false) for update in data).join('\n\n')
-              res.send message
-            # No updates
-            else
-              res.send "#{md.codeMulti}Operator, there are no updates at the moment#{md.blockEnd}"
-  
-  robot.respond /primeaccess/, (res) ->
-    userDB.getPlatform res.message.room, (err, platform) ->
-      if err
-        robot.logger.error err
-      else
-        ds.getPrimeAccess platform, (err, data) ->
-          if err
-            robot.logger.error err
-          else
-            if data.length
-              message = (access.toString(true, false) for access in data).join('\n\n')
-              res.send message
-            # No prime access news
-            else
-              res.send "#{md.codeMulti}Operator, there is no information pertaining to Prime Access at the moment#{md.blockEnd}"
-
-  robot.respond /baro/, (res) ->
-    userDB.getPlatform res.message.room, (err, platform) ->
-      if err
-        robot.logger.error err
-      else
-        ds.getBaro platform, (err, data) ->
-          if err
-            robot.logger.error err
-          else
-            if data?
-              res.send data.toString()
-            else
-              res.send util.format('%sNo info about Baro%s', md.codeMulti, md.blockEnd)
-
-  robot.respond /sortie/, (res) ->
-    userDB.getPlatform res.message.room, (err, platform) ->
-      if err
-        return robot.logger.error err
-      ws.getSortie platform, (err, sortie) ->
-        if err 
-          return robot.logger.error err
-        res.send sortie
-      
-  robot.respond /simaris/, (res) ->
-    res.send "#{md.codeMulti}No info about Synthesis Targets, Simaris has left us alone#{md.blockEnd}"
-        
-  robot.respond /chart/, (res) ->
-    res.send "#{md.codeMulti}#{md.linkBegin}Chart#{md.linkMid}http://chart.morningstar-wf.com/#{md.linkEnd}#{md.blockEnd}"
-
-  robot.respond /damage/, (res) ->  
-    res.send util.format('%s%s%s%s%s%s%s%s%s', md.codeMulti, md.linkBegin, 'Damage 2.0', 
-                         md.linkMid, 'http://morningstar-wf.com/chart/Damage_2.0_Resistance_Flowchart.png', 
-                         md.linkEnd, md.blockEnd)
-  
   robot.respond /armor(?:\s+([\d\s]+))?/, (res) ->
     pattern3Params = new RegExp(/^(\d+)(?:\s+(\d+)\s+(\d+))?$/)
     pattern1Param = new RegExp(/^(\d+)$/)
@@ -223,24 +104,22 @@ module.exports = (robot) ->
                                 armorInstruct3, md.lineEnd, 
                                 armorInstruct1, md.blockEnd)
     res.send armorString
-   
-  robot.respond /shield(?:\s+([\d\s]+))?/, (res) ->
-    pattern3Params = new RegExp(/^(\d+)(?:\s+(\d+)\s+(\d+))?$/)
-    robot.logger.debug util.format('matched shield command. matching string: %s', res.match[1])
-    params = res.match[1]
     
-    if pattern3Params.test(params)
-      shields = params.match(pattern3Params)[1]
-      baseLevel = params.match(pattern3Params)[2]
-      currentLevel = params.match(pattern3Params)[3]
-      
-      robot.logger.debug 'Entered 3-param shield'
-      shieldString = dsUtil.shieldString dsUtil.shieldCalc(shields, baseLevel, currentLevel), currentLevel    
-    else
-      robot.logger.debug 'Entered 0-param shield'
-      shieldInstruct3 = 'shields (Base Shelds) (Base Level) (Current Level) calculate shields and stats.'
-      shieldString = "#{md.codeMulti}Possible uses include:#{md.lineEnd}#{shieldInstruct3}#{md.blockEnd}"
-    res.send shieldString
+  robot.respond /baro/, (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        robot.logger.error err
+      else
+        ds.getBaro platform, (err, data) ->
+          if err
+            robot.logger.error err
+          else
+            if data?
+              res.send data.toString()
+            else
+              res.send util.format('%sNo info about Baro%s', md.codeMulti, md.blockEnd)
+  robot.respond /chart/, (res) ->
+    res.send "#{md.codeMulti}#{md.linkBegin}Chart#{md.linkMid}http://chart.morningstar-wf.com/#{md.linkEnd}#{md.blockEnd}"
     
   robot.respond /conclave(?:\s+([\w+\s]+))?/, (res) ->
     robot.logger.debug util.format('matched conclave command. matching string: %s', res.match[1])
@@ -256,40 +135,23 @@ module.exports = (robot) ->
       userDB.getPlatform res.message.room, (err, platform) ->
         if err
           return robot.logger.error err
-        ws.getConclaveAll platform, (err, challenge) ->
-          if err 
-            res.send
-            return robot.logger.error err
-          if challenge != ''
-            res.send util.format(challengeFormat, md.codeMulti, challenge, md.blockEnd)
-          else
-            res.send noChallengeString
-    
+        checkWorldstate platform
+        setTimeout (-> res.send worldStates[platform].getConclaveAllString()), 300
     else if dailyRegExp.test(params)
       robot.logger.debug 'Entered daily challenge'
       userDB.getPlatform res.message.room, (err, platform) ->
         if err
           return robot.logger.error err
-        ws.getConclaveDailies platform, (err, challenge) ->
-          if err 
-            return robot.logger.error err
-          if challenge != ''
-            res.send util.format(challengeFormat, md.codeMulti, challenge, md.blockEnd)
-          else
-            res.send noChallengeString
-    
+        checkWorldstate platform
+        setTimeout (-> res.send worldStates[platform].getConclaveDailiesString()), 300   
     else if weeklyRegExp.test(params)
       robot.logger.debug 'Entered weekly challenge'
       userDB.getPlatform res.message.room, (err, platform) ->
         if err
           return robot.logger.error err
-        ws.getConclaveWeeklies platform, (err, challenge) ->
-          if err
-            return robot.logger.error err
-          if challenge != ''
-            res.send util.format(challengeFormat, md.codeMulti, challenge, md.blockEnd)
-          else
-            res.send noChallengeString
+        checkWorldstate platform
+        setTimeout (-> res.send worldStates[platform].getConclaveWeekliesString()), 300
+
     else
       robot.logger.debug 'Entered null challenge'
       conclaveInstructAll = 'conclave all - print all conclave challenges.'
@@ -300,27 +162,109 @@ module.exports = (robot) ->
                                     conclaveInstructAll, md.lineEnd, 
                                     conclaveInstructWeekly, md.lineEnd, 
                                     conclaveInstructDaily, md.blockEnd)
-  robot.respond /enemies/, (res) ->
-    robot.logger.debug 'Entered persistent enemies command'
-    noEnemiesString = util.format '%sOperator, there is no sign of enemies, stay alert.%s', 
-                        md.codeMulti, md.blockEnd
+  robot.respond /damage/, (res) ->  
+    damageURL = 'http://morningstar-wf.com/chart/Damage_2.0_Resistance_Flowchart.png'
+    res.send "${md.codeMulti}#{md.linkBegin}Damage 2.0#{md.linkMid}#{damageURL}#{md.linkEnd}#{md.blockEnd}"
+  robot.respond /darvo/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
-          return robot.logger.error err
-        ws.getPersistentEnemies platform, (err, enemies) ->
-          if err 
-            res.send noEnemiesString
-            return robot.logger.error err
-          if enemies != ''
-            res.send util.format '%s%s%s', md.codeMulti, enemies, md.blockEnd
+        robot.logger.error err
+      else
+        ds.getDeals platform, (err, data) ->
+          if err
+            robot.logger.error err
           else
-            res.send noEnemiesString
+            message =
+              if data.length then(deal.toString() for deal in data).join('\n\n')
+              else "#{md.codeMulti}Operator, there is no daily deal at the moment#{md.blockEnd}"
+
+            res.send message
+
+  robot.respond /enemies/, (res) ->
+    robot.logger.debug 'Entered persistent enemies command'
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        return robot.logger.error err
+      checkWorldstate platform
+      setTimeout (-> res.send worldStates[platform].getAllPersistentEnemiesString()), 300
+            
+  
+  robot.respond /event/, (res) ->
+    robot.logger.debug 'Entered events command'
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        return robot.logger.error err
+      checkWorldstate platform
+      setTimeout (-> res.send worldStates[platform].getEventsString()), 300
+  
+  robot.respond /invasions/, (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        robot.logger.error err
+      else
+        ds.getInvasions platform, (err, data) ->
+          if err
+            robot.logger.error err
+          else
+            message =
+              if data.length then (invasion.toString() for invasion in data).join('\n\n')
+              else "#{md.codeMulti}Operator, there are no invasions at the moment#{md.blockEnd}"
+            res.send message  
+  robot.respond /news/, (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        return robot.logger.error err
+      checkWorldstate platform
+      setTimeout (-> res.send worldStates[platform].getNewsString()), 300
+      
+  robot.respond /primeaccess/, (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        return robot.logger.error err
+      checkWorldstate platform
+      setTimeout (-> res.send worldStates[platform].getPrimeAccessString()), 300
+  
+  robot.respond /update/, (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        return robot.logger.error err
+      checkWorldstate platform
+      setTimeout (-> res.send worldStates[platform].getUpdatesString()), 300
+
   robot.respond /rewards/, (res) ->
     res.send "#{md.codeMulti}#{md.linkBegin}Mission rewards #{md.linkMid} http://rewards.morningstar-wf.com#{md.linkEnd}#{md.blockEnd}"
+    
+  robot.respond /shield(?:\s+([\d\s]+))?/, (res) ->
+    pattern3Params = new RegExp(/^(\d+)(?:\s+(\d+)\s+(\d+))?$/)
+    robot.logger.debug util.format('matched shield command. matching string: %s', res.match[1])
+    params = res.match[1]
+    
+    if pattern3Params.test(params)
+      shields = params.match(pattern3Params)[1]
+      baseLevel = params.match(pattern3Params)[2]
+      currentLevel = params.match(pattern3Params)[3]
+      
+      robot.logger.debug 'Entered 3-param shield'
+      shieldString = dsUtil.shieldString dsUtil.shieldCalc(shields, baseLevel, currentLevel), currentLevel    
+    else
+      robot.logger.debug 'Entered 0-param shield'
+      shieldInstruct3 = 'shield (Base Shelds) (Base Level) (Current Level) calculate shields and stats.'
+      shieldString = "#{md.codeMulti}Possible uses include:#{md.lineEnd}#{shieldInstruct3}#{md.blockEnd}"
+    res.send shieldString
+  robot.respond /simaris/, (res) ->
+    res.send "#{md.codeMulti}No info about Synthesis Targets, Simaris has left us alone#{md.blockEnd}"
+    
+  robot.respond /sortie/, (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        return robot.logger.error err
+      checkWorldstate platform
+      setTimeout (-> res.send worldStates[platform].getSortieString()), 300
+        
   robot.respond /tutorial(.+)/, (res) ->
     tutorial = res.match[1]
     focusReg = /\sfocus/
     if focusReg.test tutorial
-      res.send "#{md.codeBlock}#{md.linkBegin}Warframe Focus #{md.linkMid} https://www.youtube.com/watch?v=IMltFZ97oXc #{md.linkEnd}#{md.blockEnd}"
+      res.send "#{md.codeMulti}#{md.linkBegin}Warframe Focus #{md.linkMid} https://www.youtube.com/watch?v=IMltFZ97oXc #{md.linkEnd}#{md.blockEnd}"
     else
-      res.send "#{md.codeBlock}Apologies, Operator, there is no such tutorial registered in my system.#{md.blockEnd}"
+      res.send "#{md.codeMulti}Apologies, Operator, there is no such tutorial registered in my system.#{md.blockEnd}"

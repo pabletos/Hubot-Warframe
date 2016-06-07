@@ -1,6 +1,7 @@
 var util = require('util');
-var dsUtil = require('./_utils.js');
 var md = require('hubot-markdown');
+
+var dsUtil = require('./_utils.js');
 
 /**
  * Create a new baro instance
