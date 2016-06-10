@@ -71,7 +71,8 @@ Command | Listener ID | Description
 `hubot sortie` | `/sortie/` | Display current sortie missions
 `hubot chart` | `/chart/` | Display mission progression chart
 `hubot rewards` | `/rewards/` | Display link to Rewards table
-`hubot tutorial focus` | `/tutorial(.+)/` | Display link to focus tutorial video
+`hubot tutorial <topic>` | `/tutorial\s?(.+)/` | Display link to focus tutorial video
+`hubot profile <warframe>` | `/profile\s?(.+)/` | Display link to warframe profile video
 
 ## Sample Interaction
 
