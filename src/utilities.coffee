@@ -13,6 +13,7 @@
 #   hubot armor <base armor> <base level> <current level> - Display the current armor, damage resistance, and necessary corrosive procs to strip armor.
 #   hubot chart - Display link to Warframe progression chart
 #   hubot damage - Display link to Damage 2.0 infographic
+#   hubot efficiency chart - Display link to Duration/Efficienct chart
 #   hubot shield - Display instructions for calculating shields
 #   hubot shield <base shields> <base level> <current level> - Display the current shields.
 #
@@ -65,6 +66,9 @@ module.exports = (robot) ->
   robot.respond /damage/, (res) ->  
     damageURL = 'http://morningstar-wf.com/chart/Damage_2.0_Resistance_Flowchart.png'
     res.send "#{md.codeMulti}#{md.linkBegin}Damage 2.0#{md.linkMid}#{damageURL}#{md.linkEnd}#{md.blockEnd}"
+  robot.respond /efficeincy\schart/, (res) ->
+    efficienctChartURL = 'http://morningstar-wf.com/chart/efficiency.png'
+    res.send res.send "#{md.codeMulti}#{md.linkBegin}Duration/Efficiency Balance Chart#{md.linkMid}#{efficienctChartURL}#{md.linkEnd}#{md.blockEnd}"
   robot.respond /shield(?:\s+([\d\s]+))?/, (res) ->
     pattern3Params = new RegExp(/^(\d+)(?:\s+(\d+)\s+(\d+))?$/)
     robot.logger.debug util.format('matched shield command. matching string: %s', res.match[1])

@@ -5,7 +5,7 @@ A [Hubot](https://hubot.github.com/) module for tracking Warframe alerts, invasi
 
 [![Build Status](https://travis-ci.org/pabletos/Hubot-Warframe.svg)](https://travis-ci.org/pabletos/Hubot-Warframe)
 
-[![Try hubot-warframe on Discord!](https://discordapp.com/api/servers/146691885363232769/widget.png?style=banner)](https://discord.gg/0onjYYKuUBE52UTL)  
+[![Try hubot-warframe on Discord!](https://discordapp.com/api/servers/146691885363232769/widget.png?style=banner)](https://discord.me/cephalon-genesis)  
 
 [![Try hubot-warframe on Telegram!](https://img.shields.io/badge/Telegram-Beta%20War%20Bot-279DD8.svg)](https://telegram.me/betawarbot)
 
@@ -33,8 +33,8 @@ hubot-warframe requires a MongoDB server. It uses the **MONGODB_URL** environmen
 
 Environment Variable | Description | Example
 --- | --- | ---
-MONGODB_URL | connection url for mongodb | `mongodb://<host>:<port>/<database>`
-HUBOT_WARFRAME_LANG_PATH | Define the path to the languages.json in order to allow a custom string set to be defined. This will default to the included `languages.json` included with the module. | `./languages.json`
+MONGODB_URL | connection url for mongodb (REQUIRED) | `mongodb://<host>:<port>/<database>`
+HUBOT_WARFRAME_LANG_PATH | Define the path to the languages.json in order to allow a custom string set to be defined. This will default to the included `languages.json` included with the module. (OPTIONAL) | `./languages.json`
 
 ## Commands
 
@@ -71,7 +71,7 @@ Command | Listener ID | Description
 `hubot sortie` | `/sortie/` | Display current sortie missions
 `hubot chart` | `/chart/` | Display mission progression chart
 `hubot rewards` | `/rewards/` | Display link to Rewards table
-`hubot tutorial <topic>` | `/tutorial\s?(.+)/` | Display link to focus tutorial video
+`hubot tutorial <topic>` | `/tutorial\s?(.+)/` | Display link to topic's tutorial video
 `hubot profile <warframe>` | `/profile\s?(.+)/` | Display link to warframe profile video
 
 ## Sample Interaction

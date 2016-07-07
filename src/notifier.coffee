@@ -17,6 +17,7 @@ util = require('util')
 Users = require('./lib/users.js')
 ds = require('./lib/deathsnacks.js')
 platforms = require('./lib/platforms.json')
+worldstate = require('warframe-worldstate-parser')
 
 mongoURL = process.env.MONGODB_URL
 NOTIFICATION_INTERVAL = 60 * 1000
@@ -124,6 +125,31 @@ checkNews = (robot, userDB, platform) ->
       for n in news when n.id not in notifiedNewsIds
         broadcast 'News: ' + n.toString(false),
           items: 'news'
+          platform: platform
+        , robot, userDB
+      return
+    
+    
+checkSortie = (robot, userDB, platform) ->
+  ###
+  # Check for unread sorties and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking sorties (' + platform + ')...'
+  worldstate.getSorties platform, (err, sortie) ->
+    if err
+      robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedSortieIds = robot.brain.get('notifiedSortieIds' + platform) or []
+      robot.brain.set 'notifiedSortieIds' + platform, (n.id for n in news)
+
+      if sortie.id not in notifiedSortieIds
+        broadcast sortie.toString(),
+          items: 'sorties'
           platform: platform
         , robot, userDB
       return

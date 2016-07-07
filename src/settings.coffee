@@ -16,6 +16,7 @@
 #   hubot track <reward or event> - Start tracking reward or event, menu if no argument
 #   hubot untrack <reward or event> - Stop tracking reward or event
 #   hubot end (telegram only) - Hide custom keyboard
+#   hubot notify <reward or event> <
 #
 # Author:
 #   nspacestd
@@ -25,6 +26,8 @@ Reward = require('./lib/reward.js')
 Users = require('./lib/users.js')
 
 mongoURL = process.env.MONGODB_URL
+trackingUpdated = 'Tracking settings updated\n\nChoose one'
+invalid = 
 
 TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news', 'all']
 
@@ -64,8 +67,7 @@ module.exports = (robot) ->
         if err
           robot.logger.error err
         else
-          text = 'Tracking settings updated\n\nChoose one'
-          replyWithTrackSettingsKeyboard robot, res, text, userDB
+          replyWithTrackSettingsKeyboard robot, res, trackingUpdated, userDB
     else
       res.reply 'Invalid argument'
           
@@ -76,8 +78,7 @@ module.exports = (robot) ->
         if err
           robot.logger.error err
         else
-          text = 'Tracking settings updated\n\nChoose one'
-          replyWithTrackSettingsKeyboard robot, res, text, userDB
+          replyWithTrackSettingsKeyboard robot, res, trackingUpdated, userDB
     else
       res.reply 'Invalid argument'
 
@@ -94,7 +95,6 @@ module.exports = (robot) ->
 
       robot.emit 'telegram:invoke', 'sendMessage', opts, (err, response) ->
         robot.logger.error err if err
-
 
 replyWithKeyboard = (robot, res, text, keys) ->
   ###
