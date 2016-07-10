@@ -31,6 +31,7 @@ Users.DEFAULT_SETTINGS = {
     'skin',
     'weapon',
     'mutalistCoordinate',
+    'fusionCore',
     'other',
     'all'
   ]
