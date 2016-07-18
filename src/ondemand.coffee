@@ -21,7 +21,6 @@
 #   hubot news - Display news
 #   hubot primeaccess - Display current Prime Access news
 #   hubot update - Display current update
-#   hubot rewards - Display link to VoiD_Glitch's rewards table
 #   hubot simaris - Display current Synthesis target
 #   hubot sortie - Display current sortie missions
 #
@@ -34,9 +33,8 @@ md = require('hubot-markdown')
 
 Users = require('./lib/users.js')
 ds = require('./lib/deathsnacks.js')
-Worldstate = require('warframe-worldstate-parser')
 dsUtil = require('./lib/_utils.js')
-#Parser = require('warframe-worldstate-parser')
+Worldstate = require('warframe-worldstate-parser')
 
 mongoURL = process.env.MONGODB_URL
 
@@ -47,10 +45,7 @@ module.exports = (robot) ->
     PC: null
     PS4: null
     X1:  null
-  
-  checkWorldstate = (platform) ->
-    if worldStates[platform] == null
-      worldStates[platform] = new Worldstate(platform)
+  worldStates[worldstate] = new Worldstate(worldstate) for worldstate of worldStates
   
   robot.respond /alerts/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
@@ -93,23 +88,28 @@ module.exports = (robot) ->
       userDB.getPlatform res.message.room, (err, platform) ->
         if err
           return robot.logger.error err
-        checkWorldstate platform
-        setTimeout (-> res.send worldStates[platform].getConclaveAllString()), 300
+        worldStates[platform].getConclaveAllString (err, conclaveAllString) ->
+          if err
+            return robot.logger.error err
+          res.send conclaveAllString
     else if dailyRegExp.test(params)
       robot.logger.debug 'Entered daily challenge'
       userDB.getPlatform res.message.room, (err, platform) ->
         if err
           return robot.logger.error err
-        checkWorldstate platform
-        setTimeout (-> res.send worldStates[platform].getConclaveDailiesString()), 300   
+        worldStates[platform].getConclaveDailiesString (err, conclaveDailiesString) ->
+          if err
+            return robot.logger.error err
+          res.send conclaveDailiesString
     else if weeklyRegExp.test(params)
       robot.logger.debug 'Entered weekly challenge'
       userDB.getPlatform res.message.room, (err, platform) ->
         if err
           return robot.logger.error err
-        checkWorldstate platform
-        setTimeout (-> res.send worldStates[platform].getConclaveWeekliesString()), 300
-
+        worldStates[platform].getConclaveWeekliesString (err, conclaveWeekliesString) ->
+          if err
+            return robot.logger.error err
+          res.send conclaveWeekliesString
     else
       robot.logger.debug 'Entered null challenge'
       conclaveInstructAll = 'conclave all - print all conclave challenges.'
@@ -140,17 +140,29 @@ module.exports = (robot) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
-      checkWorldstate platform
-      setTimeout (-> res.send worldStates[platform].getAllPersistentEnemiesString()), 300
-            
+      worldStates[platform].getAllPersistentEnemiesString (err, enemiesString) ->
+        if err
+          return robot.logger.error err
+        res.send enemiesString
   
   robot.respond /event/, (res) ->
     robot.logger.debug 'Entered events command'
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
-      checkWorldstate platform
-      setTimeout (-> res.send worldStates[platform].getEventsString()), 300
+      worldStates[platform].getEventsString (err, eventsString) ->
+        if err
+          return robot.logger.error err
+        res.send eventsString  
+  
+  robot.respond /fissures/, (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        return robot.logger.error err
+      worldStates[platform].getFissureString (err, fissuresString) ->
+        if err
+          return robot.logger.error err
+        res.send fissuresString 
   
   robot.respond /invasions/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
@@ -169,31 +181,35 @@ module.exports = (robot) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
-      checkWorldstate platform
-      setTimeout (-> res.send worldStates[platform].getNewsString()), 300
+      worldStates[platform].getNewsString (err, newsString) ->
+        if err
+            return robot.logger.error err
+        res.send newsString
       
   robot.respond /primeaccess/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
-      checkWorldstate platform
-      setTimeout (-> res.send worldStates[platform].getPrimeAccessString()), 300
+      worldStates[platform].getPrimeAccessString (err, primeAccessString) ->
+        if err
+            return robot.logger.error err
+        res.send primeAccessString
   
   robot.respond /update/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
-      checkWorldstate platform
-      setTimeout (-> res.send worldStates[platform].getUpdatesString()), 300
-
-  robot.respond /rewards/, (res) ->
-    res.send "#{md.codeMulti}#{md.linkBegin}Mission rewards#{md.linkMid}http://rewards.morningstar-wf.com#{md.linkEnd}#{md.blockEnd}"
-    
+      worldStates[platform].getUpdatesString (err, updatesString) ->
+        if err
+            return robot.logger.error err
+        res.send updatesString
   robot.respond /simaris/, (res) ->
     res.send "#{md.codeMulti}No info about Synthesis Targets, Simaris has left us alone#{md.blockEnd}"    
   robot.respond /sortie/, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
-      checkWorldstate platform
-      setTimeout (-> res.send worldStates[platform].getSortieString()), 300
+      worldStates[platform].getSortieString (err, sortieString) ->
+        if err
+            return robot.logger.error err
+        res.send sortieString

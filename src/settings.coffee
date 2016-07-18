@@ -16,7 +16,7 @@
 #   hubot track <reward or event> - Start tracking reward or event, menu if no argument
 #   hubot untrack <reward or event> - Stop tracking reward or event
 #   hubot end (telegram only) - Hide custom keyboard
-#   hubot notify <reward or event> <
+#   hubot notify <reward or event> <message> - notify reward or event with a message added on the beginning
 #
 # Author:
 #   nspacestd
@@ -26,10 +26,9 @@ Reward = require('./lib/reward.js')
 Users = require('./lib/users.js')
 
 mongoURL = process.env.MONGODB_URL
-trackingUpdated = 'Tracking settings updated\n\nChoose one'
-invalid = 
+trackingUpdated = 'Tracking settings updated\n\nChoose one' 
 
-TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news', 'all']
+TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'all']
 
 module.exports = (robot) ->
   userDB = new Users(mongoURL)
