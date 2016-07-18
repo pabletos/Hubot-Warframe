@@ -169,23 +169,10 @@ checkSortie = (robot, userDB, platform) ->
       robot.logger.error err
     else
       # IDs are saved in robot.brain
-      notifiedSortieIds = robot.brain.get('notifiedSortieIds' + platform) or []
-      #notifiedSortieId = robot.brain.get('notifiedSortieId' + platform) or ''
-      sorties = []
-      sorties.push sortie
-      robot.logger.debug notifiedSortieIds
-      #robot.logger.debug notifiedSortieId
-      #robot.logger.debug sortie.id
-      robot.brain.set 'notifiedSortieIds' + platform, (s.id for s in sorties)
-      #robot.brain.set 'notifiedSortieId' + platform, sortie.id
-      
-      for s in sorties when s.id not in notifiedSortieIds
-        broadcast s.toString(),
-          items: 'sorties'
-          platform: platform
-        , robot, userDB
-      return
-      ###
+      notifiedSortieId = robot.brain.get('notifiedSortieId' + platform) or ''
+      robot.logger.debug notifiedSortieId
+      robot.logger.debug sortie.id
+      robot.brain.set 'notifiedSortieId' + platform, sortie.id
       if (sortie.id != notifiedSortieId)
         broadcast sortie.toString(),
           items: 'sorties'
@@ -194,6 +181,18 @@ checkSortie = (robot, userDB, platform) ->
       return
       ###
       
+      notifiedSortieIds = robot.brain.get('notifiedSortieIds' + platform) or []
+      sorties = []
+      sorties.push sortie
+      robot.logger.debug notifiedSortieIds
+      robot.brain.set 'notifiedSortieIds' + platform, (s.id for s in sorties)
+      for s in sorties when s.id not in notifiedSortieIds
+        broadcast s.toString(),
+          items: 'sorties'
+          platform: platform
+        , robot, userDB
+      return
+      ###
     
 checkFissures = (robot, userDB, platform) ->
   ###
