@@ -18,7 +18,7 @@ Users = require './lib/users.js'
 ds = require './lib/deathsnacks.js'
 platforms = require './lib/platforms.json'
 Worldstate = require 'warframe-worldstate-parser'
-md = require 'hubot-markdown'
+md = require 'node-md-config'
 
 mongoURL = process.env.MONGODB_URL
 NOTIFICATION_INTERVAL = 60 * 1000

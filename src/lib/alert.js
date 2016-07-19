@@ -1,5 +1,5 @@
 var util = require('util');
-var md = require('hubot-markdown');
+var md = require('node-md-config');
 
 var dsUtil = require('./_utils.js');
 var Reward = require('./reward.js');

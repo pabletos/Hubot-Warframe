@@ -29,7 +29,7 @@
 #   aliasfalse
 
 util = require('util')
-md = require('hubot-markdown')
+md = require('node-md-config')
 
 Users = require('./lib/users.js')
 ds = require('./lib/deathsnacks.js')

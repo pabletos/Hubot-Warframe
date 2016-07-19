@@ -17,10 +17,10 @@
     "hubot": "^2.17.0"
   },
   "dependencies": {
-    "hubot-markdown": "^1.1.1",
+    "node-md-config": "^2.0.1",
     "mongodb": "^2.1.2",
     "request": "^2.67.0",
-    "warframe-worldstate-parser": "0.0.1"
+    "warframe-worldstate-parser": "0.0.3"
   },
   "devDependencies": {
     "hubot": "^2.17.0",

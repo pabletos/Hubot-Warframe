@@ -15,7 +15,7 @@
 #   nspacestd
 #   aliasfalse
 util = require('util')
-md = require('hubot-markdown')
+md = require('node-md-config')
 
 dsUtil = require('./lib/_utils.js')
 
