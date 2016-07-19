@@ -1,5 +1,5 @@
 var util = require('util');
-var md = require('hubot-markdown');
+var md = require('node-md-config');
 
 /**
  * Converts the difference between two Date object to a String.

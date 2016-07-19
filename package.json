@@ -1,6 +1,7 @@
 {
   "name": "hubot-warframe",
-  "version": "0.0.0",
+  "version": "1.0.0",
+
   "author": "nspacestd <nspacestd@gmail.com>",
   "description": "Warframe module for Hubot",
   "keywords": [
@@ -35,6 +36,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pabletos/hubot-warframe"
+    "url": "https://github.com/pabletos/Hubot-Warframe.git"
   }
 }

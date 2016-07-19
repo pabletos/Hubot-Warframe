@@ -9,7 +9,7 @@ A [Hubot](https://hubot.github.com/) module for tracking Warframe alerts, invasi
 
 [![Try hubot-warframe on Telegram!](https://img.shields.io/badge/Telegram-Beta%20War%20Bot-279DD8.svg)](https://telegram.me/betawarbot)
 
-## Installation via NPM --- not currently functioning
+## Installation via NPM
 
 1. Install the __Hubot-Warframe__ module as a Hubot dependency by running:
 

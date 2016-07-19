@@ -149,11 +149,13 @@ settingsToString = (settings) ->
   lines.push 'Alerts are ' + if 'alerts' in settings.items then 'ON' else 'OFF'
   lines.push 'Invasions are ' + if 'invasions' in settings.items then 'ON' else 'OFF'
   lines.push 'News are ' + if 'news' in settings.items then 'ON' else 'OFF'
-
+  lines.push 'Sorties are ' + if 'sorties' in settings.items then 'ON' else 'OFF'
+  lines.push 'Fissures are ' + if 'fissures' in settings.items then 'ON' else 'OFF'
+  
   lines.push '\nTracked rewards:'
 
   trackedRewards = for i in settings.items when i not in \
-    ['alerts', 'invasions', 'news']
+    ['alerts', 'invasions', 'news', 'sorties', 'fissures']
       Reward.typeToString(i)
 
   return lines.concat(trackedRewards).join('\n')

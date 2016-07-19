@@ -132,26 +132,11 @@ checkNews = (robot, userDB, platform) ->
       robot.brain.set 'notifiedNewsIds' + platform, (n.id for n in news)
 
       for n in news when n.id not in notifiedNewsIds
-        broadcast 'News: ' + n.toString(false),
+        broadcast n.toString(false),
           items: 'news'
           platform: platform
         , robot, userDB
       return
-  
-  ###ds.getNews platform, (err, news) ->
-    if err
-      robot.logger.error err
-    else
-      # IDs are saved in robot.brain
-      notifiedNewsIds = robot.brain.get('notifiedNewsIds' + platform) or []
-      robot.brain.set 'notifiedNewsIds' + platform, (n.id for n in news)
-      for n in news when n.id not in notifiedNewsIds
-        broadcast 'News: ' + n.toString(false),
-          items: 'news'
-          platform: platform
-        , robot, userDB
-      return
-  ###
     
     
 checkSortie = (robot, userDB, platform) ->
