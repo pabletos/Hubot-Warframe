@@ -34,7 +34,6 @@ module.exports = (robot) ->
   setInterval check, NOTIFICATION_INTERVAL, robot, userDB
   setTimeout check, 5000, robot, userDB
 
-
 check = (robot, userDB) ->
   ###
   # Check for new alerts/invasions/news
@@ -170,8 +169,6 @@ checkSortie = (robot, userDB, platform) ->
     else
       # IDs are saved in robot.brain
       notifiedSortieId = robot.brain.get('notifiedSortieId' + platform) or ''
-      robot.logger.debug notifiedSortieId
-      robot.logger.debug sortie.id
       robot.brain.set 'notifiedSortieId' + platform, sortie.id
       if (sortie.id != notifiedSortieId)
         broadcast sortie.toString(),
@@ -179,21 +176,6 @@ checkSortie = (robot, userDB, platform) ->
           platform: platform
         , robot, userDB
       return
-      ###
-      
-      notifiedSortieIds = robot.brain.get('notifiedSortieIds' + platform) or []
-      sorties = []
-      sorties.push sortie
-      robot.logger.debug notifiedSortieIds
-      robot.brain.set 'notifiedSortieIds' + platform, (s.id for s in sorties)
-      for s in sorties when s.id not in notifiedSortieIds
-        broadcast s.toString(),
-          items: 'sorties'
-          platform: platform
-        , robot, userDB
-      return
-      ###
-    
 checkFissures = (robot, userDB, platform) ->
   ###
   # Check for unread fissures and notify them to subscribed users from userDB
@@ -233,4 +215,3 @@ broadcast = (message, query, robot, userDB) ->
       robot.logger.error err
     else
       robot.messageRoom chatID, message
-    
