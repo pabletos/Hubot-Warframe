@@ -6,7 +6,7 @@ A [Hubot](https://hubot.github.com/) module for tracking Warframe alerts, invasi
 [![Build Status](https://travis-ci.org/pabletos/Hubot-Warframe.svg)](https://travis-ci.org/pabletos/Hubot-Warframe)
 
 
-## Installation via NPM --- not currently functioning
+## Installation via NPM
 
 1. Install the __Hubot-Warframe__ module as a Hubot dependency by running:
 
