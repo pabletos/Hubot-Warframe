@@ -6,9 +6,6 @@
 #
 # Configuration:
 #   MONGODB_URL - MongoDB url
-#   HUBOT_LINE_END - Configuragble line-return character
-#   HUBOT_BLOCK_END - Configuragble string for ending blocks
-#   HUBOT_DOUBLE_RET - Configurable string for double-line returns
 #
 # Commands:
 #   None
@@ -16,13 +13,21 @@
 # Author:
 #   nspacestd
 
-util = require('util')
-Users = require('./lib/users.js')
-ds = require('./lib/deathsnacks.js')
-platforms = require('./lib/platforms.json')
+util = require 'util'
+Users = require './lib/users.js'
+ds = require './lib/deathsnacks.js'
+platforms = require './lib/platforms.json'
+Worldstate = require 'warframe-worldstate-parser'
+md = require 'node-md-config'
 
 mongoURL = process.env.MONGODB_URL
 NOTIFICATION_INTERVAL = 60 * 1000
+
+worldStates = 
+  PC: null
+  PS4: null
+  X1:  null
+worldStates[worldstate] = new Worldstate worldstate for worldstate of worldStates
 
 module.exports = (robot) ->
   userDB = new Users(mongoURL)
@@ -40,6 +45,8 @@ check = (robot, userDB) ->
     checkAlerts(robot, userDB, platform)
     checkInvasions(robot, userDB, platform)
     checkNews(robot, userDB, platform)
+    checkSortie(robot, userDB, platform)
+    checkFissures(robot, userDB, platform)
   return
 
 checkAlerts = (robot, userDB, platform) ->
@@ -116,7 +123,7 @@ checkNews = (robot, userDB, platform) ->
   # @param string platform
   ###
   robot.logger.debug 'Checking news (' + platform + ')...'
-  ds.getNews platform, (err, news) ->
+  worldStates[platform].getNews (err, news) ->
     if err
       robot.logger.error err
     else
@@ -125,8 +132,55 @@ checkNews = (robot, userDB, platform) ->
       robot.brain.set 'notifiedNewsIds' + platform, (n.id for n in news)
 
       for n in news when n.id not in notifiedNewsIds
-        broadcast 'News: ' + n.toString(false),
+        broadcast n.toString(false),
           items: 'news'
+          platform: platform
+        , robot, userDB
+      return
+    
+    
+checkSortie = (robot, userDB, platform) ->
+  ###
+  # Check for unread sorties and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking sorties (' + platform + ')...'
+  worldStates[platform].getSortie (err, sortie) ->
+    if err
+      robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedSortieId = robot.brain.get('notifiedSortieId' + platform) or ''
+      robot.brain.set 'notifiedSortieId' + platform, sortie.id
+      if (sortie.id != notifiedSortieId)
+        broadcast sortie.toString(),
+          items: 'sorties'
+          platform: platform
+        , robot, userDB
+      return
+checkFissures = (robot, userDB, platform) ->
+  ###
+  # Check for unread fissures and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking fissures (' + platform + ')...'
+  worldStates[platform].getFissures (err, fissures) ->
+    if err
+      robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedFissureIds = robot.brain.get('notifiedFissureIds' + platform) or []
+      robot.brain.set 'notifiedFissureIds' + platform, (f.id for f in fissures)
+
+      for f in fissures when f.id not in notifiedFissureIds
+        broadcast md.codeMulti+f.toString()+md.blockEnd,
+          items: 'fissures'
           platform: platform
         , robot, userDB
       return
@@ -146,4 +200,3 @@ broadcast = (message, query, robot, userDB) ->
       robot.logger.error err
     else
       robot.messageRoom chatID, message
-    

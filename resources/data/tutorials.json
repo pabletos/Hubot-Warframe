@@ -1,0 +1,17 @@
+{
+  "focus": {
+    "regex": "focus",
+    "name": "Focus",
+    "url": "https://youtu.be/IMltFZ97oXc"
+  },
+  "mods": {
+    "regex": "mods?",
+    "name": "Mods",
+    "url": "https://youtu.be/ZuYfEJzpR4A"
+  },
+  "dojos": {
+    "regex": "dojos?",
+    "name": "Dojos",
+    "url": "https://youtu.be/M28grdARKoQ"
+  }
+}

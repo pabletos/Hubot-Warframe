@@ -32,6 +32,8 @@ Users.DEFAULT_SETTINGS = {
     'weapon',
     'mutalistCoordinate',
     'fusionCore',
+    'sorties',
+    'fissures',
     'other',
     'all'
   ]

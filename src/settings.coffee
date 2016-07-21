@@ -16,6 +16,7 @@
 #   hubot track <reward or event> - Start tracking reward or event, menu if no argument
 #   hubot untrack <reward or event> - Stop tracking reward or event
 #   hubot end (telegram only) - Hide custom keyboard
+#   hubot notify <reward or event> <message> - notify reward or event with a message added on the beginning
 #
 # Author:
 #   nspacestd
@@ -25,8 +26,9 @@ Reward = require('./lib/reward.js')
 Users = require('./lib/users.js')
 
 mongoURL = process.env.MONGODB_URL
+trackingUpdated = 'Tracking settings updated\n\nChoose one' 
 
-TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news', 'all']
+TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'all']
 
 module.exports = (robot) ->
   userDB = new Users(mongoURL)
@@ -64,8 +66,7 @@ module.exports = (robot) ->
         if err
           robot.logger.error err
         else
-          text = 'Tracking settings updated\n\nChoose one'
-          replyWithTrackSettingsKeyboard robot, res, text, userDB
+          replyWithTrackSettingsKeyboard robot, res, trackingUpdated, userDB
     else
       res.reply 'Invalid argument'
           
@@ -76,8 +77,7 @@ module.exports = (robot) ->
         if err
           robot.logger.error err
         else
-          text = 'Tracking settings updated\n\nChoose one'
-          replyWithTrackSettingsKeyboard robot, res, text, userDB
+          replyWithTrackSettingsKeyboard robot, res, trackingUpdated, userDB
     else
       res.reply 'Invalid argument'
 
@@ -94,7 +94,6 @@ module.exports = (robot) ->
 
       robot.emit 'telegram:invoke', 'sendMessage', opts, (err, response) ->
         robot.logger.error err if err
-
 
 replyWithKeyboard = (robot, res, text, keys) ->
   ###
@@ -150,11 +149,13 @@ settingsToString = (settings) ->
   lines.push 'Alerts are ' + if 'alerts' in settings.items then 'ON' else 'OFF'
   lines.push 'Invasions are ' + if 'invasions' in settings.items then 'ON' else 'OFF'
   lines.push 'News are ' + if 'news' in settings.items then 'ON' else 'OFF'
-
+  lines.push 'Sorties are ' + if 'sorties' in settings.items then 'ON' else 'OFF'
+  lines.push 'Fissures are ' + if 'fissures' in settings.items then 'ON' else 'OFF'
+  
   lines.push '\nTracked rewards:'
 
   trackedRewards = for i in settings.items when i not in \
-    ['alerts', 'invasions', 'news']
+    ['alerts', 'invasions', 'news', 'sorties', 'fissures']
       Reward.typeToString(i)
 
   return lines.concat(trackedRewards).join('\n')

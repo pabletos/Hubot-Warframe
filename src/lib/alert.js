@@ -1,4 +1,6 @@
 var util = require('util');
+var md = require('node-md-config');
+
 var dsUtil = require('./_utils.js');
 var Reward = require('./reward.js');
 
@@ -38,11 +40,11 @@ Alert.prototype.toString = function() {
                                 '%s%s' +
                                 'level %d - %d%s' +
                                 'Expires in %s%s',
-                                dsUtil.codeMulti, this.location, dsUtil.lineEnd,
-                                this.missionType, this.faction, dsUtil.lineEnd,
-                                this.reward.toString(), dsUtil.lineEnd,
-                                this.minLevel, this.maxLevel, dsUtil.lineEnd,
-                                this.getETAString(), dsUtil.blockEnd);
+                                md.codeMulti, this.location, md.lineEnd,
+                                this.missionType, this.faction, md.lineEnd,
+                                this.reward.toString(), md.lineEnd,
+                                this.minLevel, this.maxLevel, md.lineEnd,
+                                this.getETAString(), md.blockEnd);
 
   return alertString;
 }

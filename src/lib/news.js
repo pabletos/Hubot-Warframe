@@ -1,4 +1,6 @@
 var util = require('util');
+var md = require('node-md-config');
+
 var dsUtil = require('./_utils.js');
 
 /**
@@ -52,7 +54,7 @@ News.prototype.toString = function(showElapsedTime, markdown) {
 
   this.link = this.link.replace(/\s/, '');
   formatString = '%s%s%s%s%s%s%s%s';
-  return util.format(formatString, dsUtil.codeMulti, elapsedTime, dsUtil.linkBegin, text, dsUtil.linkMid, this.link, dsUtil.linkEnd, dsUtil.blockEnd);
+  return util.format(formatString, md.codeMulti, elapsedTime, md.linkBegin, text, md.linkMid, this.link, md.linkEnd, md.blockEnd);
 }
 
 /**

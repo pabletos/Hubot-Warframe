@@ -1,4 +1,6 @@
 var util = require('util');
+var md = require('node-md-config');
+
 var dsUtil = require('./_utils.js');
 
 /**
@@ -26,11 +28,11 @@ Deal.prototype.toString = function() {
                                '%dp (original %dp)%s' +
                                '%d / %d sold%s' +
                                'Expires in %s%s',
-                               dsUtil.codeMulti,
-                               this.item, dsUtil.lineEnd,
-                               this.salePrice, this.originalPrice, dsUtil.lineEnd,
-                               this.sold, this.total, dsUtil.lineEnd,
-                               this.getETAString(), dsUtil.blockEnd);
+                               md.codeMulti,
+                               this.item, md.lineEnd,
+                               this.salePrice, this.originalPrice, md.lineEnd,
+                               this.sold, this.total, md.lineEnd,
+                               this.getETAString(), md.blockEnd);
   return dealString;
 }
 
