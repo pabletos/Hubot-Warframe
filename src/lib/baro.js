@@ -10,6 +10,7 @@ var dsUtil = require('./_utils.js');
  * @param {object} data Void Trader data
  */
 var Baro = function(data) {
+  this.id = data._id.id;
   this.config = data.Config;
   this.start = new Date(1000 * data.Activation.sec);
   this.end = new Date(1000 * data.Expiry.sec);

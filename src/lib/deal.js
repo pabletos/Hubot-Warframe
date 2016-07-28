@@ -10,7 +10,7 @@ var dsUtil = require('./_utils.js');
  * @param {object} data Deal data
  */
 var Deal = function(data) {
-  this.id = data._id;
+  this.id = data.Activation.sec;
   this.item = data.StoreItem;
   this.expiry = new Date(1000 * data.Expiry.sec);
   this.originalPrice = data.OriginalPrice;
@@ -28,8 +28,7 @@ Deal.prototype.toString = function() {
                                '%dp (original %dp)%s' +
                                '%d / %d sold%s' +
                                'Expires in %s%s',
-                               md.codeMulti,
-                               this.item, md.lineEnd,
+                               md.codeMulti, this.item, md.lineEnd,
                                this.salePrice, this.originalPrice, md.lineEnd,
                                this.sold, this.total, md.lineEnd,
                                this.getETAString(), md.blockEnd);

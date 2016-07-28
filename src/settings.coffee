@@ -28,7 +28,7 @@ Users = require('./lib/users.js')
 mongoURL = process.env.MONGODB_URL
 trackingUpdated = 'Tracking settings updated\n\nChoose one' 
 
-TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'all']
+TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'baro', 'darvo', 'all']
 
 module.exports = (robot) ->
   userDB = new Users(mongoURL)
@@ -151,11 +151,13 @@ settingsToString = (settings) ->
   lines.push 'News are ' + if 'news' in settings.items then 'ON' else 'OFF'
   lines.push 'Sorties are ' + if 'sorties' in settings.items then 'ON' else 'OFF'
   lines.push 'Fissures are ' + if 'fissures' in settings.items then 'ON' else 'OFF'
+  lines.push 'Baro Ki\'Teer tracking is ' + if 'baro' in settings.items then 'ON' else 'OFF'
+  lines.push 'Darvo tracking is ' + if 'darvo' in settings.items then 'ON' else 'OFF'
   
   lines.push '\nTracked rewards:'
 
   trackedRewards = for i in settings.items when i not in \
-    ['alerts', 'invasions', 'news', 'sorties', 'fissures']
+    ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'baro', 'darvo']
       Reward.typeToString(i)
 
   return lines.concat(trackedRewards).join('\n')

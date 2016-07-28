@@ -20,8 +20,8 @@
   "dependencies": {
     "node-md-config": "^2.0.1",
     "mongodb": "^2.1.2",
-    "request": "^2.67.0",
-    "warframe-worldstate-parser": "latest"
+    "warframe-worldstate-parser" : "git://github.com/aliasfalse/warframe-worldstate-parser.git#aliasfalse-relics-resources",
+    "request": "^2.67.0"
   },
   "devDependencies": {
     "hubot": "^2.17.0",

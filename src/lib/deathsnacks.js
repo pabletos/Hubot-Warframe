@@ -221,7 +221,6 @@ exports.getUpdate = function(platform, callback) {
   });
 }
 
-
 /**
  * Return an array of Update objects representing currently active news
  * on a given platform.

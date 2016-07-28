@@ -34,6 +34,8 @@ Users.DEFAULT_SETTINGS = {
     'fusionCore',
     'sorties',
     'fissures',
+    'baro',
+    'darvo',
     'other',
     'all'
   ]

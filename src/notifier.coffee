@@ -47,6 +47,8 @@ check = (robot, userDB) ->
     checkNews(robot, userDB, platform)
     checkSortie(robot, userDB, platform)
     checkFissures(robot, userDB, platform)
+    checkBaro(robot, userDB, platform)
+    checkDarvo(robot, userDB, platform)
   return
 
 checkAlerts = (robot, userDB, platform) ->
@@ -181,6 +183,55 @@ checkFissures = (robot, userDB, platform) ->
       for f in fissures when f.id not in notifiedFissureIds
         broadcast md.codeMulti+f.toString()+md.blockEnd,
           items: 'fissures'
+          platform: platform
+        , robot, userDB
+      return
+
+checkBaro = (robot, userDB, platform) ->
+  ###
+  # Check for unread Baro Ki'Teer notifications and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking Baro (' + platform + ')...'
+  ds.getBaro platform, (err, data) ->
+    if err
+      robot.logger.error err
+    else
+      if data?
+        # IDs are saved in robot.brain
+        notifiedBaroId = robot.brain.get('notifiedBaroId' + platform) or ''
+        robot.brain.set 'notifiedBaroId' + platform, data.id
+
+        if (data.id != notifiedBaroId)
+          broadcast data.toString(),
+            items: 'baro'
+            platform: platform
+          , robot, userDB
+        return
+
+checkDarvo = (robot, userDB, platform) ->
+  ###
+  # Check for unread Darvo Daily Deals notifications and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking Darvo (' + platform + ')...'
+  ds.getDeals platform, (err, deals) ->
+    if err
+      robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedDarvoIds = robot.brain.get('notifiedDarvoIds' + platform) or []
+      robot.brain.set 'notifiedDarvoIds' + platform, (d.id for d in deals)
+
+      for d in deals when d.id not in notifiedDarvoIds
+        broadcast d.toString(),
+          items: 'darvo'
           platform: platform
         , robot, userDB
       return

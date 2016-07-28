@@ -10,6 +10,7 @@
 # Commands:
 #   hubot alerts - Display alerts
 #   hubot baro - Display current Baro status/inventory
+#   hubot bonus - Display current global bonus if there is one
 #   hubot conclave - Display usage for conclave command
 #   hubot conclave all - Display all conclave challenges
 #   hubot conclave daily - Display active daily conclave challenges
@@ -23,6 +24,7 @@
 #   hubot update - Display current update
 #   hubot simaris - Display current Synthesis target
 #   hubot sortie - Display current sortie missions
+#   hubot syndicate <syndicate> - Display syndicate mission nodes
 #
 # Author:
 #   nspacestd
@@ -47,7 +49,7 @@ module.exports = (robot) ->
     X1:  null
   worldStates[worldstate] = new Worldstate(worldstate) for worldstate of worldStates
   
-  robot.respond /alerts/, (res) ->
+  robot.respond /alerts/i, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         robot.logger.error err
@@ -61,7 +63,7 @@ module.exports = (robot) ->
               else "#{md.codeMulti}Operator, there are no alerts at the moment#{md.blockEnd}"
             res.send message
     
-  robot.respond /baro/, (res) ->
+  robot.respond /baro/i, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         robot.logger.error err
@@ -74,7 +76,15 @@ module.exports = (robot) ->
               res.send data.toString()
             else
               res.send util.format('%sNo info about Baro%s', md.codeMulti, md.blockEnd)  
-  robot.respond /conclave(?:\s+([\w+\s]+))?/, (res) ->
+  robot.respond /bonus/i, (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        return robot.logger.error err
+      worldStates[platform].getGlobalModifersString (err, bonusString) ->
+        if err
+            return robot.logger.error err
+        res.send bonusString
+  robot.respond /conclave(?:\s+([\w+\s]+))?/i, (res) ->
     robot.logger.debug util.format('matched conclave command. matching string: %s', res.match[1])
     params = res.match[1]
     challengeFormat = '%s%s%s'
@@ -120,7 +130,7 @@ module.exports = (robot) ->
                                     conclaveInstructAll, md.lineEnd, 
                                     conclaveInstructWeekly, md.lineEnd, 
                                     conclaveInstructDaily, md.blockEnd)
-  robot.respond /darvo/, (res) ->
+  robot.respond /darvo/i, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         robot.logger.error err
@@ -135,7 +145,7 @@ module.exports = (robot) ->
 
             res.send message
 
-  robot.respond /enemies/, (res) ->
+  robot.respond /enemies/i, (res) ->
     robot.logger.debug 'Entered persistent enemies command'
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
@@ -145,7 +155,7 @@ module.exports = (robot) ->
           return robot.logger.error err
         res.send enemiesString
   
-  robot.respond /event/, (res) ->
+  robot.respond /event/i, (res) ->
     robot.logger.debug 'Entered events command'
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
@@ -155,7 +165,7 @@ module.exports = (robot) ->
           return robot.logger.error err
         res.send eventsString  
   
-  robot.respond /fissures/, (res) ->
+  robot.respond /fissures/i, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
@@ -164,7 +174,7 @@ module.exports = (robot) ->
           return robot.logger.error err
         res.send fissuresString 
   
-  robot.respond /invasions/, (res) ->
+  robot.respond /invasions/i, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         robot.logger.error err
@@ -177,7 +187,7 @@ module.exports = (robot) ->
               if data.length then (invasion.toString() for invasion in data).join('\n\n')
               else "#{md.codeMulti}Operator, there are no invasions at the moment#{md.blockEnd}"
             res.send message  
-  robot.respond /news/, (res) ->
+  robot.respond /news/i, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
@@ -186,7 +196,7 @@ module.exports = (robot) ->
             return robot.logger.error err
         res.send newsString
       
-  robot.respond /primeaccess/, (res) ->
+  robot.respond /primeaccess/i, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
@@ -195,7 +205,7 @@ module.exports = (robot) ->
             return robot.logger.error err
         res.send primeAccessString
   
-  robot.respond /update/, (res) ->
+  robot.respond /update/i, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
@@ -203,9 +213,15 @@ module.exports = (robot) ->
         if err
             return robot.logger.error err
         res.send updatesString
-  robot.respond /simaris/, (res) ->
-    res.send "#{md.codeMulti}No info about Synthesis Targets, Simaris has left us alone#{md.blockEnd}"    
-  robot.respond /sortie/, (res) ->
+  robot.respond /simaris/i, (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        return robot.logger.error err
+      worldStates[platform].getSimarisString (err, simarisString) ->
+        if err
+            return robot.logger.error err
+        res.send simarisString 
+  robot.respond /sortie/i, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
@@ -213,3 +229,79 @@ module.exports = (robot) ->
         if err
             return robot.logger.error err
         res.send sortieString
+        
+  robot.respond /syndicate(?:\s+([\w+\s]+))?/i, (res) ->
+    syndicateReg = res.match[1]
+    arbitersReg = /arbiters(\sof)?(\shexis)?/
+    sudaReg = /(cephalon\s)?suda/
+    lokaReg = /(new\s)?loka/
+    perrinReg = /perrin(\ssequence)?/
+    steelMeridianReg = /(steel\s)?meridian/
+    redVeilReg = /(red\s)?veil/
+    allReg = /all/
+    
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        return robot.logger.error err
+      syndicateString = ''
+      if syndicateReg?
+        if arbitersReg.test syndicateReg
+          worldStates[platform].getArbitersOfHexisString (err, arbiterString) ->
+            if err
+                return robot.logger.error err
+            robot.logger.debug "Entering arbiters syndicate"
+            res.send arbiterString
+        else if sudaReg.test syndicateReg
+          worldStates[platform].getCephalonSudaString (err, sudaString) ->
+            if err
+                return robot.logger.error err
+            robot.logger.debug "Entering cephalon suda syndicate"
+            res.send sudaString
+        else if lokaReg.test syndicateReg
+          worldStates[platform].getNewLokaString (err, lokaString) ->
+            if err
+                return robot.logger.error err
+            robot.logger.debug "Entering new loka syndicate"
+            res.send lokaString
+        else if perrinReg.test syndicateReg
+          worldStates[platform].getPerrinSequenceString (err, perrinString) ->
+            if err
+                return robot.logger.error err
+            robot.logger.debug "Entering perrin sequence syndicate"
+            res.send perrinString
+        else if steelMeridianReg.test syndicateReg
+          worldStates[platform].getSteelMeridianString (err, steelMeridianString) ->
+            if err
+                return robot.logger.error err
+            robot.logger.debug "Entering steel Meridian syndicate"
+            res.send steelMeridianString
+        else if redVeilReg.test syndicateReg
+          worldStates[platform].getRedVeilString (err, redVeilString) ->
+            if err
+                return robot.logger.error err
+            robot.logger.debug "Entering red veil syndicate"
+            res.send redVeilString
+        else if allReg.test syndicateReg
+          worldStates[platform].getAllSyndicatesAsString (err, allSyndString) ->
+            if err
+                return robot.logger.error err
+            robot.logger.debug "Entering all syndicate"
+            res.send allSyndString
+        else
+         res.send util.format("#{md.codeMulti}Operator, that is not a currently valid syndicate, stay alert.#{md.blockEnd}")
+      else
+        syndicates = ["arbiters of hexis", "cephalon suda", "new loka", "perrin sequence", "steel meridian", "red veil"]
+        syndicateString = "#{md.codeMulti}Available syndicates:#{md.lineEnd}"
+        syndicates.forEach (syndicate) ->
+            syndicateString += "  \u2022 #{syndicate}#{md.lineEnd}" 
+        res.send syndicateString += md.blockEnd
+  robot.respond /where(?:\s?is)?(?:\s+([\w+\s]+))?/i, (res) ->
+    query = res.match[1]
+    if query?
+      #do stuff
+      Worldstate.getRelicFromQuery query, (err, partsString) ->
+        if err
+            return robot.logger.error err
+        res.send partsString
+    else
+      res.send "#{md.codeMulti}Usage: whereis <prime part/blueprint>#{md.blockEnd}"
