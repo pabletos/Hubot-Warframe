@@ -36,6 +36,7 @@ Users.DEFAULT_SETTINGS = {
     'fissures',
     'baro',
     'darvo',
+    'enemies',
     'other',
     'all'
   ]

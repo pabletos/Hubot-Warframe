@@ -6,9 +6,6 @@
 #
 # Configuration:
 #   MONGODB_URL - MongoDB url
-#   HUBOT_LINE_END - Configuragble line-return character
-#   HUBOT_BLOCK_END - Configuragble string for ending blocks
-#   HUBOT_DOUBLE_RET - Configurable string for double-line returns
 # 
 # Commands:
 #   hubot settings - Display settings menu
@@ -28,7 +25,7 @@ Users = require('./lib/users.js')
 mongoURL = process.env.MONGODB_URL
 trackingUpdated = 'Tracking settings updated\n\nChoose one' 
 
-TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'baro', 'darvo', 'all']
+TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'baro', 'darvo', 'enemies', 'all']
 
 module.exports = (robot) ->
   userDB = new Users(mongoURL)
@@ -153,11 +150,12 @@ settingsToString = (settings) ->
   lines.push 'Fissures are ' + if 'fissures' in settings.items then 'ON' else 'OFF'
   lines.push 'Baro Ki\'Teer tracking is ' + if 'baro' in settings.items then 'ON' else 'OFF'
   lines.push 'Darvo tracking is ' + if 'darvo' in settings.items then 'ON' else 'OFF'
-  
+  lines.push 'Enemy tracking is ' + if 'enemies' in settings.items then 'ON' else 'OFF'
+    
   lines.push '\nTracked rewards:'
 
   trackedRewards = for i in settings.items when i not in \
-    ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'baro', 'darvo']
+    ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'baro', 'darvo', 'enemies']
       Reward.typeToString(i)
 
   return lines.concat(trackedRewards).join('\n')

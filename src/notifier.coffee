@@ -49,6 +49,7 @@ check = (robot, userDB) ->
     checkFissures(robot, userDB, platform)
     checkBaro(robot, userDB, platform)
     checkDarvo(robot, userDB, platform)
+    checkEnemies(robot, userDB, platform)
   return
 
 checkAlerts = (robot, userDB, platform) ->
@@ -183,6 +184,29 @@ checkFissures = (robot, userDB, platform) ->
       for f in fissures when f.id not in notifiedFissureIds
         broadcast md.codeMulti+f.toString()+md.blockEnd,
           items: 'fissures'
+          platform: platform
+        , robot, userDB
+      return
+checkEnemies = (robot, userDB, platform) ->
+  ###
+  # Check for unread fissures and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking enemies (' + platform + ')...'
+  worldStates[platform].getAllPersistentEnemies (err, enemies) ->
+    if err
+      robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedEnemyIds = robot.brain.get('notifiedEnemyIds' + platform) or []
+      robot.brain.set 'notifiedEnemyIds' + platform, (e.id for e in enemies)
+
+      for e in enemies when e.id not in notifiedEnemyIds
+        broadcast e.toString(),
+          items: 'enemies'
           platform: platform
         , robot, userDB
       return

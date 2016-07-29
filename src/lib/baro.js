@@ -30,7 +30,7 @@ Baro.prototype.toString = function() {
   var baroString = util.format('%sVoid Trader at %s%s', md.codeMulti, this.location, md.doubleReturn);
   for(i in this.manifest) {
     baroString += util.format('%s - price: %d ducats + %dcr%s',
-                              this.manifest[i].ItemType,
+                              this.manifest[i].ItemType.replace(/'S/,"s"),
                               this.manifest[i].PrimePrice,
                               this.manifest[i].RegularPrice,
                               md.lineEnd);
@@ -46,7 +46,7 @@ Baro.prototype.toString = function() {
  * @return {string} The new string object
  */
 Baro.prototype.getStartString = function() {
-  return dsUtil.timeDeltaToString(this.start.getTime() - Date.now());
+  return dsUtil.timeDeltaToString(Math.abs(Date.now()-this.start.getTime()));
 }
 
 /**
@@ -55,7 +55,7 @@ Baro.prototype.getStartString = function() {
  * @return {string} The new string object
  */
 Baro.prototype.getEndString = function() {
-  return dsUtil.timeDeltaToString(this.end.getTime() - Date.now());
+  return dsUtil.timeDeltaToString(Math.abs(Date.now()-this.end.getTime()));
 }
 
 /**
