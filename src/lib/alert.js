@@ -40,9 +40,9 @@ Alert.prototype.toString = function() {
                                 '%s%s' +
                                 'level %d - %d%s' +
                                 'Expires in %s%s',
-                                md.codeMulti, this.location, md.lineEnd,
+                                md.codeMulti, this.reward.toString(), md.lineEnd,
                                 this.missionType, this.faction, md.lineEnd,
-                                this.reward.toString(), md.lineEnd,
+                                this.location, md.lineEnd,
                                 this.minLevel, this.maxLevel, md.lineEnd,
                                 this.getETAString(), md.blockEnd);
 

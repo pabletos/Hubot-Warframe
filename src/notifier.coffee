@@ -62,7 +62,9 @@ checkAlerts = (robot, userDB, platform) ->
   ###
   
   robot.logger.debug 'Checking alerts (' + platform + ')...'
-  ds.getAlerts platform, (err, alerts) ->
+  worldStates[platform].getAlerts (err, alerts) ->
+  
+  #ds.getAlerts platform, (err, alerts) ->
     if err
       robot.logger.error err
     else
@@ -205,7 +207,7 @@ checkEnemies = (robot, userDB, platform) ->
       robot.brain.set 'notifiedEnemyIds' + platform, (e.id for e in enemies)
 
       for e in enemies when e.id not in notifiedEnemyIds
-        broadcast e.toString(),
+        broadcast  md.codeMulti+e.toString()+md.blockEnd,
           items: 'enemies'
           platform: platform
         , robot, userDB
@@ -219,18 +221,18 @@ checkBaro = (robot, userDB, platform) ->
   # @param object userDB
   # @param string platform
   ###
-  robot.logger.debug 'Checking Baro (' + platform + ')...'
-  ds.getBaro platform, (err, data) ->
+  robot.logger.debug 'Checking Baro (' + platform + ')...'  
+  worldStates[platform].getVoidTrader (err, baro) ->
     if err
       robot.logger.error err
     else
-      if data?
+      if baro?
         # IDs are saved in robot.brain
         notifiedBaroId = robot.brain.get('notifiedBaroId' + platform) or ''
-        robot.brain.set 'notifiedBaroId' + platform, data.id
+        robot.brain.set 'notifiedBaroId' + platform, baro.id
 
-        if (data.id != notifiedBaroId)
-          broadcast data.toString(),
+        if (baro.id != notifiedBaroId)
+          broadcast baro.toString(),
             items: 'baro'
             platform: platform
           , robot, userDB
@@ -245,20 +247,21 @@ checkDarvo = (robot, userDB, platform) ->
   # @param string platform
   ###
   robot.logger.debug 'Checking Darvo (' + platform + ')...'
-  ds.getDeals platform, (err, deals) ->
+  worldStates[platform].getDeals (err, deals) ->
     if err
       robot.logger.error err
     else
-      # IDs are saved in robot.brain
-      notifiedDarvoIds = robot.brain.get('notifiedDarvoIds' + platform) or []
-      robot.brain.set 'notifiedDarvoIds' + platform, (d.id for d in deals)
+      if deals?
+        # IDs are saved in robot.brain
+        notifiedDarvoIds = robot.brain.get('notifiedDarvoIds' + platform) or []
+        robot.brain.set 'notifiedDarvoIds' + platform, (d.id for d in deals)
 
-      for d in deals when d.id not in notifiedDarvoIds
-        broadcast d.toString(),
-          items: 'darvo'
-          platform: platform
-        , robot, userDB
-      return
+        for d in deals when d.id not in notifiedDarvoIds
+          broadcast md.codeMulti+d.toString()+md.blockEnd,
+            items: 'darvo'
+            platform: platform
+          , robot, userDB
+        return
 
 broadcast = (message, query, robot, userDB) ->
   ###

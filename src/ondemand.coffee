@@ -54,28 +54,22 @@ module.exports = (robot) ->
       if err
         robot.logger.error err
       else
-        ds.getAlerts platform, (err, data) ->
+        worldStates[platform].getAlertsString (err, alertsString) ->
           if err
             robot.logger.error err
-          else
-            message =
-              if data.length then (alert.toString() for alert in data).join('\n\n')
-              else "#{md.codeMulti}Operator, there are no alerts at the moment#{md.blockEnd}"
-            res.send message
+          res.send alertsString
+        
     
   robot.respond /baro/i, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         robot.logger.error err
       else
-        ds.getBaro platform, (err, data) ->
+         worldStates[platform].getVoidTraderString (err, voidTraderString) ->
           if err
             robot.logger.error err
-          else
-            if data?
-              res.send data.toString()
-            else
-              res.send util.format('%sNo info about Baro%s', md.codeMulti, md.blockEnd)  
+          res.send voidTraderString
+          
   robot.respond /bonus/i, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
@@ -135,15 +129,10 @@ module.exports = (robot) ->
       if err
         robot.logger.error err
       else
-        ds.getDeals platform, (err, data) ->
+        worldStates[platform].getDealsString (err, dealsString) ->
           if err
             robot.logger.error err
-          else
-            message =
-              if data.length then(deal.toString() for deal in data).join('\n\n')
-              else "#{md.codeMulti}Operator, there is no daily deal at the moment#{md.blockEnd}"
-
-            res.send message
+          res.send dealsString
 
   robot.respond /enemies/i, (res) ->
     robot.logger.debug 'Entered persistent enemies command'
@@ -176,6 +165,7 @@ module.exports = (robot) ->
   
   robot.respond /invasions/i, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
+      ###
       if err
         robot.logger.error err
       else
@@ -187,6 +177,14 @@ module.exports = (robot) ->
               if data.length then (invasion.toString() for invasion in data).join('\n\n')
               else "#{md.codeMulti}Operator, there are no invasions at the moment#{md.blockEnd}"
             res.send message  
+      ###
+      if err
+        robot.logger.error err
+      else
+        worldStates[platform].getInvasionsString (err, invasionsString) ->
+          if err
+            robot.logger.error err
+          res.send invasionsString
   robot.respond /news/i, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err

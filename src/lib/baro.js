@@ -27,9 +27,9 @@ Baro.prototype.toString = function() {
   if(!this.isActive()) {
     return util.format('%sBaro is not here yet, he will arrive in %s at %s%s', md.codeMulti, this.getStartString(), this.location, md.blockEnd);
   }
-  var baroString = util.format('%sVoid Trader at %s%s', md.codeMulti, this.location, md.doubleReturn);
+  var baroString = util.format('%sVoid Trader at %s%s', md.codeMulti, this.location, md.lineEnd);
   for(i in this.manifest) {
-    baroString += util.format('%s - price: %d ducats + %dcr%s',
+    baroString += util.format('　　%s - %d ducats + %dcr%s',
                               this.manifest[i].ItemType.replace(/'S/,"s"),
                               this.manifest[i].PrimePrice,
                               this.manifest[i].RegularPrice,

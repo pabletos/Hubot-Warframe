@@ -11,20 +11,25 @@ var md = require('node-md-config');
  */
 module.exports.timeDeltaToString = function (millis) {
   var seconds = millis / 1000;
-  var time = '';
+  var timePieces = [];
 
   if (seconds >= 86400) { // Seconds in a day
-    time += util.format('%dd', Math.floor(seconds / 86400));
-    seconds = seconds % 86400;
+    timePieces.push(util.format('%dd', Math.floor(seconds / 86400)));
+    seconds = Math.floor(seconds) % 86400;
   }
   if (seconds >= 3600) { // Seconds in an hour
-    time += util.format(' %dh %dm', Math.floor(seconds / 3600)
-                        , Math.floor((seconds % 3600) / 60));
-    seconds = seconds % 3600;
+    timePieces.push(util.format('%dh', Math.floor(seconds / 3600)));
+    seconds = Math.floor(seconds) % 3600;
   }
-  time += util.format(' %ds', Math.floor(seconds / 60));
-  
-  return time;
+  if(seconds > 60){
+    timePieces.push(util.format('%dm', Math.floor(seconds/60)));
+    seconds = Math.floor(seconds) % 60;
+  }
+  if(seconds > 0)
+  {
+    timePieces.push(util.format('%ds', Math.floor(seconds)));
+  }
+  return timePieces.join(' ');
 };
 
 module.exports.damageReduction = function (currentArmor) {
