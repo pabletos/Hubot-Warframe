@@ -40,38 +40,41 @@ HUBOT_WARFRAME_LANG_PATH | Define the path to the languages.json in order to all
 
 Command | Listener ID | Description
 --- | ------- | ---
-`hubot start` | `/start/` | Adds user to DB and starts tracking
-`hubot alerts` | `/alerts/` | Displays active alerts
-`hubot baro` | `/baro/` | Displays current Baro Ki'Teer status/inventory
-`hubot darvo` | `/darvo/` | Displays current Darvo Daily Deal
-`hubot end` | `/end/` | Hide custom keyboard (telegram only)
-`hubot invasions` | `/invasions/` | Displays current Invasions
-`hubot news` | `/news/` | Displays news
-`hubot platform <platform>` | `/platform\s*(\w+)?/` | Changes the platform
-`hubot platform` | `/platform\s*(\w+)?/` | Displays menu
-`hubot settings` | `/settings/` | Display settings menu
-`hubot stop` | `/stop/` | Turn off notifications
-`hubot track <reward or event>` | `/track\s*(\w+)?/` | Start tracking reward or event
-`hubot track` | `/track\s*(\w+)?/` | Tracking menu
-`hubot untrack <reward or event>` | `/untrack\s+(\w+)/` | Stop tracking reward or event
-`hubot simaris` | `/simaris/` | Get Synthesis target tracking
-`hubot update` | `/update/` | Display current update
-`hubot primeaccess` | `/primeaccess/` | Display current Prime Access news
-`hubot damage` | `/damage/` | Display link to Damage 2.0 infographic
-`hubot armor`  | `/armor(?:\s+([\d\s]+))?/` | Display instructions for calculating armor
-`hubot armor <current armor>` | `/armor(?:\s+([\d\s]+))?/`  | Display current damage resistance and amount of corrosive procs required to strip it
-`hubot armor <base armor> <base level> <current level>` | `/armor(?:\s+([\d\s]+))?/` |  Display the current armor, damage resistance, and necessary corrosive procs to strip armor.
-`hubot shield`  | `/shield(?:\s+([\d\s]+))?/` | Display instructions for calculating armor
-`hubot shield <base shield> <base level> <current level>` | `/shield(?:\s+([\d\s]+))?/` |  Display the current shields.
-`hubot conclave` | `/conclave(?:\s+([\w+\s]+))?/` | Display usage for conclave command
-`hubot conclave all` | `/conclave(?:\s+([\w+\s]+))?/` | Display all conclave challenges
-`hubot conclave daily` | `/conclave(?:\s+([\w+\s]+))?/` | Display active daily conclave challenges
-`hubot conclave weekly` | `/conclave(?:\s+([\w+\s]+))?/` | Display active weekly conclave challenges
-`hubot enemies` | `/enemies/` | Display list of active persistent enemies where they were last found
-`hubot sortie` | `/sortie/` | Display current sortie missions
-`hubot chart` | `/chart/` | Display mission progression chart
-`hubot tutorial <topic>` | `/tutorial\s?(.+)/` | Display link to topic's tutorial video
-`hubot profile <warframe>` | `/profile\s?(.+)/` | Display link to warframe profile video
+`hubot alerts` | `hubot-warframe.alerts` | Displays active alerts
+`hubot baro` | `hubot-warframe.baro` | Displays current Baro Ki'Teer status/inventory
+`hubot start` | `hubot-warframe.start` | Adds user to DB and starts tracking
+`hubot armor`  | `hubot-warframe.armor` | Display instructions for calculating armor
+`hubot armor <current armor>` | `hubot-warframe.armor`  | Display current damage resistance and amount of corrosive procs required to strip it
+`hubot armor <base armor> <base level> <current level>` | `hubot-warframe.armor` |  Display the current armor, damage resistance, and necessary corrosive procs to strip armor.
+`hubot bonus` | `hubot-warframe.boost` | Display the current Bonus Weekend modifier if there is one
+`hubot chart` | `hubot-warframe.chart` | Display mission progression chart
+`hubot conclave` | `hubot-warframe.conclave` | Display usage for conclave command
+`hubot conclave all` | `hubot-warframe.conclave` | Display all conclave challenges
+`hubot conclave daily` | `hubot-warframe.conclave` | Display active daily conclave challenges
+`hubot conclave weekly` | `hubot-warframe.conclave` | Display active weekly conclave challenges
+`hubot damage` | `hubot-warframe.damage` | Display link to Damage 2.0 infographic
+`hubot darvo` | `hubot-warframe.darvo` | Displays current Darvo Daily Deal
+`hubot end` | `hubot-warframe.end` | Hide custom keyboard (telegram only)
+`hubot enemies` | `hubot-warframe.enemies` | Display list of active persistent enemies where they were last found
+`hubot fissures` | `hubot-warframe.fissures` | List of fissures
+`hubot invasions` | `hubot-warframe.invasions` | Displays current Invasions
+`hubot news` | `hubot-warframe.news` | Displays news
+`hubot platform <platform>` | `hubot-warframe.platform` | Changes the platform
+`hubot platform` | `hubot-warframe.platform/` | Displays menu
+`hubot primeaccess` | `hubot-warframe.primeaccess` | Display current Prime Access news
+`hubot profile <warframe>` | `hubot-warframe.profile` | Display link to warframe profile video
+`hubot settings` | `hubot-warframe.settings` | Display settings menu
+`hubot simaris` | `hubot-warframe.simaris` | Get Synthesis target tracking
+`hubot shield`  | `hubot-warframe.shield` | Display instructions for calculating armor
+`hubot shield <base shield> <base level> <current level>` | `hubot-warframe.shield` |  Display the current shields given the data.
+`hubot sortie` | `hubot-warframe.sortie` | Display current sortie missions
+`hubot stop` | `hubot-warframe.stop` | Turn off notifications
+`hubot track <reward or event>` | `hubot-warframe.track` | Start tracking reward or event
+`hubot track` | `hubot-warframe.track` | Tracking menu
+`hubot tutorial <topic>` | `hubot-warframe.tutorial` | Display link to topic's tutorial video
+`hubot untrack <reward or event>` | `hubot-warframe.untrack` | Stop tracking reward or event
+`hubot update` | `hubot-warframe.update` | Display current update
+
 
 ## Sample Interaction
 

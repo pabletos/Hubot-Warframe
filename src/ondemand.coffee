@@ -18,6 +18,7 @@
 #   hubot darvo - Display daily deals
 #   hubot enemies - Display list of active persistent enemies where they were last found
 #   hubot event - Display information about current event
+#   hubot fissures - Display currently active fissures
 #   hubot invasions - Display invasions
 #   hubot news - Display news
 #   hubot primeaccess - Display current Prime Access news
@@ -25,6 +26,7 @@
 #   hubot simaris - Display current Synthesis target
 #   hubot sortie - Display current sortie missions
 #   hubot syndicate <syndicate> - Display syndicate mission nodes
+#   hubot where (is) <item> - Display list of locations for requested item
 #
 # Author:
 #   nspacestd
@@ -49,7 +51,7 @@ module.exports = (robot) ->
     X1:  null
   worldStates[worldstate] = new Worldstate(worldstate) for worldstate of worldStates
   
-  robot.respond /alerts/i, (res) ->
+  robot.respond /alerts/i, id:'hubot-warframe.alerts', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         robot.logger.error err
@@ -60,7 +62,7 @@ module.exports = (robot) ->
           res.send alertsString
         
     
-  robot.respond /baro/i, (res) ->
+  robot.respond /baro/i, id:'hubot-warframe.baro', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         robot.logger.error err
@@ -70,7 +72,7 @@ module.exports = (robot) ->
             robot.logger.error err
           res.send voidTraderString
           
-  robot.respond /bonus/i, (res) ->
+  robot.respond /bonus/i, id:'hubot-warframe.bonus', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
@@ -78,7 +80,7 @@ module.exports = (robot) ->
         if err
             return robot.logger.error err
         res.send bonusString
-  robot.respond /conclave(?:\s+([\w+\s]+))?/i, (res) ->
+  robot.respond /conclave(?:\s+([\w+\s]+))?/i, id:'hubot-warframe.conclave', (res) ->
     robot.logger.debug util.format('matched conclave command. matching string: %s', res.match[1])
     params = res.match[1]
     challengeFormat = '%s%s%s'
@@ -124,7 +126,7 @@ module.exports = (robot) ->
                                     conclaveInstructAll, md.lineEnd, 
                                     conclaveInstructWeekly, md.lineEnd, 
                                     conclaveInstructDaily, md.blockEnd)
-  robot.respond /darvo/i, (res) ->
+  robot.respond /darvo/i, id:'hubot-warframe.darvo', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         robot.logger.error err
@@ -134,7 +136,7 @@ module.exports = (robot) ->
             robot.logger.error err
           res.send dealsString
 
-  robot.respond /enemies/i, (res) ->
+  robot.respond /enemies/i, id:'hubot-warframe.enemies', (res) ->
     robot.logger.debug 'Entered persistent enemies command'
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
@@ -144,7 +146,7 @@ module.exports = (robot) ->
           return robot.logger.error err
         res.send enemiesString
   
-  robot.respond /event/i, (res) ->
+  robot.respond /event/i, id:'hubot-warframe.event', (res) ->
     robot.logger.debug 'Entered events command'
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
@@ -154,7 +156,7 @@ module.exports = (robot) ->
           return robot.logger.error err
         res.send eventsString  
   
-  robot.respond /fissures/i, (res) ->
+  robot.respond /fissures/i, id:'hubot-warframe.fissures', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
@@ -163,7 +165,7 @@ module.exports = (robot) ->
           return robot.logger.error err
         res.send fissuresString 
   
-  robot.respond /invasions/i, (res) ->
+  robot.respond /invasions/i, id:'hubot-warframe.invasions', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         robot.logger.error err
@@ -172,7 +174,7 @@ module.exports = (robot) ->
           if err
             robot.logger.error err
           res.send invasionsString
-  robot.respond /news/i, (res) ->
+  robot.respond /news/i, id:'hubot-warframe.news', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
@@ -181,7 +183,7 @@ module.exports = (robot) ->
             return robot.logger.error err
         res.send newsString
       
-  robot.respond /primeaccess/i, (res) ->
+  robot.respond /prime\s?access/i, id:'hubot-warframe.primeaccess', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
@@ -190,7 +192,7 @@ module.exports = (robot) ->
             return robot.logger.error err
         res.send primeAccessString
   
-  robot.respond /update/i, (res) ->
+  robot.respond /update/i, id:'hubot-warframe.updates', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
@@ -198,7 +200,7 @@ module.exports = (robot) ->
         if err
             return robot.logger.error err
         res.send updatesString
-  robot.respond /simaris/i, (res) ->
+  robot.respond /simaris/, id:'hubot-warframe.simaris'i, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
@@ -206,7 +208,7 @@ module.exports = (robot) ->
         if err
             return robot.logger.error err
         res.send simarisString 
-  robot.respond /sortie/i, (res) ->
+  robot.respond /sortie/i, id:'hubot-warframe.sortie', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
@@ -215,7 +217,7 @@ module.exports = (robot) ->
             return robot.logger.error err
         res.send sortieString
         
-  robot.respond /syndicate(?:\s+([\w+\s]+))?/i, (res) ->
+  robot.respond /syndicate(?:\s+([\w+\s]+))?/i, id:'hubot-warframe.syndicate', (res) ->
     syndicateReg = res.match[1]
     arbitersReg = /arbiters(\sof)?(\shexis)?/
     sudaReg = /(cephalon\s)?suda/
@@ -280,15 +282,8 @@ module.exports = (robot) ->
         syndicates.forEach (syndicate) ->
             syndicateString += "  \u2022 #{syndicate}#{md.lineEnd}" 
         res.send syndicateString += md.blockEnd
-  
-  robot.respond /trial(?:\s+([\w+\s]+))?(?:\s+([\w+\s]+))?/i, (res) ->
-    param1 = match[1]
-    param2 = match[2]
-    lorRegExp = /l?(aw\s)?o(f\s)?r(etribution\s)?/i
-    jordasRegExp = /jordas(?:verdict)?/i
     
-  
-  robot.respond /where(?:\s?is)?(?:\s+([\w+\s]+))?/i, (res) ->
+  robot.respond /where(?:\s?is)?(?:\s+([\w+\s]+))?/i, id:'hubot-warframe.where', (res) ->
     query = res.match[1]
     if query?
       Worldstate.getComponentFromQuery query, (err, componentString) ->

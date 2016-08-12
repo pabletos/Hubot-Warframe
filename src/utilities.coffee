@@ -16,6 +16,7 @@
 #   hubot efficiency chart - Display link to Duration/Efficienct chart
 #   hubot shield - Display instructions for calculating shields
 #   hubot shield <base shields> <base level> <current level> - Display the current shields.
+#   hubot trial <in-game-name> - display link to search for stats for user
 #
 # Author:
 #   nspacestd
@@ -26,7 +27,7 @@ md = require('node-md-config')
 dsUtil = require('./lib/_utils.js')
 
 module.exports = (robot) ->
-  robot.respond /armor(?:\s+([\d\s]+))?/, (res) ->
+  robot.respond /armor(?:\s+([\d\s]+))?/i, id:'hubot-warframe.armor', (res) ->
     pattern3Params = new RegExp(/^(\d+)(?:\s+(\d+)\s+(\d+))?$/)
     pattern1Param = new RegExp(/^(\d+)$/)
     robot.logger.debug util.format('matched armor command. matching string: %s', res.match[1])
@@ -59,17 +60,17 @@ module.exports = (robot) ->
                                 armorInstruct1, md.blockEnd)
     res.send armorString
     
-  robot.respond /chart/, (res) ->
+  robot.respond /chart/i, id:'hubot-warframe.chart', (res) ->
     res.send string = "#{md.codeMulti}#{md.linkBegin}Chart"+
           "#{md.linkMid}http://chart.morningstar-wf.com/"+
           "#{md.linkEnd}#{md.blockEnd}"
-  robot.respond /damage/, (res) ->  
+  robot.respond /damage/i, id:'hubot-warframe.damage', (res) ->  
     damageURL = 'http://morningstar-wf.com/chart/Damage_2.0_Resistance_Flowchart.png'
     res.send "#{md.codeMulti}#{md.linkBegin}Damage 2.0#{md.linkMid}#{damageURL}#{md.linkEnd}#{md.blockEnd}"
-  robot.respond /efficeincy\schart/, (res) ->
+  robot.respond /efficeincy\s?chart/, id:'hubot-warframe.efficiencychart', (res) ->
     efficienctChartURL = 'http://morningstar-wf.com/chart/efficiency.png'
     res.send res.send "#{md.codeMulti}#{md.linkBegin}Duration/Efficiency Balance Chart#{md.linkMid}#{efficienctChartURL}#{md.linkEnd}#{md.blockEnd}"
-  robot.respond /shield(?:\s+([\d\s]+))?/, (res) ->
+  robot.respond /shield(?:\s+([\d\s]+))?/, id:'hubot-warframe.shields', (res) ->
     pattern3Params = new RegExp(/^(\d+)(?:\s+(\d+)\s+(\d+))?$/)
     robot.logger.debug util.format('matched shield command. matching string: %s', res.match[1])
     params = res.match[1]
@@ -86,3 +87,8 @@ module.exports = (robot) ->
       shieldInstruct3 = 'shield (Base Shelds) (Base Level) (Current Level) calculate shields and stats.'
       shieldString = "#{md.codeMulti}Possible uses include:#{md.lineEnd}#{shieldInstruct3}#{md.blockEnd}"
     res.send shieldString
+  robot.respond /trial(?:\s+([\w+\s]+))?(?:\s+([\w+\s]+))?/i, id:'hubot-warframe.trials', (res) ->
+    param1 = match[1]
+    param2 = match[2]
+    lorRegExp = /l?(aw\s)?o(f\s)?r(etribution\s)?/i
+    jordasRegExp = /jordas(?:verdict)?/i

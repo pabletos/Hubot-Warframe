@@ -30,7 +30,7 @@ TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news', 
 module.exports = (robot) ->
   userDB = new Users(mongoURL)
 
-  robot.respond /settings/i, (res) ->
+  robot.respond /settings/i, id:'hubot-warframe.settings', (res) ->
     userDB.getSettings res.message.room, {}, true, (err, settings) ->
       if err
         robot.logger.error err
@@ -39,13 +39,13 @@ module.exports = (robot) ->
         keys = ['platform', 'track']
         replyWithKeyboard robot, res, text, keys
 
-  robot.respond /platform\s*(\w+)?/, (res) ->
+  robot.respond /platform\s*(\w+)?/i, id:'hubot-warframe.tutorial', (res) ->
     platform = res.match[1]
     if not platform
       text = 'Choose your platform'
       keys = ('platform ' + k for k in platforms)
       replyWithKeyboard robot, res, text, keys
-    else if platform in platforms
+    else if platform.toUpperCase() in platforms
       userDB.setPlatform res.message.room, platform, (err) ->
         if err
           robot.logger.error err
@@ -54,7 +54,7 @@ module.exports = (robot) ->
     else
       res.reply 'Invalid platform'
 
-  robot.respond /track\s*(\w+)?/, (res) ->
+  robot.respond /track\s*(\w+)?/, id:'hubot-warframe.track', (res) ->
     type = res.match[1]
     if not type
       replyWithTrackSettingsKeyboard robot, res, 'Choose one', userDB
@@ -67,7 +67,7 @@ module.exports = (robot) ->
     else
       res.reply 'Invalid argument'
           
-  robot.respond /untrack\s+(\w+)/, (res) ->
+  robot.respond /untrack\s+(\w+)/, id:'hubot-warframe.untrack', (res) ->
     type = res.match[1]
     if type in TRACKABLE
       userDB.setItemTrack res.message.room, type, false, (err) ->
@@ -80,7 +80,7 @@ module.exports = (robot) ->
 
   # Telegram only
   if robot.adapterName is 'telegram'
-    robot.respond /end/, (res) ->
+    robot.respond /end/i, id:'hubot-warframe.telegram-end', (res) ->
       opts =
         chat_id: res.message.room
         text: 'Done'

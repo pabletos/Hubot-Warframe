@@ -24,7 +24,7 @@ mongoURL = process.env.MONGODB_URL
 module.exports = (robot) ->
   userDB = new Users(mongoURL)
 
-  robot.respond /start/, (res) ->
+  robot.respond /start/, id:'hubot-warframe.start' , (res) ->
     userDB.add res.message.room, (err, result) ->
       if err
         robot.logger.error err
@@ -34,7 +34,7 @@ module.exports = (robot) ->
         else
           res.send 'Already tracking'
 
-  robot.respond /stop/, (res) ->
+  robot.respond /stop/, id:'hubot-warframe.stop', (res) ->
     userDB.stopTrack res.message.room, (err) ->
       if err
         robot.logger.error err
