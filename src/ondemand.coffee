@@ -165,19 +165,6 @@ module.exports = (robot) ->
   
   robot.respond /invasions/i, (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
-      ###
-      if err
-        robot.logger.error err
-      else
-        ds.getInvasions platform, (err, data) ->
-          if err
-            robot.logger.error err
-          else
-            message =
-              if data.length then (invasion.toString() for invasion in data).join('\n\n')
-              else "#{md.codeMulti}Operator, there are no invasions at the moment#{md.blockEnd}"
-            res.send message  
-      ###
       if err
         robot.logger.error err
       else
@@ -293,13 +280,20 @@ module.exports = (robot) ->
         syndicates.forEach (syndicate) ->
             syndicateString += "  \u2022 #{syndicate}#{md.lineEnd}" 
         res.send syndicateString += md.blockEnd
+  
+  robot.respond /trial(?:\s+([\w+\s]+))?(?:\s+([\w+\s]+))?/i, (res) ->
+    param1 = match[1]
+    param2 = match[2]
+    lorRegExp = /l?(aw\s)?o(f\s)?r(etribution\s)?/i
+    jordasRegExp = /jordas(?:verdict)?/i
+    
+  
   robot.respond /where(?:\s?is)?(?:\s+([\w+\s]+))?/i, (res) ->
     query = res.match[1]
     if query?
-      #do stuff
-      Worldstate.getRelicFromQuery query, (err, partsString) ->
+      Worldstate.getComponentFromQuery query, (err, componentString) ->
         if err
             return robot.logger.error err
-        res.send partsString
+        res.send componentString
     else
       res.send "#{md.codeMulti}Usage: whereis <prime part/blueprint>#{md.blockEnd}"

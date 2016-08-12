@@ -14,6 +14,10 @@ var Users = function(mongoURL) {
   this.mongoURL = mongoURL;
 }
 
+// Array of reward types
+var rewardTypeArray = Object.keys(rewardTypes).map(function(k){
+	return rewardTypes[k]});
+
 // Default settings for new users
 Users.DEFAULT_SETTINGS = {
   platform: 'PC',
@@ -21,17 +25,6 @@ Users.DEFAULT_SETTINGS = {
     'alerts',
     'invasions',
     'news',
-    'helmet',
-    'clantech',
-    'nightmareMod',
-    'aura',
-    'resource',
-    'nitain',
-    'voidKey',
-    'skin',
-    'weapon',
-    'mutalistCoordinate',
-    'fusionCore',
     'sorties',
     'fissures',
     'baro',
@@ -39,7 +32,7 @@ Users.DEFAULT_SETTINGS = {
     'enemies',
     'other',
     'all'
-  ]
+  ].concat(rewardTypeArray)
 };
 
 /**
@@ -265,6 +258,7 @@ Users.prototype.setItemTrack = function(chatID, item, value, callback) {
       };
       
       if(value) {
+      // Add a new tracked item
         if (item === 'all') {
           update = {
             $set: {
@@ -279,6 +273,7 @@ Users.prototype.setItemTrack = function(chatID, item, value, callback) {
           };
         }
       } else {
+      // Remove a tracked item
         if (item === 'all') {
           update = {
             $set: {items: []}

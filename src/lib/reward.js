@@ -84,6 +84,10 @@ Reward.TYPES = {
   CLANTECH: 'clantech',
   MUTALIST_COORDINATE: 'mutalistCoordinate',
   FUSION_CORE: 'fusionCore',
+  POTATO: 'potato',
+  FORMA: 'forma',
+  EXILUS: 'exilus',
+  VAUBAN: 'vauban',
   OTHER: 'other'
 }
 
@@ -150,7 +154,15 @@ Reward.typeToString = function(type) {
     case Reward.TYPES.MUTALIST_COORDINATE:
       return 'Mutalist Alad V Coordinates';
     case Reward.TYPES.FUSION_CORE:
-      return 'Fusion Core';
+      return 'Fusion Cores';
+    case Reward.TYPES.POTATO:
+      return 'Orokin Catalysts/Reactors';
+    case Reward.TYPES.FORMA:
+      return 'Forma';
+    case Reward.TYPES.EXILUS:
+      return 'Exilus Adapters';
+    case Reward.TYPES.VAUBAN:
+      return 'Vauban Parts'
     case Reward.TYPES.OTHER:
       return 'Other rewards';
     case 'all':
@@ -170,7 +182,7 @@ Reward.typeToString = function(type) {
 function getItemType(item) {
   // Catch vauban parts before helmets (both can have 'helmet' in their name)
   if(/^vauban/i.test(item)) {
-    return Reward.TYPES.OTHER;
+    return Reward.TYPES.VAUBAN;
   }
   else if(/skin/i.test(item)) {
     return Reward.TYPES.SKIN;
@@ -207,6 +219,15 @@ function getItemType(item) {
   }
   else if(/[CUR]\d Fusion Core/i.test(item)) {
     return Reward.TYPES.FUSION_CORE;
+  }
+  else if(/catalyst/i.test(item) || /reactor/i.test(item)) {
+    return Reward.TYPES.POTATO;
+  }
+  else if(/forma/i.test(item)) {
+    return Reward.TYPES.FORMA;
+  }
+  else if(/exilus/i.test(item)) {
+    return Reward.TYPES.EXILUS;
   }
   else {
     return Reward.TYPES.OTHER;

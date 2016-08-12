@@ -60,11 +60,8 @@ checkAlerts = (robot, userDB, platform) ->
   # @param object userDB
   # @param string platform
   ###
-  
   robot.logger.debug 'Checking alerts (' + platform + ')...'
-  worldStates[platform].getAlerts (err, alerts) ->
-  
-  #ds.getAlerts platform, (err, alerts) ->
+  worldStates[platform].getAlerts (err, alerts) ->  
     if err
       robot.logger.error err
     else
@@ -96,7 +93,9 @@ checkInvasions = (robot, userDB, platform) ->
   # @param string platform
   ###
   robot.logger.debug 'Checking invasions (' + platform + ')...'
-  ds.getInvasions platform, (err, invasions) ->
+  #ds.getInvasions platform, (err, invasions) ->
+  worldStates[platform].getInvasions (err, invasions) ->  
+
     if err
       robot.logger.error err
     else

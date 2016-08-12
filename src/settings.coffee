@@ -174,8 +174,10 @@ replyWithTrackSettingsKeyboard = (robot, res, text, userDB) ->
     if err
       robot.logger.error err
     else
-      keys = for t in TRACKABLE
+      keys = for t in TRACKABLE when t != 'all'
               if t in tracked then 'untrack ' + t
               else 'track ' + t
-      
+      keys.push 'track all'
+      keys.push 'untrack all'
+
       replyWithKeyboard robot, res, text, keys
