@@ -88,7 +88,30 @@ module.exports = (robot) ->
       shieldString = "#{md.codeMulti}Possible uses include:#{md.lineEnd}#{shieldInstruct3}#{md.blockEnd}"
     res.send shieldString
   robot.respond /trial(?:\s+([\w+\s]+))?(?:\s+([\w+\s]+))?/i, id:'hubot-warframe.trials', (res) ->
-    param1 = match[1]
-    param2 = match[2]
-    lorRegExp = /l?(aw\s)?o(f\s)?r(etribution\s)?/i
-    jordasRegExp = /jordas(?:verdict)?/i
+    params = res.match[1]
+  
+    lorRegExp = /(?:(?:lor)|(?:law of retribution))\s*?(?:([\w+\s]+))?/i
+    jordasRegExp = /(?:jordas(?:\sverdict))(?:\s+([\w+\s]+))?/i
+    
+    baseURL = 'http://wf.christx.tw/'
+    searchAppend = 'search.php?id='
+    jordasSearchAppend = 'JordasSearch.php?id='
+    jordasAppend = 'JordasRecords.php?type=all'
+    
+    messageToSend = 'Sorry, Operator, no functionality exists for that yet.'
+    
+    if(typeof params == 'undefined')
+      messageToSend = baseURL
+    else if lorRegExp.test params
+      name = params.match(lorRegExp)[1]
+      if(typeof name != 'undefined')
+        messageToSend = baseURL + searchAppend + encodeURIComponent name.replace(/\s/,'')
+      else
+        messageToSend = baseURL
+    else if jordasRegExp.test params
+      name = params.match(jordasRegExp)[1]
+      if(typeof name != 'undefined')
+        messageToSend = baseURL + jordasSearchAppend + encodeURIComponent name.replace(/\s/,'')
+      else
+        messageToSend = baseURL + jordasAppend
+    res.send messageToSend

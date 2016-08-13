@@ -200,7 +200,7 @@ module.exports = (robot) ->
         if err
             return robot.logger.error err
         res.send updatesString
-  robot.respond /simaris/, id:'hubot-warframe.simaris'i, (res) ->
+  robot.respond /simaris/i, id:'hubot-warframe.simaris', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
