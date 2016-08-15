@@ -5,7 +5,7 @@
 #   None
 #
 # Configuration:
-#   MONGODB_URL - MongoDB url
+#   None
 #
 # Commands:
 #   hubot armor - Display instructions for calculating armor
@@ -23,10 +23,12 @@
 #   aliasfalse
 util = require('util')
 md = require('node-md-config')
-
+PriceCheck = require('warframe-nexus-query')
 dsUtil = require('./lib/_utils.js')
 
 module.exports = (robot) ->
+  priceCheckr = new PriceCheck()
+  
   robot.respond /armor(?:\s+([\d\s]+))?/i, id:'hubot-warframe.armor', (res) ->
     pattern3Params = new RegExp(/^(\d+)(?:\s+(\d+)\s+(\d+))?$/)
     pattern1Param = new RegExp(/^(\d+)$/)
@@ -70,6 +72,15 @@ module.exports = (robot) ->
   robot.respond /efficeincy\s?chart/, id:'hubot-warframe.efficiencychart', (res) ->
     efficienctChartURL = 'http://morningstar-wf.com/chart/efficiency.png'
     res.send res.send "#{md.codeMulti}#{md.linkBegin}Duration/Efficiency Balance Chart#{md.linkMid}#{efficienctChartURL}#{md.linkEnd}#{md.blockEnd}"
+  robot.respond /p(?:rice)?\s?c(?:heck)?(?:\s+([\w+\s]+))?/i, id:'hubot-warframe.pricecheck', (res) ->
+    query = res.match[1]
+    if query?
+      priceCheckr.priceCheckQueryString query, (err, componentString) ->
+        if err
+            return robot.logger.error err
+        res.send componentString
+    else
+      res.send "#{md.codeMulti}Usage: whereis <prime part/blueprint>#{md.blockEnd}"
   robot.respond /shield(?:\s+([\d\s]+))?/, id:'hubot-warframe.shields', (res) ->
     pattern3Params = new RegExp(/^(\d+)(?:\s+(\d+)\s+(\d+))?$/)
     robot.logger.debug util.format('matched shield command. matching string: %s', res.match[1])
