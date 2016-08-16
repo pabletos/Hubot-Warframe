@@ -5,7 +5,7 @@ A [Hubot](https://hubot.github.com/) module for tracking Warframe alerts, invasi
 
 [![Build Status](https://travis-ci.org/pabletos/Hubot-Warframe.svg)](https://travis-ci.org/pabletos/Hubot-Warframe)
 
-[![Try hubot-warframe on Discord!](https://discordapp.com/api/servers/146691885363232769/widget.png?style=banner)](https://discord.me/cephalon-genesis)  
+[![Try hubot-warframe on Discord!](https://img.shields.io/badge/Discord-Genesis-7289DA.svg)](https://discord.me/cephalon-sanctuary)  
 
 [![Try hubot-warframe on Telegram!](https://img.shields.io/badge/Telegram-Beta%20War%20Bot-279DD8.svg)](https://telegram.me/betawarbot)
 

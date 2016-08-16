@@ -10,8 +10,8 @@
 # Commands:
 #   hubot settings - Display settings menu
 #   hubot platform <platform> - Change platform or display menu if no argument
-#   hubot track <reward or event> - Start tracking reward or event, menu if no argument
-#   hubot untrack <reward or event> - Stop tracking reward or event
+#   hubot track <reward or event> - Start tracking reward or event, menu if no argument. For rewards to be tracked for alerts or invasions, it must also be tracked in settings.
+#   hubot untrack <reward or event> - Stop tracking reward or event. For rewards to be tracked for alerts or invasions, it must also be tracked in settings.
 #   hubot end (telegram only) - Hide custom keyboard
 #   hubot notify <reward or event> <message> - notify reward or event with a message added on the beginning
 #
@@ -25,7 +25,7 @@ Users = require('./lib/users.js')
 mongoURL = process.env.MONGODB_URL
 trackingUpdated = 'Tracking settings updated\n\nChoose one' 
 
-TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'baro', 'darvo', 'enemies', 'all']
+TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'baro', 'darvo', 'enemies', 'rewards', 'all']
 
 module.exports = (robot) ->
   userDB = new Users(mongoURL)
@@ -151,7 +151,9 @@ settingsToString = (settings) ->
   lines.push 'Baro Ki\'Teer tracking is ' + if 'baro' in settings.items then 'ON' else 'OFF'
   lines.push 'Darvo tracking is ' + if 'darvo' in settings.items then 'ON' else 'OFF'
   lines.push 'Enemy tracking is ' + if 'enemies' in settings.items then 'ON' else 'OFF'
-    
+  
+  lines.push 'For an alert or invasion with a particular item reward to be notified,\nit must also be in the tracked rewards below.'
+  
   lines.push '\nTracked rewards:'
 
   trackedRewards = for i in settings.items when i not in \
