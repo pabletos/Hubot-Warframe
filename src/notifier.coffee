@@ -15,13 +15,12 @@
 
 util = require 'util'
 Users = require './lib/users.js'
-ds = require './lib/deathsnacks.js'
 platforms = require './lib/platforms.json'
-Worldstate = require 'warframe-worldstate-parser'
 md = require 'node-md-config'
+Worldstate = require('warframe-worldstate-parser').Parser
 
 mongoURL = process.env.MONGODB_URL
-NOTIFICATION_INTERVAL = 60 * 1000
+NOTIFICATION_INTERVAL =  process.env.WORLDSTATE_CACHE_LENGTH || 300000
 
 worldStates = 
   PC: null
@@ -42,14 +41,14 @@ check = (robot, userDB) ->
   # @param object userDB
   ###
   for platform in platforms
-    checkAlerts(robot, userDB, platform)
-    checkInvasions(robot, userDB, platform)
     checkNews(robot, userDB, platform)
     checkSortie(robot, userDB, platform)
     checkFissures(robot, userDB, platform)
     checkBaro(robot, userDB, platform)
     checkDarvo(robot, userDB, platform)
     checkEnemies(robot, userDB, platform)
+    checkAlerts(robot, userDB, platform)
+    checkInvasions(robot, userDB, platform)
   return
 
 checkAlerts = (robot, userDB, platform) ->
@@ -63,7 +62,7 @@ checkAlerts = (robot, userDB, platform) ->
   robot.logger.debug 'Checking alerts (' + platform + ')...'
   worldStates[platform].getAlerts (err, alerts) ->  
     if err
-      robot.logger.error err
+      return robot.logger.error err
     else
       # IDs are saved in robot.brain
       notifiedAlertIds = robot.brain.get('notifiedAlertIds' + platform) or []
@@ -71,7 +70,6 @@ checkAlerts = (robot, userDB, platform) ->
 
       for a in alerts when a.id not in notifiedAlertIds
         types = a.getRewardTypes()
-
         # Credit only alerts are not notified
         if types.length
           query = $and: [
@@ -93,19 +91,17 @@ checkInvasions = (robot, userDB, platform) ->
   # @param string platform
   ###
   robot.logger.debug 'Checking invasions (' + platform + ')...'
-  #ds.getInvasions platform, (err, invasions) ->
   worldStates[platform].getInvasions (err, invasions) ->  
-
     if err
-      robot.logger.error err
+      return robot.logger.error err
     else
+      
       # IDs are saved in robot.brain
       notifiedInvasionIds = robot.brain.get('notifiedInvasionIds' + platform) or []
       robot.brain.set 'notifiedInvasionIds' + platform, (i.id for i in invasions)
 
       for i in invasions when i.id not in notifiedInvasionIds
         types = i.getRewardTypes()
-
         # Credit only invasions are not notified
         if types.length
           query = $and: [
@@ -129,14 +125,14 @@ checkNews = (robot, userDB, platform) ->
   robot.logger.debug 'Checking news (' + platform + ')...'
   worldStates[platform].getNews (err, news) ->
     if err
-      robot.logger.error err
+      return robot.logger.error err
     else
       # IDs are saved in robot.brain
       notifiedNewsIds = robot.brain.get('notifiedNewsIds' + platform) or []
       robot.brain.set 'notifiedNewsIds' + platform, (n.id for n in news)
 
       for n in news when n.id not in notifiedNewsIds
-        broadcast n.toString(false),
+        broadcast n.toString(),
           items: 'news'
           platform: platform
         , robot, userDB
@@ -154,7 +150,7 @@ checkSortie = (robot, userDB, platform) ->
   robot.logger.debug 'Checking sorties (' + platform + ')...'
   worldStates[platform].getSortie (err, sortie) ->
     if err
-      robot.logger.error err
+      return robot.logger.error err
     else
       # IDs are saved in robot.brain
       notifiedSortieId = robot.brain.get('notifiedSortieId' + platform) or ''
@@ -176,7 +172,7 @@ checkFissures = (robot, userDB, platform) ->
   robot.logger.debug 'Checking fissures (' + platform + ')...'
   worldStates[platform].getFissures (err, fissures) ->
     if err
-      robot.logger.error err
+      return robot.logger.error err
     else
       # IDs are saved in robot.brain
       notifiedFissureIds = robot.brain.get('notifiedFissureIds' + platform) or []
@@ -199,7 +195,7 @@ checkEnemies = (robot, userDB, platform) ->
   robot.logger.debug 'Checking enemies (' + platform + ')...'
   worldStates[platform].getAllPersistentEnemies (err, enemies) ->
     if err
-      robot.logger.error err
+      return robot.logger.error err
     else
       # IDs are saved in robot.brain
       notifiedEnemyIds = robot.brain.get('notifiedEnemyIds' + platform) or []
@@ -248,7 +244,7 @@ checkDarvo = (robot, userDB, platform) ->
   robot.logger.debug 'Checking Darvo (' + platform + ')...'
   worldStates[platform].getDeals (err, deals) ->
     if err
-      robot.logger.error err
+      return robot.logger.error err
     else
       if deals?
         # IDs are saved in robot.brain
@@ -274,6 +270,6 @@ broadcast = (message, query, robot, userDB) ->
   robot.logger.debug 'Broadcasting to: %s', util.inspect(query, {depth: null})
   userDB.broadcast query, (err, chatID) ->
     if err
-      robot.logger.error err
+      return robot.logger.error err
     else
       robot.messageRoom chatID, message

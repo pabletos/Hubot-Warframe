@@ -1,7 +1,5 @@
 var MongoClient = require('mongodb').MongoClient;
-var platforms = require('./deathsnacks.js').PLATFORM;
-var rewardTypes = require('./reward.js').TYPES;
-
+var rewardTypes = require('warframe-worldstate-parser').Reward.TYPES;
 var USERS_COLLECTION = 'users';
 
 /**
@@ -273,7 +271,7 @@ Users.prototype.setItemTrack = function(chatID, item, value, callback) {
             if (err){
               console.error(err);
             }
-            itemsToSet.concat(trackedItems);
+            itemsToSet = itemsToSet.concat(trackedItems);
             rewardTypeArray.forEach(function(trackableItem){
               if(itemsToSet.indexOf(trackableItem) === -1){
                 itemsToSet.push(trackableItem);

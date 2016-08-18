@@ -36,9 +36,8 @@ util = require('util')
 md = require('node-md-config')
 
 Users = require('./lib/users.js')
-ds = require('./lib/deathsnacks.js')
 dsUtil = require('./lib/_utils.js')
-Worldstate = require('warframe-worldstate-parser')
+Worldstate = require('warframe-worldstate-parser').Parser
 
 mongoURL = process.env.MONGODB_URL
 

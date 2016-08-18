@@ -19,7 +19,7 @@
 #   nspacestd
 
 platforms = require('./lib/platforms.json')
-Reward = require('./lib/reward.js')
+Reward = require('warframe-worldstate-parser').Reward
 Users = require('./lib/users.js')
 
 mongoURL = process.env.MONGODB_URL
