@@ -29,7 +29,14 @@ Users.DEFAULT_SETTINGS = {
     'darvo',
     'enemies',
     'other',
-    'rewards',
+    'conclave.weeklies',
+    'conclave.dailies',
+    'syndicate.arbiters',
+    'syndicate.suda',
+    'syndicate.loka',
+    'syndicate.perrin',
+    'syndicate.veil',
+    'syndicate.meridian',
     'all'
   ].concat(rewardTypeArray)
 };

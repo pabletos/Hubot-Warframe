@@ -6,9 +6,6 @@
 #
 # Configuration:
 #   MONGODB_URL - MongoDB url
-#   HUBOT_LINE_END - Configuragble line-return character
-#   HUBOT_BLOCK_END - Configuragble string for ending blocks
-#   HUBOT_DOUBLE_RET - Configurable string for double-line returns
 #
 # Commands:
 #   hubot start - Add user to database and start tracking

@@ -21,11 +21,12 @@
 platforms = require('./lib/platforms.json')
 Reward = require('warframe-worldstate-parser').Reward
 Users = require('./lib/users.js')
+md = require 'node-md-config'
 
 mongoURL = process.env.MONGODB_URL
 trackingUpdated = 'Tracking settings updated\n\nChoose one' 
 
-TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'baro', 'darvo', 'enemies', 'rewards', 'all']
+TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'baro', 'darvo', 'enemies', 'conclave.weeklies', 'conclave.dailies', 'syndicate.arbiters', 'syndicate.suda', 'syndicate.loka', 'syndicate.perrin', 'syndicate.veil', 'syndicate.meridian', 'all']
 
 module.exports = (robot) ->
   userDB = new Users(mongoURL)
@@ -54,7 +55,7 @@ module.exports = (robot) ->
     else
       res.reply 'Invalid platform'
 
-  robot.respond /track\s*(\w+)?/, id:'hubot-warframe.track', (res) ->
+  robot.respond /track\s*(\w+\.?\w*)?/, id:'hubot-warframe.track', (res) ->
     type = res.match[1]
     if not type
       replyWithTrackSettingsKeyboard robot, res, 'Choose one', userDB
@@ -67,7 +68,7 @@ module.exports = (robot) ->
     else
       res.reply 'Invalid argument'
           
-  robot.respond /untrack\s+(\w+)/, id:'hubot-warframe.untrack', (res) ->
+  robot.respond /untrack\s+(\w+\.?\w*)/, id:'hubot-warframe.untrack', (res) ->
     type = res.match[1]
     if type in TRACKABLE
       userDB.setItemTrack res.message.room, type, false, (err) ->
@@ -128,7 +129,7 @@ replyWithKeyboard = (robot, res, text, keys) ->
       robot.logger.error err if err
   else
     # Non-telegram adapter, send a list of commands
-    res.reply text + '\n\n' + keys.join('\n')
+    res.send md.codeMulti + text + '\n\n' + keys.join('\n') + md.blockEnd
 
 settingsToString = (settings) ->
   ###
@@ -141,23 +142,32 @@ settingsToString = (settings) ->
   
   lines = []
 
-  lines.push 'Your platform is ' + settings.platform.replace('X1', 'Xbox One')
+  lines.push 'This channel`s platform is ' + settings.platform.replace('X1', 'Xbox One')
 
   lines.push 'Alerts are ' + if 'alerts' in settings.items then 'ON' else 'OFF'
   lines.push 'Invasions are ' + if 'invasions' in settings.items then 'ON' else 'OFF'
   lines.push 'News are ' + if 'news' in settings.items then 'ON' else 'OFF'
   lines.push 'Sorties are ' + if 'sorties' in settings.items then 'ON' else 'OFF'
   lines.push 'Fissures are ' + if 'fissures' in settings.items then 'ON' else 'OFF'
-  lines.push 'Baro Ki\'Teer tracking is ' + if 'baro' in settings.items then 'ON' else 'OFF'
+  lines.push 'Baro Ki`Teer tracking is ' + if 'baro' in settings.items then 'ON' else 'OFF'
   lines.push 'Darvo tracking is ' + if 'darvo' in settings.items then 'ON' else 'OFF'
   lines.push 'Enemy tracking is ' + if 'enemies' in settings.items then 'ON' else 'OFF'
+  lines.push 'Conclave Daily tracking is ' + if 'conclave.dailies' in settings.items then 'ON' else 'OFF'
+  lines.push 'Conclave Weekly tracking is ' + if 'conclave.weeklies' in settings.items then 'ON' else 'OFF'
+  lines.push 'Syndicate Arbiters of Hexis tracking is ' + if 'syndicate.arbiters' in settings.items then 'ON' else 'OFF'
+  lines.push 'Syndicate Cephalon Suda tracking is ' + if 'syndicate.suda' in settings.items then 'ON' else 'OFF'
+  lines.push 'Syndicate New Loka tracking is ' + if 'syndicate.loka' in settings.items then 'ON' else 'OFF'
+  lines.push 'Syndicate Perrin Sequence tracking is ' + if 'syndicate.perrin' in settings.items then 'ON' else 'OFF'
+  lines.push 'Syndicate Red Veil tracking is ' + if 'syndicate.veil' in settings.items then 'ON' else 'OFF'
+  lines.push 'Syndicate Steel Meridian tracking is ' + if 'syndicate.meridian' in settings.items then 'ON' else 'OFF'
   
-  lines.push 'For an alert or invasion with a particular item reward to be notified,\nit must also be in the tracked rewards below.'
+  lines.push '\nFor an alert or invasion with a particular item reward to be notified,\nit must also be in the tracked rewards below.'
   
   lines.push '\nTracked rewards:'
 
   trackedRewards = for i in settings.items when i not in \
-    ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'baro', 'darvo', 'enemies']
+    ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'baro', 'darvo', 'enemies', 'conclave.dailies', 'conclave.weeklies','syndicate.arbiters', 'syndicate.suda', 'syndicate.loka', 'syndicate.perrin', 'syndicate.veil',
+    'syndicate.meridian']
       Reward.typeToString(i)
 
   return lines.concat(trackedRewards).join('\n')

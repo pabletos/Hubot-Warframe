@@ -49,6 +49,14 @@ check = (robot, userDB) ->
     checkEnemies(robot, userDB, platform)
     checkAlerts(robot, userDB, platform)
     checkInvasions(robot, userDB, platform)
+    checkConclaveDailies(robot, userDB, platform)
+    checkConclaveWeeklies(robot, userDB, platform)
+    checkSyndicateArbiters(robot, userDB, platform)
+    checkSyndicateSuda(robot, userDB, platform)
+    checkSyndicateLoka(robot, userDB, platform)
+    checkSyndicatePerrin(robot, userDB, platform)
+    checkSyndicateRedVeil(robot, userDB, platform)
+    checkSyndicateMeridian(robot, userDB, platform)
   return
 
 checkAlerts = (robot, userDB, platform) ->
@@ -186,7 +194,7 @@ checkFissures = (robot, userDB, platform) ->
       return
 checkEnemies = (robot, userDB, platform) ->
   ###
-  # Check for unread fissures and notify them to subscribed users from userDB
+  # Check for unread persistent enemies and notify them to subscribed users from userDB
   #
   # @param object robot
   # @param object userDB
@@ -258,6 +266,195 @@ checkDarvo = (robot, userDB, platform) ->
           , robot, userDB
         return
 
+
+checkConclaveDailies = (robot, userDB, platform) ->
+  ###
+  # Check for unread conclave daily challenges and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking conclave daily challenges (' + platform + ')...'
+  worldStates[platform].getConclaveDailies (err, challenges) ->
+    if err
+      return robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedConclaveIds = robot.brain.get('notifiedConclaveIds' + platform) or []
+      robot.brain.set 'notifiedConclaveIds' + platform, (c.id for c in challenges)
+
+      for c in challenges when c.id not in notifiedConclaveIds
+        broadcast  md.codeMulti+c.toString(true)+md.blockEnd,
+          items: 'conclave.daily'
+          platform: platform
+        , robot, userDB
+      return
+    
+checkConclaveWeeklies = (robot, userDB, platform) ->
+  ###
+  # Check for unread conclave weekly challenges and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking conclave daily challenges (' + platform + ')...'
+  worldStates[platform].getConclaveWeeklies (err, challenges) ->
+    if err
+      return robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedConclaveIds = robot.brain.get('notifiedConclaveIds' + platform) or []
+      robot.brain.set 'notifiedConclaveIds' + platform, (c.id for c in challenges)
+
+      for c in challenges when c.id not in notifiedConclaveIds
+        broadcast  md.codeMulti+c.toString(true)+md.blockEnd,
+          items: 'conclave.weekly'
+          platform: platform
+        , robot, userDB
+      return
+    
+checkSyndicateArbiters = (robot, userDB, platform) ->
+  ###
+  # Check for unread conclave weekly challenges and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking Arbiters of Hexis Missions (' + platform + ')...'
+  worldStates[platform].getArbitersOfHexisMissions (err, missions) ->
+    if err
+      return robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedSyndicateIds = robot.brain.get('notifiedSyndicateIds' + platform) or []
+      robot.brain.set 'notifiedSyndicateIds' + platform, (m.id for m in missions)
+
+      for m in missions when c.id not in notifiedSyndicateIds
+        broadcast  md.codeMulti+m.toString()+md.blockEnd,
+          items: 'syndicate.arbiters'
+          platform: platform
+        , robot, userDB
+      return
+checkSyndicateSuda = (robot, userDB, platform) ->
+  ###
+  # Check for unread Cephalon Suda missions and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking Cephalon Suda Missions (' + platform + ')...'
+  worldStates[platform].getCephalonSudaMissions (err, missions) ->
+    if err
+      return robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedSyndicateIds = robot.brain.get('notifiedSyndicateIds' + platform) or []
+      robot.brain.set 'notifiedSyndicateIds' + platform, (m.id for m in missions)
+
+      for m in missions when c.id not in notifiedSyndicateIds
+        broadcast  md.codeMulti+m.toString()+md.blockEnd,
+          items: 'syndicate.suda'
+          platform: platform
+        , robot, userDB
+      return
+checkSyndicateLoka = (robot, userDB, platform) ->
+  ###
+  # Check for unread New Loka missions and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking Arbiters of Hexis Missions (' + platform + ')...'
+  worldStates[platform].getNewLokaMissions (err, missions) ->
+    if err
+      return robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedSyndicateIds = robot.brain.get('notifiedSyndicateIds' + platform) or []
+      robot.brain.set 'notifiedSyndicateIds' + platform, (m.id for m in missions)
+
+      for m in missions when c.id not in notifiedSyndicateIds
+        broadcast  md.codeMulti+m.toString()+md.blockEnd,
+          items: 'syndicate.loka'
+          platform: platform
+        , robot, userDB
+      return
+checkSyndicatePerrin = (robot, userDB, platform) ->
+  ###
+  # Check for unread Perrin Sequence missions and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking Arbiters of Hexis Missions (' + platform + ')...'
+  worldStates[platform].getPerrinSequenceMissions (err, missions) ->
+    if err
+      return robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedSyndicateIds = robot.brain.get('notifiedSyndicateIds' + platform) or []
+      robot.brain.set 'notifiedSyndicateIds' + platform, (m.id for m in missions)
+
+      for m in missions when c.id not in notifiedSyndicateIds
+        broadcast  md.codeMulti+m.toString()+md.blockEnd,
+          items: 'syndicate.perrin'
+          platform: platform
+        , robot, userDB
+      return
+checkSyndicateRedVeil = (robot, userDB, platform) ->
+  ###
+  # Check for unread Red Veil Missions and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking Red Veil Missions (' + platform + ')...'
+  worldStates[platform].getRedVeilMissions (err, missions) ->
+    if err
+      return robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedSyndicateIds = robot.brain.get('notifiedSyndicateIds' + platform) or []
+      robot.brain.set 'notifiedSyndicateIds' + platform, (m.id for m in missions)
+
+      for m in missions when c.id not in notifiedSyndicateIds
+        broadcast  md.codeMulti+m.toString()+md.blockEnd,
+          items: 'syndicate.veil'
+          platform: platform
+        , robot, userDB
+      return
+checkSyndicateMeridian = (robot, userDB, platform) ->
+  ###
+  # Check for unread Steel Meridian missions and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking Steel Meridian Missions (' + platform + ')...'
+  worldStates[platform].getSteelMeridianMissions (err, missions) ->
+    if err
+      return robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedSyndicateIds = robot.brain.get('notifiedSyndicateIds' + platform) or []
+      robot.brain.set 'notifiedSyndicateIds' + platform, (m.id for m in missions)
+
+      for m in missions when c.id not in notifiedSyndicateIds
+        broadcast  md.codeMulti+m.toString()+md.blockEnd,
+          items: 'syndicate.meridian'
+          platform: platform
+        , robot, userDB
+      return
+    
+    
 broadcast = (message, query, robot, userDB) ->
   ###
   # Broadcast a message to all subscribed users that match a query

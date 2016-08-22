@@ -12,6 +12,7 @@
 #   hubot armor <current armor> - Display current damage resistance and amount of corrosive procs required to strip it
 #   hubot armor <base armor> <base level> <current level> - Display the current armor, damage resistance, and necessary corrosive procs to strip armor.
 #   hubot chart - Display link to Warframe progression chart
+#   hubot cycle - Display the current day/night cycle for Earth and tell you how much time is left.
 #   hubot damage - Display link to Damage 2.0 infographic
 #   hubot efficiency chart - Display link to Duration/Efficienct chart
 #   hubot shield - Display instructions for calculating shields
@@ -21,13 +22,35 @@
 # Author:
 #   nspacestd
 #   aliasfalse
-util = require('util')
-md = require('node-md-config')
-PriceCheck = require('warframe-nexus-query')
-dsUtil = require('./lib/_utils.js')
+util = require 'util'
+moment = require 'moment'
+md = require 'node-md-config'
+PriceCheck = require 'warframe-nexus-query'
+
+dsUtil = require './lib/_utils.js'
 
 module.exports = (robot) ->
   priceCheckr = new PriceCheck()
+  
+  getCurrentEarthCycle = ->
+    hour = Math.floor(moment().valueOf() / 3600000) % 24
+    cycle = 'Night'
+    opposite = 'Day'
+    if hour >= 0 and hour < 4 or hour >= 8 and hour < 12 or hour >= 16 and hour < 20
+      cycle = 'Day'
+      opposite = 'Night'
+    hourleft = 3 - (hour % 4)
+    minutes = 59 - moment().minutes()
+    seconds = 59 - moment().seconds()
+    timePieces = []
+    if hourleft > 0
+      timePieces.push hourleft + 'h'
+    if minutes > 0
+      timePieces.push minutes + 'm'
+    if seconds > 0
+      timePieces.push seconds + 's'
+    format = '%sOperator, Earth is currently in %stime. Time remaining until %s: %s.%s'
+    return util.format format, md.codeMulti, cycle, opposite, timePieces.join(' '), md.blockEnd
   
   robot.respond /armor(?:\s+([\d\s]+))?/i, id:'hubot-warframe.armor', (res) ->
     pattern3Params = new RegExp(/^(\d+)(?:\s+(\d+)\s+(\d+))?$/)
@@ -66,6 +89,8 @@ module.exports = (robot) ->
     res.send string = "#{md.codeMulti}#{md.linkBegin}Chart"+
           "#{md.linkMid}http://chart.morningstar-wf.com/"+
           "#{md.linkEnd}#{md.blockEnd}"
+  robot.respond /cycle/i, id:'hubot-warframe.cycle', (res) ->
+    res.send getCurrentEarthCycle()
   robot.respond /damage/i, id:'hubot-warframe.damage', (res) ->  
     damageURL = 'http://morningstar-wf.com/chart/Damage_2.0_Resistance_Flowchart.png'
     res.send "#{md.codeMulti}#{md.linkBegin}Damage 2.0#{md.linkMid}#{damageURL}#{md.linkEnd}#{md.blockEnd}"

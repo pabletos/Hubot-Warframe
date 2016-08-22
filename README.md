@@ -57,6 +57,7 @@ Command | Listener ID | Description
 `hubot end` | `hubot-warframe.end` | Hide custom keyboard (telegram only)
 `hubot enemies` | `hubot-warframe.enemies` | Display list of active persistent enemies where they were last found
 `hubot fissures` | `hubot-warframe.fissures` | List of fissures
+`hubot flash deals`|`hubot-warframe.flashdeals`| Display list of currently active flash deals
 `hubot invasions` | `hubot-warframe.invasions` | Displays current Invasions
 `hubot news` | `hubot-warframe.news` | Displays news
 `hubot platform <platform>` | `hubot-warframe.platform` | Changes the platform

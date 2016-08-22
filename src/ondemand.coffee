@@ -19,6 +19,7 @@
 #   hubot enemies - Display list of active persistent enemies where they were last found
 #   hubot event - Display information about current event
 #   hubot fissures - Display currently active fissures
+#   hubot flash deals - Display Current Market flash deals
 #   hubot invasions - Display invasions
 #   hubot news - Display news
 #   hubot primeaccess - Display current Prime Access news
@@ -163,6 +164,15 @@ module.exports = (robot) ->
         if err
           return robot.logger.error err
         res.send fissuresString 
+  
+  robot.respond /flash(?:\sdeals)/i, id:'hubot-warframe.flashdeals', (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        return robot.logger.error err
+      worldStates[platform].getFlashDealsString (err, flashDealsString) ->
+        if err
+          return robot.logger.error err
+        res.send flashDealsString
   
   robot.respond /invasions/i, id:'hubot-warframe.invasions', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->

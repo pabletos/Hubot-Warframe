@@ -17,6 +17,7 @@
     "hubot": "^2.17.0"
   },
   "dependencies": {
+    "moment": "^2.14.1",
     "mongodb": "^2.1.2",
     "node-md-config": "^2.0.1",
     "request": "^2.67.0",
