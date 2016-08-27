@@ -1,7 +1,6 @@
 {
   "name": "hubot-warframe",
   "version": "1.0.0",
-
   "author": "nspacestd <nspacestd@gmail.com>",
   "description": "Warframe module for Hubot",
   "keywords": [
@@ -18,10 +17,12 @@
     "hubot": "^2.17.0"
   },
   "dependencies": {
-    "node-md-config": "^2.0.1",
+    "moment": "^2.14.1",
     "mongodb": "^2.1.2",
+    "node-md-config": "^2.0.1",
     "request": "^2.67.0",
-    "warframe-worldstate-parser": "0.0.3"
+    "warframe-nexus-query": "0.0.2",
+    "warframe-worldstate-parser": "^0.0.5"
   },
   "devDependencies": {
     "hubot": "^2.17.0",

@@ -10,25 +10,35 @@ var md = require('node-md-config');
  * @return {string}
  */
 module.exports.timeDeltaToString = function (millis) {
-    var seconds = millis / 1000;
+  var seconds = millis / 1000;
+  var timePieces = [];
 
-    if (seconds >= 86400) { // Seconds in a day
-        return util.format('%dd', Math.floor(seconds / 86400));
-    } else if (seconds >= 3600) { // Seconds in an hour
-        return util.format('%dh %dm', Math.floor(seconds / 3600)
-            , Math.floor((seconds % 3600) / 60));
-    } else {
-        return util.format('%dm', Math.floor(seconds / 60));
-    }
+  if (seconds >= 86400) { // Seconds in a day
+    timePieces.push(util.format('%dd', Math.floor(seconds / 86400)));
+    seconds = Math.floor(seconds) % 86400;
+  }
+  if (seconds >= 3600) { // Seconds in an hour
+    timePieces.push(util.format('%dh', Math.floor(seconds / 3600)));
+    seconds = Math.floor(seconds) % 3600;
+  }
+  if(seconds > 60){
+    timePieces.push(util.format('%dm', Math.floor(seconds/60)));
+    seconds = Math.floor(seconds) % 60;
+  }
+  if(seconds > 0)
+  {
+    timePieces.push(util.format('%ds', Math.floor(seconds)));
+  }
+  return timePieces.join(' ');
 };
 
 module.exports.damageReduction = function (currentArmor) {
-  var damageRes = parseInt(currentArmor) / (parseInt(currentArmor) + 300) * 100;
+  var damageRes = (parseInt(currentArmor) / (parseInt(currentArmor) + 300) * 100).toFixed(2);
   return util.format("%d% damage reduction", damageRes);
 };
 
 module.exports.armorFull = function (baseArmor, baseLevel, currentLevel) {
-  var armor = parseInt(baseArmor) * (1 + (Math.pow((parseInt(currentLevel) - parseInt(baseLevel)),1.75) / 200));
+  var armor = (parseInt(baseArmor) * (1 + (Math.pow((parseInt(currentLevel) - parseInt(baseLevel)),1.75) / 200))).toFixed(2);
   var armorString = util.format("At level %s your enemy would have %d Armor %s %s", 
                      currentLevel, armor, md.lineEnd, 
                      this.damageReduction(armor))
@@ -37,13 +47,13 @@ module.exports.armorFull = function (baseArmor, baseLevel, currentLevel) {
 };
 
 module.exports.armorStrip = function (armor) {
-  var armorStripValue = 8*Math.log(parseInt(armor));
+  var armorStripValue = 8*Math.log(parseInt(armor)).toFixed(2);
   
-  return util.format("You will need %d corrosive procs to strip your enemy of armor.", armorStripValue)
+  return util.format("You will need %d corrosive procs to strip your enemy of armor.", armorStripValue);
 };
 
 module.exports.shieldCalc = function(baseShields, baseLevel, currentLevel) {    
-    return parseInt(baseShields) + (Math.pow(parseInt(currentLevel)-parseInt(baseLevel), 2) * 0.0075 * parseInt(baseShields));
+    return (parseInt(baseShields) + (Math.pow(parseInt(currentLevel)-parseInt(baseLevel), 2) * 0.0075 * parseInt(baseShields))).toFixed(2);
 };
 
 module.exports.shieldString = function(shields, level) {

@@ -6,15 +6,12 @@
 #
 # Configuration:
 #   MONGODB_URL - MongoDB url
-#   HUBOT_LINE_END - Configuragble line-return character
-#   HUBOT_BLOCK_END - Configuragble string for ending blocks
-#   HUBOT_DOUBLE_RET - Configurable string for double-line returns
 # 
 # Commands:
 #   hubot settings - Display settings menu
 #   hubot platform <platform> - Change platform or display menu if no argument
-#   hubot track <reward or event> - Start tracking reward or event, menu if no argument
-#   hubot untrack <reward or event> - Stop tracking reward or event
+#   hubot track <reward or event> - Start tracking reward or event, menu if no argument. For rewards to be tracked for alerts or invasions, it must also be tracked in settings.
+#   hubot untrack <reward or event> - Stop tracking reward or event. For rewards to be tracked for alerts or invasions, it must also be tracked in settings.
 #   hubot end (telegram only) - Hide custom keyboard
 #   hubot notify <reward or event> <message> - notify reward or event with a message added on the beginning
 #
@@ -22,18 +19,19 @@
 #   nspacestd
 
 platforms = require('./lib/platforms.json')
-Reward = require('./lib/reward.js')
+Reward = require('warframe-worldstate-parser').Reward
 Users = require('./lib/users.js')
+md = require 'node-md-config'
 
 mongoURL = process.env.MONGODB_URL
 trackingUpdated = 'Tracking settings updated\n\nChoose one' 
 
-TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'all']
+TRACKABLE = (v for k, v of Reward.TYPES).concat ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'baro', 'darvo', 'enemies', 'conclave.weeklies', 'conclave.dailies', 'syndicate.arbiters', 'syndicate.suda', 'syndicate.loka', 'syndicate.perrin', 'syndicate.veil', 'syndicate.meridian', 'all']
 
 module.exports = (robot) ->
   userDB = new Users(mongoURL)
 
-  robot.respond /settings/i, (res) ->
+  robot.respond /settings/i, id:'hubot-warframe.settings', (res) ->
     userDB.getSettings res.message.room, {}, true, (err, settings) ->
       if err
         robot.logger.error err
@@ -42,13 +40,13 @@ module.exports = (robot) ->
         keys = ['platform', 'track']
         replyWithKeyboard robot, res, text, keys
 
-  robot.respond /platform\s*(\w+)?/, (res) ->
+  robot.respond /platform\s*(\w+)?/i, id:'hubot-warframe.tutorial', (res) ->
     platform = res.match[1]
     if not platform
       text = 'Choose your platform'
       keys = ('platform ' + k for k in platforms)
       replyWithKeyboard robot, res, text, keys
-    else if platform in platforms
+    else if platform.toUpperCase() in platforms
       userDB.setPlatform res.message.room, platform, (err) ->
         if err
           robot.logger.error err
@@ -57,7 +55,7 @@ module.exports = (robot) ->
     else
       res.reply 'Invalid platform'
 
-  robot.respond /track\s*(\w+)?/, (res) ->
+  robot.respond /track\s*(\w+\.?\w*)?/, id:'hubot-warframe.track', (res) ->
     type = res.match[1]
     if not type
       replyWithTrackSettingsKeyboard robot, res, 'Choose one', userDB
@@ -70,7 +68,7 @@ module.exports = (robot) ->
     else
       res.reply 'Invalid argument'
           
-  robot.respond /untrack\s+(\w+)/, (res) ->
+  robot.respond /untrack\s+(\w+\.?\w*)/, id:'hubot-warframe.untrack', (res) ->
     type = res.match[1]
     if type in TRACKABLE
       userDB.setItemTrack res.message.room, type, false, (err) ->
@@ -83,7 +81,7 @@ module.exports = (robot) ->
 
   # Telegram only
   if robot.adapterName is 'telegram'
-    robot.respond /end/, (res) ->
+    robot.respond /end/i, id:'hubot-warframe.telegram-end', (res) ->
       opts =
         chat_id: res.message.room
         text: 'Done'
@@ -131,7 +129,7 @@ replyWithKeyboard = (robot, res, text, keys) ->
       robot.logger.error err if err
   else
     # Non-telegram adapter, send a list of commands
-    res.reply text + '\n\n' + keys.join('\n')
+    res.send md.codeMulti + text + '\n\n' + keys.join('\n') + md.blockEnd
 
 settingsToString = (settings) ->
   ###
@@ -144,18 +142,32 @@ settingsToString = (settings) ->
   
   lines = []
 
-  lines.push 'Your platform is ' + settings.platform.replace('X1', 'Xbox One')
+  lines.push 'This channel`s platform is ' + settings.platform.replace('X1', 'Xbox One')
 
   lines.push 'Alerts are ' + if 'alerts' in settings.items then 'ON' else 'OFF'
   lines.push 'Invasions are ' + if 'invasions' in settings.items then 'ON' else 'OFF'
   lines.push 'News are ' + if 'news' in settings.items then 'ON' else 'OFF'
   lines.push 'Sorties are ' + if 'sorties' in settings.items then 'ON' else 'OFF'
   lines.push 'Fissures are ' + if 'fissures' in settings.items then 'ON' else 'OFF'
+  lines.push 'Baro Ki`Teer tracking is ' + if 'baro' in settings.items then 'ON' else 'OFF'
+  lines.push 'Darvo tracking is ' + if 'darvo' in settings.items then 'ON' else 'OFF'
+  lines.push 'Enemy tracking is ' + if 'enemies' in settings.items then 'ON' else 'OFF'
+  lines.push 'Conclave Daily tracking is ' + if 'conclave.dailies' in settings.items then 'ON' else 'OFF'
+  lines.push 'Conclave Weekly tracking is ' + if 'conclave.weeklies' in settings.items then 'ON' else 'OFF'
+  lines.push 'Syndicate Arbiters of Hexis tracking is ' + if 'syndicate.arbiters' in settings.items then 'ON' else 'OFF'
+  lines.push 'Syndicate Cephalon Suda tracking is ' + if 'syndicate.suda' in settings.items then 'ON' else 'OFF'
+  lines.push 'Syndicate New Loka tracking is ' + if 'syndicate.loka' in settings.items then 'ON' else 'OFF'
+  lines.push 'Syndicate Perrin Sequence tracking is ' + if 'syndicate.perrin' in settings.items then 'ON' else 'OFF'
+  lines.push 'Syndicate Red Veil tracking is ' + if 'syndicate.veil' in settings.items then 'ON' else 'OFF'
+  lines.push 'Syndicate Steel Meridian tracking is ' + if 'syndicate.meridian' in settings.items then 'ON' else 'OFF'
+  
+  lines.push '\nFor an alert or invasion with a particular item reward to be notified,\nit must also be in the tracked rewards below.'
   
   lines.push '\nTracked rewards:'
 
   trackedRewards = for i in settings.items when i not in \
-    ['alerts', 'invasions', 'news', 'sorties', 'fissures']
+    ['alerts', 'invasions', 'news', 'sorties', 'fissures', 'baro', 'darvo', 'enemies', 'conclave.dailies', 'conclave.weeklies','syndicate.arbiters', 'syndicate.suda', 'syndicate.loka', 'syndicate.perrin', 'syndicate.veil',
+    'syndicate.meridian']
       Reward.typeToString(i)
 
   return lines.concat(trackedRewards).join('\n')

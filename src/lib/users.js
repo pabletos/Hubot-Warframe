@@ -1,7 +1,5 @@
 var MongoClient = require('mongodb').MongoClient;
-var platforms = require('./deathsnacks.js').PLATFORM;
-var rewardTypes = require('./reward.js').TYPES;
-
+var rewardTypes = require('warframe-worldstate-parser').Reward.TYPES;
 var USERS_COLLECTION = 'users';
 
 /**
@@ -27,6 +25,19 @@ Users.DEFAULT_SETTINGS = {
     'news',
     'sorties',
     'fissures',
+    'baro',
+    'darvo',
+    'enemies',
+    'other',
+    'conclave.weeklies',
+    'conclave.dailies',
+    'syndicate.arbiters',
+    'syndicate.suda',
+    'syndicate.loka',
+    'syndicate.perrin',
+    'syndicate.veil',
+    'syndicate.meridian',
+    'all'
   ].concat(rewardTypeArray)
 };
 
@@ -240,6 +251,7 @@ Users.prototype.setPlatform = function(chatID, platform, callback) {
  * @param {function} callback Callback function
  */
 Users.prototype.setItemTrack = function(chatID, item, value, callback) {
+  var self = this;
   MongoClient.connect(this.mongoURL, function(err, db) {
     if(err) {
       callback(err, null);
@@ -258,6 +270,25 @@ Users.prototype.setItemTrack = function(chatID, item, value, callback) {
           update = {
             $set: {
               items: Users.DEFAULT_SETTINGS.items
+            }
+          };
+        } else if(item === 'rewards'){
+          var itemsToSet = [];
+          self.getTrackedItems(chatID, function(err, trackedItems){
+            if (err){
+              console.error(err);
+            }
+            itemsToSet = itemsToSet.concat(trackedItems);
+            rewardTypeArray.forEach(function(trackableItem){
+              if(itemsToSet.indexOf(trackableItem) === -1){
+                itemsToSet.push(trackableItem);
+              }
+            });
+          });
+          
+          update = {
+            $set: {
+              items: itemsToSet
             }
           };
         } else {

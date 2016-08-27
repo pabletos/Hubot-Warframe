@@ -15,13 +15,12 @@
 
 util = require 'util'
 Users = require './lib/users.js'
-ds = require './lib/deathsnacks.js'
 platforms = require './lib/platforms.json'
-Worldstate = require 'warframe-worldstate-parser'
 md = require 'node-md-config'
+Worldstate = require('warframe-worldstate-parser').Parser
 
 mongoURL = process.env.MONGODB_URL
-NOTIFICATION_INTERVAL = 60 * 1000
+NOTIFICATION_INTERVAL =  process.env.WORLDSTATE_CACHE_LENGTH || 300000
 
 worldStates = 
   PC: null
@@ -42,11 +41,22 @@ check = (robot, userDB) ->
   # @param object userDB
   ###
   for platform in platforms
-    checkAlerts(robot, userDB, platform)
-    checkInvasions(robot, userDB, platform)
     checkNews(robot, userDB, platform)
     checkSortie(robot, userDB, platform)
     checkFissures(robot, userDB, platform)
+    checkBaro(robot, userDB, platform)
+    checkDarvo(robot, userDB, platform)
+    checkEnemies(robot, userDB, platform)
+    checkAlerts(robot, userDB, platform)
+    checkInvasions(robot, userDB, platform)
+    checkConclaveDailies(robot, userDB, platform)
+    checkConclaveWeeklies(robot, userDB, platform)
+    checkSyndicateArbiters(robot, userDB, platform)
+    checkSyndicateSuda(robot, userDB, platform)
+    checkSyndicateLoka(robot, userDB, platform)
+    checkSyndicatePerrin(robot, userDB, platform)
+    checkSyndicateRedVeil(robot, userDB, platform)
+    checkSyndicateMeridian(robot, userDB, platform)
   return
 
 checkAlerts = (robot, userDB, platform) ->
@@ -57,11 +67,10 @@ checkAlerts = (robot, userDB, platform) ->
   # @param object userDB
   # @param string platform
   ###
-  
   robot.logger.debug 'Checking alerts (' + platform + ')...'
-  ds.getAlerts platform, (err, alerts) ->
+  worldStates[platform].getAlerts (err, alerts) ->  
     if err
-      robot.logger.error err
+      return robot.logger.error err
     else
       # IDs are saved in robot.brain
       notifiedAlertIds = robot.brain.get('notifiedAlertIds' + platform) or []
@@ -69,7 +78,6 @@ checkAlerts = (robot, userDB, platform) ->
 
       for a in alerts when a.id not in notifiedAlertIds
         types = a.getRewardTypes()
-
         # Credit only alerts are not notified
         if types.length
           query = $and: [
@@ -91,17 +99,17 @@ checkInvasions = (robot, userDB, platform) ->
   # @param string platform
   ###
   robot.logger.debug 'Checking invasions (' + platform + ')...'
-  ds.getInvasions platform, (err, invasions) ->
+  worldStates[platform].getInvasions (err, invasions) ->  
     if err
-      robot.logger.error err
+      return robot.logger.error err
     else
+      
       # IDs are saved in robot.brain
       notifiedInvasionIds = robot.brain.get('notifiedInvasionIds' + platform) or []
       robot.brain.set 'notifiedInvasionIds' + platform, (i.id for i in invasions)
 
       for i in invasions when i.id not in notifiedInvasionIds
         types = i.getRewardTypes()
-
         # Credit only invasions are not notified
         if types.length
           query = $and: [
@@ -125,14 +133,14 @@ checkNews = (robot, userDB, platform) ->
   robot.logger.debug 'Checking news (' + platform + ')...'
   worldStates[platform].getNews (err, news) ->
     if err
-      robot.logger.error err
+      return robot.logger.error err
     else
       # IDs are saved in robot.brain
       notifiedNewsIds = robot.brain.get('notifiedNewsIds' + platform) or []
       robot.brain.set 'notifiedNewsIds' + platform, (n.id for n in news)
 
       for n in news when n.id not in notifiedNewsIds
-        broadcast n.toString(false),
+        broadcast n.toString(),
           items: 'news'
           platform: platform
         , robot, userDB
@@ -150,7 +158,7 @@ checkSortie = (robot, userDB, platform) ->
   robot.logger.debug 'Checking sorties (' + platform + ')...'
   worldStates[platform].getSortie (err, sortie) ->
     if err
-      robot.logger.error err
+      return robot.logger.error err
     else
       # IDs are saved in robot.brain
       notifiedSortieId = robot.brain.get('notifiedSortieId' + platform) or ''
@@ -172,7 +180,7 @@ checkFissures = (robot, userDB, platform) ->
   robot.logger.debug 'Checking fissures (' + platform + ')...'
   worldStates[platform].getFissures (err, fissures) ->
     if err
-      robot.logger.error err
+      return robot.logger.error err
     else
       # IDs are saved in robot.brain
       notifiedFissureIds = robot.brain.get('notifiedFissureIds' + platform) or []
@@ -184,7 +192,269 @@ checkFissures = (robot, userDB, platform) ->
           platform: platform
         , robot, userDB
       return
+checkEnemies = (robot, userDB, platform) ->
+  ###
+  # Check for unread persistent enemies and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking enemies (' + platform + ')...'
+  worldStates[platform].getAllPersistentEnemies (err, enemies) ->
+    if err
+      return robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedEnemyIds = robot.brain.get('notifiedEnemyIds' + platform) or []
+      robot.brain.set 'notifiedEnemyIds' + platform, (e.id for e in enemies)
 
+      for e in enemies when e.id not in notifiedEnemyIds
+        broadcast  md.codeMulti+e.toString()+md.blockEnd,
+          items: 'enemies'
+          platform: platform
+        , robot, userDB
+      return
+
+checkBaro = (robot, userDB, platform) ->
+  ###
+  # Check for unread Baro Ki'Teer notifications and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking Baro (' + platform + ')...'  
+  worldStates[platform].getVoidTrader (err, baro) ->
+    if err
+      robot.logger.error err
+    else
+      if baro?
+        # IDs are saved in robot.brain
+        notifiedBaroId = robot.brain.get('notifiedBaroId' + platform) or ''
+        robot.brain.set 'notifiedBaroId' + platform, baro.id
+
+        if (baro.id != notifiedBaroId)
+          broadcast baro.toString(),
+            items: 'baro'
+            platform: platform
+          , robot, userDB
+        return
+
+checkDarvo = (robot, userDB, platform) ->
+  ###
+  # Check for unread Darvo Daily Deals notifications and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking Darvo (' + platform + ')...'
+  worldStates[platform].getDeals (err, deals) ->
+    if err
+      return robot.logger.error err
+    else
+      if deals?
+        # IDs are saved in robot.brain
+        notifiedDarvoIds = robot.brain.get('notifiedDarvoIds' + platform) or []
+        robot.brain.set 'notifiedDarvoIds' + platform, (d.id for d in deals)
+
+        for d in deals when d.id not in notifiedDarvoIds
+          broadcast md.codeMulti+d.toString()+md.blockEnd,
+            items: 'darvo'
+            platform: platform
+          , robot, userDB
+        return
+
+
+checkConclaveDailies = (robot, userDB, platform) ->
+  ###
+  # Check for unread conclave daily challenges and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking conclave daily challenges (' + platform + ')...'
+  worldStates[platform].getConclaveDailies (err, challenges) ->
+    if err
+      return robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedConclaveIds = robot.brain.get('notifiedConclaveIds' + platform) or []
+      robot.brain.set 'notifiedConclaveIds' + platform, (c.id for c in challenges)
+
+      for c in challenges when c.id not in notifiedConclaveIds
+        broadcast  md.codeMulti+c.toString(true)+md.blockEnd,
+          items: 'conclave.daily'
+          platform: platform
+        , robot, userDB
+      return
+    
+checkConclaveWeeklies = (robot, userDB, platform) ->
+  ###
+  # Check for unread conclave weekly challenges and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking conclave daily challenges (' + platform + ')...'
+  worldStates[platform].getConclaveWeeklies (err, challenges) ->
+    if err
+      return robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedConclaveIds = robot.brain.get('notifiedConclaveIds' + platform) or []
+      robot.brain.set 'notifiedConclaveIds' + platform, (c.id for c in challenges)
+
+      for c in challenges when c.id not in notifiedConclaveIds
+        broadcast  md.codeMulti+c.toString(true)+md.blockEnd,
+          items: 'conclave.weekly'
+          platform: platform
+        , robot, userDB
+      return
+    
+checkSyndicateArbiters = (robot, userDB, platform) ->
+  ###
+  # Check for unread conclave weekly challenges and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking Arbiters of Hexis Missions (' + platform + ')...'
+  worldStates[platform].getArbitersOfHexisMissions (err, missions) ->
+    if err
+      return robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedSyndicateIds = robot.brain.get('notifiedSyndicateIds' + platform) or []
+      robot.brain.set 'notifiedSyndicateIds' + platform, (m.id for m in missions)
+
+      for m in missions when c.id not in notifiedSyndicateIds
+        broadcast  md.codeMulti+m.toString()+md.blockEnd,
+          items: 'syndicate.arbiters'
+          platform: platform
+        , robot, userDB
+      return
+checkSyndicateSuda = (robot, userDB, platform) ->
+  ###
+  # Check for unread Cephalon Suda missions and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking Cephalon Suda Missions (' + platform + ')...'
+  worldStates[platform].getCephalonSudaMissions (err, missions) ->
+    if err
+      return robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedSyndicateIds = robot.brain.get('notifiedSyndicateIds' + platform) or []
+      robot.brain.set 'notifiedSyndicateIds' + platform, (m.id for m in missions)
+
+      for m in missions when c.id not in notifiedSyndicateIds
+        broadcast  md.codeMulti+m.toString()+md.blockEnd,
+          items: 'syndicate.suda'
+          platform: platform
+        , robot, userDB
+      return
+checkSyndicateLoka = (robot, userDB, platform) ->
+  ###
+  # Check for unread New Loka missions and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking Arbiters of Hexis Missions (' + platform + ')...'
+  worldStates[platform].getNewLokaMissions (err, missions) ->
+    if err
+      return robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedSyndicateIds = robot.brain.get('notifiedSyndicateIds' + platform) or []
+      robot.brain.set 'notifiedSyndicateIds' + platform, (m.id for m in missions)
+
+      for m in missions when c.id not in notifiedSyndicateIds
+        broadcast  md.codeMulti+m.toString()+md.blockEnd,
+          items: 'syndicate.loka'
+          platform: platform
+        , robot, userDB
+      return
+checkSyndicatePerrin = (robot, userDB, platform) ->
+  ###
+  # Check for unread Perrin Sequence missions and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking Arbiters of Hexis Missions (' + platform + ')...'
+  worldStates[platform].getPerrinSequenceMissions (err, missions) ->
+    if err
+      return robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedSyndicateIds = robot.brain.get('notifiedSyndicateIds' + platform) or []
+      robot.brain.set 'notifiedSyndicateIds' + platform, (m.id for m in missions)
+
+      for m in missions when c.id not in notifiedSyndicateIds
+        broadcast  md.codeMulti+m.toString()+md.blockEnd,
+          items: 'syndicate.perrin'
+          platform: platform
+        , robot, userDB
+      return
+checkSyndicateRedVeil = (robot, userDB, platform) ->
+  ###
+  # Check for unread Red Veil Missions and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking Red Veil Missions (' + platform + ')...'
+  worldStates[platform].getRedVeilMissions (err, missions) ->
+    if err
+      return robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedSyndicateIds = robot.brain.get('notifiedSyndicateIds' + platform) or []
+      robot.brain.set 'notifiedSyndicateIds' + platform, (m.id for m in missions)
+
+      for m in missions when c.id not in notifiedSyndicateIds
+        broadcast  md.codeMulti+m.toString()+md.blockEnd,
+          items: 'syndicate.veil'
+          platform: platform
+        , robot, userDB
+      return
+checkSyndicateMeridian = (robot, userDB, platform) ->
+  ###
+  # Check for unread Steel Meridian missions and notify them to subscribed users from userDB
+  #
+  # @param object robot
+  # @param object userDB
+  # @param string platform
+  ###
+  robot.logger.debug 'Checking Steel Meridian Missions (' + platform + ')...'
+  worldStates[platform].getSteelMeridianMissions (err, missions) ->
+    if err
+      return robot.logger.error err
+    else
+      # IDs are saved in robot.brain
+      notifiedSyndicateIds = robot.brain.get('notifiedSyndicateIds' + platform) or []
+      robot.brain.set 'notifiedSyndicateIds' + platform, (m.id for m in missions)
+
+      for m in missions when c.id not in notifiedSyndicateIds
+        broadcast  md.codeMulti+m.toString()+md.blockEnd,
+          items: 'syndicate.meridian'
+          platform: platform
+        , robot, userDB
+      return
+    
+    
 broadcast = (message, query, robot, userDB) ->
   ###
   # Broadcast a message to all subscribed users that match a query
@@ -197,6 +467,6 @@ broadcast = (message, query, robot, userDB) ->
   robot.logger.debug 'Broadcasting to: %s', util.inspect(query, {depth: null})
   userDB.broadcast query, (err, chatID) ->
     if err
-      robot.logger.error err
+      return robot.logger.error err
     else
       robot.messageRoom chatID, message

@@ -23,7 +23,7 @@ profiles = require('../resources/data/profiles.json')
 tutorials = require('../resources/data/tutorials.json')
 
 module.exports = (robot) ->
-  robot.respond /tutorial\s?(.+)?/, (res) ->
+  robot.respond /tutorial\s?(.+)?/, id:'hubot-warframe.tutorial', (res) ->
     tutorialReg = res.match[1]      
     if(tutorialReg)
       tutorialFormat = "#{md.codeMulti}#{md.linkBegin}Warframe Tutorial | %s#{md.linkMid}%s#{md.linkEnd}#{md.blockEnd}"
@@ -42,7 +42,7 @@ module.exports = (robot) ->
         availableTutorials += "  \u2022 #{tutorial}#{md.lineEnd}"
       res.send availableTutorials+"#{md.blockEnd}"
     
-  robot.respond /profile\s?(.+)?/, (res) ->
+  robot.respond /profile\s?(.+)?/, id:'hubot-warframe.tutorial', (res) ->
     warframe = res.match[1]
     if(warframe)
       profileFormat = "#{md.codeMulti}#{md.linkBegin}Warframe Profile | %s#{md.linkMid}%s#{md.linkEnd}#{md.blockEnd}"

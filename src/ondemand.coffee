@@ -10,6 +10,7 @@
 # Commands:
 #   hubot alerts - Display alerts
 #   hubot baro - Display current Baro status/inventory
+#   hubot bonus - Display current global bonus if there is one
 #   hubot conclave - Display usage for conclave command
 #   hubot conclave all - Display all conclave challenges
 #   hubot conclave daily - Display active daily conclave challenges
@@ -17,12 +18,16 @@
 #   hubot darvo - Display daily deals
 #   hubot enemies - Display list of active persistent enemies where they were last found
 #   hubot event - Display information about current event
+#   hubot fissures - Display currently active fissures
+#   hubot flash deals - Display Current Market flash deals
 #   hubot invasions - Display invasions
 #   hubot news - Display news
 #   hubot primeaccess - Display current Prime Access news
 #   hubot update - Display current update
 #   hubot simaris - Display current Synthesis target
 #   hubot sortie - Display current sortie missions
+#   hubot syndicate <syndicate> - Display syndicate mission nodes
+#   hubot where (is) <item> - Display list of locations for requested item
 #
 # Author:
 #   nspacestd
@@ -32,9 +37,8 @@ util = require('util')
 md = require('node-md-config')
 
 Users = require('./lib/users.js')
-ds = require('./lib/deathsnacks.js')
 dsUtil = require('./lib/_utils.js')
-Worldstate = require('warframe-worldstate-parser')
+Worldstate = require('warframe-worldstate-parser').Parser
 
 mongoURL = process.env.MONGODB_URL
 
@@ -47,34 +51,36 @@ module.exports = (robot) ->
     X1:  null
   worldStates[worldstate] = new Worldstate(worldstate) for worldstate of worldStates
   
-  robot.respond /alerts/, (res) ->
+  robot.respond /alerts/i, id:'hubot-warframe.alerts', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         robot.logger.error err
       else
-        ds.getAlerts platform, (err, data) ->
+        worldStates[platform].getAlertsString (err, alertsString) ->
           if err
             robot.logger.error err
-          else
-            message =
-              if data.length then (alert.toString() for alert in data).join('\n\n')
-              else "#{md.codeMulti}Operator, there are no alerts at the moment#{md.blockEnd}"
-            res.send message
+          res.send alertsString
+        
     
-  robot.respond /baro/, (res) ->
+  robot.respond /baro/i, id:'hubot-warframe.baro', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         robot.logger.error err
       else
-        ds.getBaro platform, (err, data) ->
+         worldStates[platform].getVoidTraderString (err, voidTraderString) ->
           if err
             robot.logger.error err
-          else
-            if data?
-              res.send data.toString()
-            else
-              res.send util.format('%sNo info about Baro%s', md.codeMulti, md.blockEnd)  
-  robot.respond /conclave(?:\s+([\w+\s]+))?/, (res) ->
+          res.send voidTraderString
+          
+  robot.respond /bonus/i, id:'hubot-warframe.bonus', (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        return robot.logger.error err
+      worldStates[platform].getGlobalModifersString (err, bonusString) ->
+        if err
+            return robot.logger.error err
+        res.send bonusString
+  robot.respond /conclave(?:\s+([\w+\s]+))?/i, id:'hubot-warframe.conclave', (res) ->
     robot.logger.debug util.format('matched conclave command. matching string: %s', res.match[1])
     params = res.match[1]
     challengeFormat = '%s%s%s'
@@ -120,22 +126,17 @@ module.exports = (robot) ->
                                     conclaveInstructAll, md.lineEnd, 
                                     conclaveInstructWeekly, md.lineEnd, 
                                     conclaveInstructDaily, md.blockEnd)
-  robot.respond /darvo/, (res) ->
+  robot.respond /darvo/i, id:'hubot-warframe.darvo', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         robot.logger.error err
       else
-        ds.getDeals platform, (err, data) ->
+        worldStates[platform].getDealsString (err, dealsString) ->
           if err
             robot.logger.error err
-          else
-            message =
-              if data.length then(deal.toString() for deal in data).join('\n\n')
-              else "#{md.codeMulti}Operator, there is no daily deal at the moment#{md.blockEnd}"
+          res.send dealsString
 
-            res.send message
-
-  robot.respond /enemies/, (res) ->
+  robot.respond /enemies/i, id:'hubot-warframe.enemies', (res) ->
     robot.logger.debug 'Entered persistent enemies command'
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
@@ -145,7 +146,7 @@ module.exports = (robot) ->
           return robot.logger.error err
         res.send enemiesString
   
-  robot.respond /event/, (res) ->
+  robot.respond /event/i, id:'hubot-warframe.event', (res) ->
     robot.logger.debug 'Entered events command'
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
@@ -155,7 +156,7 @@ module.exports = (robot) ->
           return robot.logger.error err
         res.send eventsString  
   
-  robot.respond /fissures/, (res) ->
+  robot.respond /fissures/i, id:'hubot-warframe.fissures', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
@@ -164,20 +165,25 @@ module.exports = (robot) ->
           return robot.logger.error err
         res.send fissuresString 
   
-  robot.respond /invasions/, (res) ->
+  robot.respond /flash(?:\sdeals)/i, id:'hubot-warframe.flashdeals', (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        return robot.logger.error err
+      worldStates[platform].getFlashDealsString (err, flashDealsString) ->
+        if err
+          return robot.logger.error err
+        res.send flashDealsString
+  
+  robot.respond /invasions/i, id:'hubot-warframe.invasions', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         robot.logger.error err
       else
-        ds.getInvasions platform, (err, data) ->
+        worldStates[platform].getInvasionsString (err, invasionsString) ->
           if err
             robot.logger.error err
-          else
-            message =
-              if data.length then (invasion.toString() for invasion in data).join('\n\n')
-              else "#{md.codeMulti}Operator, there are no invasions at the moment#{md.blockEnd}"
-            res.send message  
-  robot.respond /news/, (res) ->
+          res.send invasionsString
+  robot.respond /news/i, id:'hubot-warframe.news', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
@@ -186,7 +192,7 @@ module.exports = (robot) ->
             return robot.logger.error err
         res.send newsString
       
-  robot.respond /primeaccess/, (res) ->
+  robot.respond /prime\s?access/i, id:'hubot-warframe.primeaccess', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
@@ -195,7 +201,7 @@ module.exports = (robot) ->
             return robot.logger.error err
         res.send primeAccessString
   
-  robot.respond /update/, (res) ->
+  robot.respond /update/i, id:'hubot-warframe.updates', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
@@ -203,9 +209,15 @@ module.exports = (robot) ->
         if err
             return robot.logger.error err
         res.send updatesString
-  robot.respond /simaris/, (res) ->
-    res.send "#{md.codeMulti}No info about Synthesis Targets, Simaris has left us alone#{md.blockEnd}"    
-  robot.respond /sortie/, (res) ->
+  robot.respond /simaris/i, id:'hubot-warframe.simaris', (res) ->
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        return robot.logger.error err
+      worldStates[platform].getSimarisString (err, simarisString) ->
+        if err
+            return robot.logger.error err
+        res.send simarisString 
+  robot.respond /sortie/i, id:'hubot-warframe.sortie', (res) ->
     userDB.getPlatform res.message.room, (err, platform) ->
       if err
         return robot.logger.error err
@@ -213,3 +225,79 @@ module.exports = (robot) ->
         if err
             return robot.logger.error err
         res.send sortieString
+        
+  robot.respond /syndicate(?:\s+([\w+\s]+))?/i, id:'hubot-warframe.syndicate', (res) ->
+    syndicateReg = res.match[1]
+    arbitersReg = /arbiters(\sof)?(\shexis)?/
+    sudaReg = /(cephalon\s)?suda/
+    lokaReg = /(new\s)?loka/
+    perrinReg = /perrin(\ssequence)?/
+    steelMeridianReg = /(steel\s)?meridian/
+    redVeilReg = /(red\s)?veil/
+    allReg = /all/
+    
+    userDB.getPlatform res.message.room, (err, platform) ->
+      if err
+        return robot.logger.error err
+      syndicateString = ''
+      if syndicateReg?
+        if arbitersReg.test syndicateReg
+          worldStates[platform].getArbitersOfHexisString (err, arbiterString) ->
+            if err
+                return robot.logger.error err
+            robot.logger.debug "Entering arbiters syndicate"
+            res.send arbiterString
+        else if sudaReg.test syndicateReg
+          worldStates[platform].getCephalonSudaString (err, sudaString) ->
+            if err
+                return robot.logger.error err
+            robot.logger.debug "Entering cephalon suda syndicate"
+            res.send sudaString
+        else if lokaReg.test syndicateReg
+          worldStates[platform].getNewLokaString (err, lokaString) ->
+            if err
+                return robot.logger.error err
+            robot.logger.debug "Entering new loka syndicate"
+            res.send lokaString
+        else if perrinReg.test syndicateReg
+          worldStates[platform].getPerrinSequenceString (err, perrinString) ->
+            if err
+                return robot.logger.error err
+            robot.logger.debug "Entering perrin sequence syndicate"
+            res.send perrinString
+        else if steelMeridianReg.test syndicateReg
+          worldStates[platform].getSteelMeridianString (err, steelMeridianString) ->
+            if err
+                return robot.logger.error err
+            robot.logger.debug "Entering steel Meridian syndicate"
+            res.send steelMeridianString
+        else if redVeilReg.test syndicateReg
+          worldStates[platform].getRedVeilString (err, redVeilString) ->
+            if err
+                return robot.logger.error err
+            robot.logger.debug "Entering red veil syndicate"
+            res.send redVeilString
+        else if allReg.test syndicateReg
+          worldStates[platform].getAllSyndicatesAsString (err, allSyndString) ->
+            if err
+                return robot.logger.error err
+            robot.logger.debug "Entering all syndicate"
+            res.send allSyndString
+        else
+         res.send util.format("#{md.codeMulti}Operator, that is not a currently valid syndicate, stay alert.#{md.blockEnd}")
+      else
+        syndicates = ["arbiters of hexis", "cephalon suda", "new loka", "perrin sequence", "steel meridian", "red veil"]
+        syndicateString = "#{md.codeMulti}Available syndicates:#{md.lineEnd}"
+        syndicates.forEach (syndicate) ->
+            syndicateString += "  \u2022 #{syndicate}#{md.lineEnd}" 
+        res.send syndicateString += md.blockEnd
+    
+  robot.respond /where(?:\s?is)?(?:\s+([\w+\s]+))?/i, id:'hubot-warframe.where', (res) ->
+    query = res.match[1]
+    if query?
+      Worldstate.getComponentFromQuery query, (err, componentString) ->
+        if err
+            return robot.logger.error err
+        res.send componentString
+    else
+      res.send "#{md.codeMulti}Usage: whereis <prime part/blueprint>#{md.blockEnd}"
