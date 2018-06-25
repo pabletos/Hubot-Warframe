@@ -22,7 +22,7 @@
     "node-md-config": "^2.0.1",
     "request": "^2.67.0",
     "warframe-nexus-query": "0.0.2",
-    "warframe-worldstate-parser": "^0.0.5"
+    "warframe-worldstate-parser": "WFCD/warframe-worldstate-parser#v0.0.6"
   },
   "devDependencies": {
     "hubot": "^2.17.0",
